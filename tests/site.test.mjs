@@ -24,7 +24,7 @@ const FILES = siteFiles();
 const HTML = FILES.filter((f) => f.endsWith('.html'));
 
 // Dozwolone domeny w linkach <a href> (użytkownik klika sam; nic nie ładuje się automatycznie).
-const LINK_HOSTS = new Set(['www.apple.com', 'apple.com', 'lkarwowski494.github.io']);
+const LINK_HOSTS = new Set(['www.apple.com', 'apple.com']); // 14.10.2026: polityka i wsparcie Treningu na apps4brew.com/trening/ (bez github.io)
 // Własna domena: tylko adres kanoniczny i tagi Open Graph (muszą być bezwzględne).
 const OWN_HOST = 'apps4brew.com';
 
@@ -76,7 +76,7 @@ test('mailto tylko na adresy studia', () => {
     for (const m of read(f).matchAll(/mailto:([^"?]+)/g)) {
       assert.ok(['hello@apps4brew.com', 'support@apps4brew.com'].includes(m[1]), `${f}: mailto ${m[1]}`);
     }
-    const emails = [...read(f).matchAll(/[\w.+-]+@[\w-]+\.[\w.]+/g)].map((m) => m[0]);
+    const emails = [...read(f).matchAll(/[\w.+-]+@[\w-]+\.[\w.]+/g)].map((m) => m[0].replace(/\.+$/, '')); // kropka kończąca zdanie nie należy do adresu
     for (const e of emails) assert.match(e, /^(hello|support)@apps4brew\.com$/, `${f}: obcy e-mail ${e}`);
   }
 });
@@ -86,7 +86,9 @@ test('bez ciasteczek, analityki i skryptów zewnętrznych; localStorage tylko na
     const src = read(f);
     assert.ok(!/document\.cookie/.test(src), `${f}: document.cookie`);
     assert.ok(!/sessionStorage|indexedDB/.test(src), `${f}: inny magazyn przeglądarki`);
-    assert.ok(!/\b(gtag|googletagmanager|analytics|plausible|umami|fbq)\b/i.test(src), `${f}: analityka`);
+    // Analityka w kodzie i zasobach; w treści HTML słowo „analytics” może paść w polityce prywatności („nie używa do … analityki”).
+    const code = f.endsWith('.html') ? (src.match(/<script\b[^>]*>[\s\S]*?<\/script>|<(?:link|img|iframe|meta)\b[^>]*>/g) || []).join('\n') : src;
+    assert.ok(!/\b(gtag|googletagmanager|analytics|plausible|umami|fbq)\b/i.test(code), `${f}: analityka`);
     for (const m of src.matchAll(/localStorage\.(setItem|getItem)\('([^']+)'/g)) {
       assert.equal(m[2], 'a4b-lang', `${f}: localStorage z kluczem ${m[2]}`);
     }
@@ -150,8 +152,9 @@ test('sekcja „Jak robimy aplikacje” z zasadą „Jakość od pierwszej linij
 
 test('stopka: linki Wsparcie, Prywatność, Warunki', () => {
   const src = read('index.html');
-  assert.ok(src.includes('href="https://lkarwowski494.github.io/trening/support.html"'));
-  assert.ok(src.includes('href="https://lkarwowski494.github.io/trening/privacy.html"'));
+  assert.ok(src.includes('href="trening/support.html"'));
+  assert.ok(src.includes('href="trening/privacy.html"'));
+  assert.ok(!/github\.io/.test(src), 'stare adresy github.io w stopce');
   assert.ok(src.includes('href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"'));
   assert.ok(!/apps\.apple\.com/.test(src), 'link do App Store przed publikacją aplikacji');
 });
@@ -209,9 +212,52 @@ test('lokalne odwołania w HTML wskazują istniejące pliki', () => {
     const src = read(f);
     for (const m of src.matchAll(/\s(?:src|href)="([^"#:][^"]*)"/g)) {
       if (/^[a-z]+:/i.test(m[1])) continue; // https:, mailto: — sprawdzane w innych testach
-      const p = m[1].replace(/^\//, '');
-      if (p === '') continue;
-      assert.ok(fs.existsSync(path.join(root, p)), `${f}: brak pliku ${m[1]}`);
+      if (m[1] === '/') continue;
+      // Ścieżka od korzenia („/assets/…”) albo względna do katalogu strony (trening/privacy.html → ../assets/…).
+      const p = m[1].startsWith('/') ? path.join(root, m[1].slice(1)) : path.join(root, path.dirname(f), m[1]);
+      assert.ok(fs.existsSync(p), `${f}: brak pliku ${m[1]}`);
     }
   }
+});
+
+// 14.10.2026 (decyzja właściciela D-2 A w repo aplikacji, docs/41): polityka prywatności i wsparcie aplikacji Trening pod apps4brew.com/trening/.
+// Strony generowane z repo aplikacji (scripts/site/export-apps4brew.mjs) — treść sprawdzają testy tamtego repo; tu: forma, język, kontakt.
+const DOCS = ['trening/privacy.html', 'trening/support.html'];
+
+test('trening/: polityka i wsparcie istnieją, oznaczone jako generowane, w szablonie strony marki', () => {
+  for (const f of DOCS) {
+    const src = read(f);
+    assert.ok(HTML.includes(f), `${f}: nie ma na liście stron`);
+    assert.match(src, /WYGENEROWANE z repozytorium aplikacji Trening/, f);
+    assert.match(src, /<link rel="stylesheet" href="\.\.\/assets\/site\.css">/, f);
+    assert.match(src, /<script src="\.\.\/assets\/site\.js"><\/script>/, f);
+    assert.match(src, /<a class="logo" href="\.\.\/">/, f);
+    assert.match(src, /id="lang-pl"/, f); assert.match(src, /id="lang-en"/, f);
+  }
+});
+
+test('trening/: sekcja PL i EN (przełącznik pokazuje jedną), bez linków do GitHuba, kontakt tylko support@apps4brew.com', () => {
+  for (const f of DOCS) {
+    const src = read(f);
+    assert.equal((src.match(/<section lang="pl" data-lang-section="pl">/g) || []).length, 1, f);
+    assert.equal((src.match(/<section lang="en" data-lang-section="en">/g) || []).length, 1, f);
+    assert.ok(!/github\.(com|io)/.test(src.replace(/<!--[\s\S]*?-->/g, '')), `${f}: link do GitHuba`);
+    assert.ok(src.includes('href="mailto:support@apps4brew.com"'), f);
+    assert.match(src, /\[UWAGA 14\.10\.2026\] Skrzynka support@apps4brew\.com działa dopiero po weryfikacji DSA/, f);
+    assert.ok(!/\+?\d{2,3}[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}/.test(src), `${f}: numer telefonu`);
+    assert.ok(!/\bul\.\s|\d{2}-\d{3}\s/.test(src), `${f}: adres pocztowy`);
+  }
+  const js = read('assets/site.js');
+  assert.match(js, /\[data-lang-section\]/); assert.match(js, /el\.hidden = el\.getAttribute\('data-lang-section'\) !== l/);
+});
+
+test('trening/privacy.html: treść polityki (dane na telefonie, Apple Health, zegarek, zakupy, „Gdy do nas piszesz”) w obu językach', () => {
+  const src = read('trening/privacy.html');
+  for (const w of ['nie łączy się z internetem', '<h2>Apple Health (opcjonalnie)</h2>', '<h2>Apple Watch (opcjonalnie)</h2>', '<h2>Zakupy (subskrypcja)</h2>', '<h2>Gdy do nas piszesz</h2>', 'Obowiązuje od',
+    'does not connect to the internet', '<h2>Apple Health (optional)</h2>', '<h2>Apple Watch (optional)</h2>', '<h2>Purchases (subscription)</h2>', '<h2>When you write to us</h2>', 'Effective']) assert.ok(src.includes(w), w);
+});
+
+test('trening/support.html: kontakt, co dołączyć, FAQ; link do polityki względny', () => {
+  const src = read('trening/support.html');
+  for (const w of ['<h2>Kontakt</h2>', 'Odpowiadamy zwykle w ciągu tygodnia', '<h2>Pytania i odpowiedzi</h2>', '<h2>Contact</h2>', 'We usually reply within a week', '<h2>FAQ</h2>', 'href="privacy.html"']) assert.ok(src.includes(w), w);
 });

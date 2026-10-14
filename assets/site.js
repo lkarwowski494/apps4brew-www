@@ -16,6 +16,10 @@
     document.querySelectorAll('[data-label-' + l + ']').forEach(function (el) {
       el.setAttribute('aria-label', el.getAttribute('data-label-' + l));
     });
+    // Strony dokumentów (trening/privacy.html, trening/support.html): widoczna tylko sekcja wybranego języka; bez JS widać obie.
+    document.querySelectorAll('[data-lang-section]').forEach(function (el) {
+      el.hidden = el.getAttribute('data-lang-section') !== l;
+    });
     if (meta && meta.getAttribute('data-content-' + l)) {
       meta.setAttribute('content', meta.getAttribute('data-content-' + l));
     }
@@ -33,7 +37,7 @@
 
   var saved = null;
   try { saved = localStorage.getItem('a4b-lang'); } catch (e) {}
-  if (saved === 'en') setLang('en');
+  if (saved === 'en' || document.querySelector('[data-lang-section]')) setLang(saved === 'en' ? 'en' : 'pl');
 
   var btn = document.getElementById('copy');
   var addr = document.getElementById('addr');
