@@ -112,7 +112,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 
 /* karta aplikacji */
 .app{display:grid;grid-template-columns:64px 1fr;gap:var(--o-4) var(--o-6);padding-block:var(--o-8);border-top:1px solid var(--linia)}
-@media (max-width:599px){.app{grid-template-columns:1fr;gap:var(--o-3)}.app .icon{width:56px;height:56px}}
+@media (max-width:599px){.app{grid-template-columns:minmax(0,1fr);gap:var(--o-3)}.app .icon{width:56px;height:56px}}
 .app-ikona,.app .icon{border-radius:22%}
 .app h3{font:400 var(--r-h3)/1.15 var(--kroj-tytul)}
 .app-meta,.app .meta{display:flex;flex-wrap:wrap;gap:var(--o-1) var(--o-4);margin-block:var(--o-2) var(--o-3);color:var(--tusz-2);font-weight:600}
@@ -197,7 +197,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .stopka{padding:var(--o-10) var(--margines);border-top:2px solid var(--linia-mocna);font-size:var(--r-mala)}
 .stopka ul{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-8);margin-top:var(--o-3)}
 .stopka li a+a{margin-left:var(--o-4)}
-.stopka a{display:inline-block;min-width:44px;padding-block:var(--o-3)}
+.stopka a{display:inline-block;min-width:44px;padding-block:var(--o-3);overflow-wrap:anywhere}
 .stopka .prawa{margin:var(--o-6) 0 0;color:var(--tusz-2)}
 
 /* podstrona dokumentu (polityka, wsparcie; struktura zgodna z eksportem Treningu: header, h1, main > section[lang]) */
