@@ -695,3 +695,17 @@ test('04-studio-projektowe-005: stopka każdej strony ma linię praw Apple (PL i
     for (const znak of new Set(vis.match(/\b(iPhone|iPad|iPod touch|App Store|Apple Watch|Apple Health|Apple Pay|Apple TV|Apple Pencil|Apple Vision Pro|TestFlight|HealthKit|StoreKit|Siri|MacBook Air|MacBook Pro|iMac|Mac App Store)\b/g) || [])) assert.ok(en.includes(znak) && pl.includes(znak), `${f}: znak ${znak} jest w tekście, ale nie na liście w linii praw`);
   }
 });
+
+// 04-studio-projektowe-006: WCAG 2.2, 2.5.3 — nazwa dostępna przycisku zawiera widoczny tekst (Voice Control: „stuknij PL”).
+test('04-studio-projektowe-006: nazwa dostępna przycisków PL/EN zaczyna się od widocznego tekstu (6 stron)', () => {
+  for (const f of HTML) {
+    const przyciski = [...read(f).matchAll(/<button\b[^>]*\bid="lang-(pl|en)"[^>]*>([^<]*)<\/button>/g)];
+    assert.equal(przyciski.length, 2, `${f}: dwa przyciski języka`);
+    for (const m of przyciski) {
+      const label = m[0].match(/aria-label="([^"]*)"/)?.[1];
+      const widoczny = m[2].trim();
+      assert.ok(label, `${f}: aria-label przycisku ${widoczny}`);
+      assert.ok(label.toLowerCase().startsWith(widoczny.toLowerCase()), `${f}: nazwa dostępna „${label}” nie zaczyna się od widocznego „${widoczny}”`);
+    }
+  }
+});
