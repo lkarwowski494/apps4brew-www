@@ -751,3 +751,13 @@ test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw �
     assert.ok(src.includes(`data-label-en="${app} path: stage 4 of 5`), `${f}: opis drogi EN`);
   }
 });
+
+// 04-studio-projektowe-011: tryb wymuszonych kolorów — stan „zrobione” i punktory listy cech. Pomiar w przeglądarce: docs/m6/narzedzia/fix-011-forced-colors.mjs.
+test('04-studio-projektowe-011: @media (forced-colors: active) wypełnia „zrobione” i punktory kolorem systemowym', () => {
+  const css = read('assets/site.css');
+  const od = css.indexOf('@media (forced-colors:active){');
+  assert.ok(od > 0, 'blok forced-colors');
+  const blok = css.slice(od);
+  assert.match(blok, /\.droga-pasek>span\.zrobione::before\{background:CanvasText;forced-color-adjust:none\}/);
+  assert.match(blok, /\.app-cechy li::before\{background:CanvasText;forced-color-adjust:none\}/);
+});

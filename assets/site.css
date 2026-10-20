@@ -210,3 +210,9 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 
 /* strona 404 */
 .blad{padding:var(--o-16) var(--margines)}
+
+/* wymuszone kolory (04-studio-projektowe-011): odcinek „zrobione” pełny w CanvasText, niezrobiony zostaje pusty z obwódką i kreskowaniem; punktory listy cech widoczne */
+@media (forced-colors:active){
+  .droga-pasek>span.zrobione::before{background:CanvasText;forced-color-adjust:none}
+  .app-cechy li::before{background:CanvasText;forced-color-adjust:none}
+}
