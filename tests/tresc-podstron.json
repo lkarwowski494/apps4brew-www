@@ -1,0 +1,50 @@
+{
+  "trening/privacy.html": {
+    "pl": {
+      "znakow": 5818,
+      "poczatek": "<p class=\"muted\">Obowiązuje od 14 października 2026 r. (wers",
+      "sha256": "0b8d19d042914f5c7ce359d6ff39bc622f41127908ebe57767d5c2ec27fccb70"
+    },
+    "en": {
+      "znakow": 5649,
+      "poczatek": "<p class=\"muted\">Effective 14 October 2026 (app version 0.20",
+      "sha256": "c6d43040bde6b268eb0327a4ac60b7a3809c704d36a05a611cf355432985c639"
+    }
+  },
+  "trening/support.html": {
+    "pl": {
+      "znakow": 1623,
+      "poczatek": "<h2>Kontakt</h2> <p>Pytania, błędy i pomysły: <a href=\"mailt",
+      "sha256": "2b7e37e02971645f91509b9408901f66fce77aa99c0e6bc62e57c1a442b53e07"
+    },
+    "en": {
+      "znakow": 1533,
+      "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
+      "sha256": "783b5debbb44ecdd28f81e19b84bf61dbc8b23c27871601e6c0e62268bd1bd0b"
+    }
+  },
+  "piekarz/privacy.html": {
+    "pl": {
+      "znakow": 3830,
+      "poczatek": "<p class=\"muted\">Obowiązuje od 20 października 2026 r. (wers",
+      "sha256": "8b4f2b0733caee4548e07d77ea50b305ecd4fad147d94c4de6d8f90c27bd2a34"
+    },
+    "en": {
+      "znakow": 3655,
+      "poczatek": "<p class=\"muted\">Effective 20 October 2026 (app version 1.0,",
+      "sha256": "16037059785f53b9cfba4431b3a810c54a48374c7a239cb02b5bbe055a5aaa81"
+    }
+  },
+  "piekarz/support.html": {
+    "pl": {
+      "znakow": 1772,
+      "poczatek": "<h2>Kontakt</h2> <p>Pytania, błędy i pomysły: <a href=\"mailt",
+      "sha256": "2ca91caf519f0ea3dc348507f8f5e4aa5c05b6e530e8e5c1dcde73df4cca2a86"
+    },
+    "en": {
+      "znakow": 1700,
+      "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
+      "sha256": "c599dd7527da0592e51d0c8acb05e6faf6dddcde1d1a01141803b8f3c6778c75"
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -51,7 +52,8 @@ test('brak zewnętrznych zasobów i domen poza dozwolonymi linkami', () => {
       for (const m of src.matchAll(/<link\b[^>]*>/g)) {
         const href = (m[0].match(/href="([^"]+)"/) || [])[1] || '';
         if (/rel="canonical"/.test(m[0])) {
-          assert.equal(href, 'https://apps4brew.com/', `${f}: zły adres kanoniczny`);
+          // Partia 2: podstrony mają własny canonical (https://apps4brew.com/<ścieżka>); wcześniej test zakładał jeden adres dla wszystkich plików.
+          assert.equal(href, 'https://apps4brew.com/' + (f === 'index.html' ? '' : f), `${f}: zły adres kanoniczny`);
         } else {
           assert.ok(!/^(https?:)?\/\//.test(href), `${f}: zewnętrzny <link> ${href}`);
         }
@@ -423,13 +425,30 @@ test('index.html: canonical i cztery tagi Open Graph; obraz OG 1200×630 PNG z z
   assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630], 'wymiary og-image.png');
 });
 
-// Partia 2: podstrony dostają canonical i Open Graph w nowym szablonie (jeszcze ich nie zmieniamy).
-test('podstrony: canonical własnego adresu i Open Graph (og:title, og:type, og:image, og:url)', { todo: 'partia 2: podstrony w nowym szablonie' }, () => {
-  for (const f of HTML.filter((x) => x !== 'index.html')) {
+// Partia 2 (20.10.2026, D-020): podstrony dostają canonical i Open Graph; 404 jest noindex i bez canonical.
+const SUBPAGES = ['trening/privacy.html', 'trening/support.html', 'piekarz/privacy.html', 'piekarz/support.html'];
+
+test('index.html i podstrony: canonical własnego adresu i Open Graph (og:title, og:type, og:image, og:url)', () => {
+  for (const f of ['index.html', ...SUBPAGES]) {
     const src = read(f);
-    assert.match(src, /<link rel="canonical" href="https:\/\/apps4brew\.com\/[^"]*">/, `${f}: canonical`);
+    const url = 'https://apps4brew.com/' + (f === 'index.html' ? '' : f);
+    assert.ok(src.includes(`<link rel="canonical" href="${url}">`), `${f}: canonical ${url}`);
+    assert.equal((src.match(/rel="canonical"/g) || []).length, 1, `${f}: liczba canonical`);
     for (const p of ['og:title', 'og:type', 'og:image', 'og:url']) assert.match(src, new RegExp(`<meta property="${p}" content="[^"]+">`), `${f}: ${p}`);
+    assert.ok(src.includes(`<meta property="og:url" content="${url}">`), `${f}: og:url = canonical`);
+    assert.ok(src.includes('<meta property="og:image" content="https://apps4brew.com/assets/og-image.png">'), `${f}: og:image`);
+    const title = (src.match(/<title[^>]*>([^<]+)<\/title>/) || [])[1];
+    assert.ok(src.includes(`<meta property="og:title" content="${title}">`), `${f}: og:title = tytuł strony`);
   }
+});
+
+test('404.html: lang, tytuł, opis, noindex, bez canonical', () => {
+  const src = read('404.html');
+  assert.match(src, /<html lang="pl">/);
+  assert.match(src, /<title[^>]*>[^<]{5,}<\/title>/);
+  assert.match(src, /<meta name="description" content="[^"]{40,}"/);
+  assert.match(src, /<meta name="robots" content="noindex">/);
+  assert.ok(!/rel="canonical"/.test(src), '404 nie ma canonical');
 });
 
 // E1-01 (P1, docs/m6/e1-sprawdzenie.md): sześć zasad „Jak robimy aplikacje” w podglądzie nie miało wersji EN, a test par data-pl/data-en
@@ -456,4 +475,130 @@ test('E1-01: sześć zasad „Jak robimy aplikacje” ma PL i EN dosłownie jak 
       assert.equal(n.own.trim(), v.pl, `<${tag}>: treść domyślna (PL) inna niż data-pl`);
     }
   }
+});
+
+// ---------------------------------------------------------------------------------------------
+// M6, partia 2 (20.10.2026): podstrony, 404, stopka po EN, wspólny szablon, obraz OG.
+
+function outside(f) { return parseHtml(read(f)).filter((n) => !n.skip && !n.covered); }
+const shortOf = (n) => `<${n.tag}> „${n.own.trim().replace(/\s+/g, ' ').slice(0, 50)}”`;
+const hasPair = (n) => 'data-pl' in n.attrs && 'data-en' in n.attrs;
+const footerOf = (f) => { const src = read(f); const a = src.indexOf('<footer'); return a < 0 ? '' : src.slice(a, src.indexOf('</footer>') + 9); };
+
+// Rozszerzenie E1-01: wszystkie strony, wszystko poza sekcjami data-lang-section (te mają osobne wersje PL/EN w treści).
+test('E1-01: wszystkie strony — każdy tekst poza sekcjami PL/EN (h1–h6, p, li, a, button) ma parę data-pl i data-en', () => {
+  for (const f of HTML) {
+    const bad = outside(f).filter((n) => TEXT_TAGS.has(n.tag) && needsTranslation(n) && !hasPair(n)).map(shortOf);
+    assert.deepEqual(bad, [], `${f}: ${bad.length} tekstów bez pary data-pl/data-en`);
+  }
+});
+
+test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, nazwy aplikacji → „Training”/„Crust”, żaden inny tekst bez pary', () => {
+  for (const f of ['index.html', ...SUBPAGES]) {
+    const foot = parseHtml(footerOf(f)).filter((n) => !n.skip && !n.covered);
+    assert.ok(foot.length > 5, `${f}: brak stopki`);
+    const bad = foot.filter((n) => needsTranslation(n) && !hasPair(n)).map(shortOf);
+    assert.deepEqual(bad, [], `${f}: stopka — teksty bez pary data-pl/data-en`);
+    const warsaw = foot.find((n) => /^\s*Warszawa\s*$/.test(n.own));
+    assert.ok(warsaw, `${f}: stopka bez osobnego elementu „Warszawa”`);
+    assert.equal(warsaw.attrs['data-pl'], 'Warszawa', `${f}: data-pl „Warszawa”`);
+    assert.equal(warsaw.attrs['data-en'], 'Warsaw', `${f}: data-en „Warsaw”`);
+    for (const [pl, en] of [['Trening', 'Training'], ['Piekarz', 'Crust']]) {
+      const n = foot.find((x) => x.own.trim() === pl);
+      assert.ok(n, `${f}: stopka bez elementu z nazwą ${pl}`);
+      assert.deepEqual([n.attrs['data-pl'], n.attrs['data-en']], [pl, en], `${f}: nazwa ${pl} → ${en}`);
+    }
+    // Żadna nazwa aplikacji nie zostaje gołym tekstem.
+    for (const n of foot) if (/Trening|Piekarz/.test(n.own)) assert.ok(n.own.trim() === 'Trening' || n.own.trim() === 'Piekarz', `${f}: nazwa aplikacji w gołym tekście: ${shortOf(n)}`);
+  }
+});
+
+// Treść polityk i wsparcia przenoszona bez zmian (D-002; zasada M6: treść to decyzja właściciela).
+// tests/tresc-podstron.json = skrót sha256 znormalizowanej treści każdej sekcji [data-lang-section] zapisany PRZED zmianą szablonu.
+test('treść podstron bez zmian: sekcje PL i EN polityk i wsparcia zgodne z zapisem sprzed zmiany szablonu', () => {
+  const zapis = JSON.parse(read('tests/tresc-podstron.json'));
+  assert.deepEqual(Object.keys(zapis).sort(), [...SUBPAGES].sort());
+  for (const f of SUBPAGES) {
+    const src = read(f);
+    for (const l of ['pl', 'en']) {
+      const sec = [...src.matchAll(new RegExp(`<section lang="${l}" data-lang-section="${l}">([\\s\\S]*?)</section>`, 'g'))];
+      assert.equal(sec.length, 1, `${f}: sekcja ${l}`);
+      const norm = sec[0][1].replace(/\s+/g, ' ').trim();
+      assert.equal(norm.length, zapis[f][l].znakow, `${f} [${l}]: długość treści`);
+      assert.equal(crypto.createHash('sha256').update(norm).digest('hex'), zapis[f][l].sha256, `${f} [${l}]: treść zmieniona (początek: ${zapis[f][l].poczatek})`);
+    }
+  }
+});
+
+test('podstrony: nowy nagłówek, main.dokument z h1 i drogą ziarna aplikacji, bez starych klas', () => {
+  const stage = { trening: 'Trening', piekarz: 'Piekarz' };
+  for (const f of SUBPAGES) {
+    const src = read(f);
+    const app = f.split('/')[0];
+    assert.match(src, /<header class="naglowek">\s*<a class="logo" href="\.\.\/">Apps4Brew<\/a>/, `${f}: nagłówek`);
+    assert.match(src, /<div class="jezyk" role="group" aria-label="Język \/ Language">/, `${f}: przełącznik języka`);
+    assert.ok(!/class="(hero|doc-hero|bar|lang|wrap|foot|doc)\b/.test(src.replace(/<section[\s\S]*?<\/section>/g, '')), `${f}: stare klasy szablonu`);
+    assert.match(src, /<main class="dokument" id="main">\s*<h1 data-pl="[^"]+" data-en="[^"]+">[^<]+<\/h1>\s*<figure class="droga" role="img"/, `${f}: main.dokument → h1 → figure.droga`);
+    const fig = src.slice(src.indexOf('<figure class="droga"'), src.indexOf('</figure>'));
+    assert.ok(fig.includes(`Droga aplikacji ${stage[app]}: etap 4 z 5`), `${f}: opis drogi z nazwą aplikacji`);
+    assert.equal((fig.match(/class="d-(zbior|obrobka|palenie|parzenie|podanie)\b/g) || []).length, 5, `${f}: pięć etapów`);
+    assert.equal((fig.match(/\bteraz\b/g) || []).length, 1, `${f}: jeden etap „teraz”`);
+    assert.ok(/class="d-parzenie zrobione teraz"/.test(fig), `${f}: etap bieżący = parzenie`);
+    assert.ok(src.includes('<footer class="stopka">'), `${f}: stopka`);
+    assert.equal((src.match(/<main\b/g) || []).length, 1, `${f}: jeden main`);
+  }
+});
+
+test('404.html: nagłówek jak na podstronach, main.blad z pustą drogą ziarna, h1 „Tego ziarna tu nie ma.”', () => {
+  const src = read('404.html');
+  assert.match(src, /<header class="naglowek">\s*<a class="logo" href="\/">Apps4Brew<\/a>/);
+  assert.match(src, /<main class="blad" id="main">\s*<figure class="droga" role="img"/);
+  assert.match(src, /<h1 data-pl="Tego ziarna tu nie ma\." data-en="This bean isn’t here\.">Tego ziarna tu nie ma\.<\/h1>/);
+  const fig = src.slice(src.indexOf('<figure class="droga"'), src.indexOf('</figure>'));
+  assert.equal((fig.match(/class="d-(zbior|obrobka|palenie|parzenie|podanie)\b/g) || []).length, 5);
+  assert.ok(!/\b(zrobione|teraz)\b/.test(fig), '404: żaden etap drogi nie jest zrobiony');
+  assert.match(src, /<a class="przycisk" href="\/" data-pl="Strona główna" data-en="Home page">/);
+  assert.ok(!/class="(hero|wrap|nf|btn)\b/.test(src), '404: stare klasy');
+  assert.match(src, /<script src="\/assets\/site\.js"><\/script>/);
+});
+
+// Szablon przeniesiony do skryptu eksportu (D-017, D-022): wspólne części muszą być identyczne na wszystkich podstronach,
+// żeby dało się je wkleić do skryptu raz. Dopuszczalna różnica to wyłącznie ścieżka do aktywnej aplikacji; stopka linkuje do obu
+// aplikacji tak samo na każdej podstronie, więc w tej wersji szablonu różnic nie ma wcale.
+test('szablon: nagłówek i stopka identyczne na 4 podstronach (poza ścieżkami do aktywnej aplikacji)', () => {
+  const part = (f, tag) => {
+    const src = read(f); const a = src.indexOf(`<${tag}`);
+    assert.ok(a >= 0, `${f}: brak <${tag}>`);
+    return src.slice(a, src.indexOf(`</${tag}>`) + tag.length + 3).replace(/\s+/g, ' ');
+  };
+  for (const tag of ['header', 'footer']) {
+    const ref = part(SUBPAGES[0], tag);
+    assert.match(ref, tag === 'header' ? /^<header class="naglowek">/ : /^<footer class="stopka">/, `${tag}: nowy szablon`);
+    for (const f of SUBPAGES.slice(1)) assert.equal(part(f, tag), ref, `${tag}: ${f} różni się od ${SUBPAGES[0]}`);
+  }
+  for (const f of SUBPAGES) for (const l of ['trening/support', 'trening/privacy', 'piekarz/support', 'piekarz/privacy']) assert.ok(footerOf(f).includes(`href="../${l}.html"`), `${f}: stopka bez linku ${l}`);
+});
+
+test('trening/*.html: komentarz „WYGENEROWANE…” zostaje, pod nim adnotacja o ręcznej zmianie szablonu (D-017, D-022)', () => {
+  const line = 'Szablon zmieniony ręcznie w M6 20.10.2026 (D-017, D-022); eksport do zmiany na gałęzi f020-sklep repo trening przed następnym eksportem.';
+  for (const f of ['trening/privacy.html', 'trening/support.html']) {
+    const src = read(f);
+    const i = src.indexOf('<!-- WYGENEROWANE z repozytorium aplikacji Trening');
+    assert.ok(i > 0, `${f}: komentarz WYGENEROWANE`);
+    const end = src.indexOf('-->', i) + 3;
+    assert.ok(src.slice(end).trimStart().startsWith(`<!-- ${line} -->`), `${f}: adnotacja pod komentarzem WYGENEROWANE`);
+  }
+});
+
+// D-021: osobna kompozycja 1200×630, nie zrzut strony; HTML kompozycji siedzi w skrypcie (bez nowego pliku .html w repo).
+test('obraz OG: skrypt renderuje kompozycję przez setContent z lokalnego serwera (D-021), PNG 1200×630', () => {
+  const js = read('docs/m6/narzedzia/og-image.mjs');
+  assert.match(js, /page\.setContent\(/);
+  assert.ok(!/page\.goto\(/.test(js), 'skrypt nie robi zrzutu strony (goto)');
+  assert.match(js, /http:\/\/localhost:\$\{port\}\/assets\/site\.css/);
+  assert.match(js, /\/fonts\//);
+  assert.match(js, /Aplikacje tańsze niż espresso\./);
+  for (const w of ['Zbiór', 'Obróbka', 'Palenie', 'Parzenie', 'Podanie']) assert.ok(js.includes(w), `etap ${w}`);
+  const png = fs.readFileSync(path.join(root, 'assets/og-image.png'));
+  assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630]);
 });
