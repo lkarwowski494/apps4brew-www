@@ -1,0 +1,33 @@
+// Adresy apps4brew.com, które muszą działać po przebudowie (D-003; źródło: docs/m6/adresy.txt, odczyt 20.10.2026).
+// Tylko ścieżki plików z tego repo i kotwice; bez adresów zewnętrznych. "/" = index.html, "/#x" = id="x" w index.html.
+// Czyta je tests/site.test.mjs.
+/
+/index.html
+/404.html
+/trening/privacy.html
+/trening/support.html
+/piekarz/privacy.html
+/piekarz/support.html
+/#apps
+/#piekarz
+/#how
+/#index
+/#about
+/#top
+/#main
+/assets/og-image.png
+/assets/favicon.svg
+/assets/apple-touch-icon.png
+/assets/site.css
+/assets/site.js
+/assets/trening-icon.png
+/assets/piekarz-icon.svg
+/fonts/young-serif-latin.woff2
+/fonts/young-serif-latin-ext.woff2
+/fonts/source-sans-3-latin.woff2
+/fonts/source-sans-3-latin-ext.woff2
+/fonts/barlow-condensed-600-latin.woff2
+/fonts/barlow-condensed-600-latin-ext.woff2
+/fonts/LICENSE-young-serif-OFL.txt
+/fonts/LICENSE-source-sans-3-OFL.txt
+/fonts/LICENSE-barlow-condensed-OFL.txt
