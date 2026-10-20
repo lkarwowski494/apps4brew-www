@@ -141,7 +141,15 @@ Sprawdzenie planowanych akcentów: żaden z trzech wybranych kierunków nie moż
 | 11 | **Próbnik palenia**: kafelki stopnia palenia od jasnych do ciemnych jako skala etapów. | etap | kafelek ciemnieje z etapem | słabe dane (etap ma 3 wartości); lepsze jako źródło palety niż metafora |
 | 12 | **Laboratorium**: szkło miarowe dla researchu i testów. | liczba źródeł, testów `[DO USTALENIA]` | poziom rośnie | sterylne, typowe dla firm technologicznych (Kalibracja); brak własnego świata |
 
+### Kandydat 13 (po STOP E1, propozycja właściciela 20.10.2026)
+| # | Metafora | Dane | Moment firmowy | Ryzyko |
+|---|---|---|---|---|
+| 13 | **Od ziarna do filiżanki**: pięć etapów drogi kawy (zbiór → obróbka → palenie → degustacja → podanie) to pięć etapów pracy studia (research → projekt → budowa z testami → TestFlight → App Store). | etap każdej aplikacji (dziś Trening i Piekarz: degustacja = TestFlight); treść „Jak robimy aplikacje” | jeden pasek barwy ziarna: od zielonego ziarna (barwy z formularza SCA CVA, `01-zrodla.md` poz. 24) przez stopnie palenia (dyski SCAA/Agtron, poz. 17) do cremy („dark golden”, poz. 5); przy przewijaniu barwa przechodzi do etapu aplikacji; „Ogranicz ruch”: stan końcowy | klisza „kroki 1-2-3 z ikonami” (unikać ikon w kółkach); ziarna i filiżanki to klisza marek kawowych; nazwy i kolejność etapów obróbki wymagają źródeł; dyski Agtron mają jedno źródło szczebla 4 |
+
 ## 7. Wybór do rozwinięcia w E2
+
+**Decyzja właściciela (D-009, 20.10.2026):** B i C bez zmian; zamiast A kierunek **A2 = kandydat 13** („Podoba mi sie B + C ale A nie. Moze jakies nawiazanie do procesu wywarzania kawy?…”; wariant „5 etapów ziarna”). Tabela niżej to rekomendacja z STOP E1, zachowana dla historii.
+
 
 | Kierunek | Metafora | Dlaczego (funkcja, nie gust) |
 |---|---|---|
