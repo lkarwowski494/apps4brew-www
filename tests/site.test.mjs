@@ -717,3 +717,10 @@ test('04-studio-projektowe-007: CSS stopki i linków kart daje cele ≥ 44 px (p
   assert.match(css, /\.app-linki a\{display:inline-block;padding-block:var\(--o-3\)\}/);
   assert.match(css, /\.stopka li a\+a\{margin-left:var\(--o-4\)\}/);
 });
+
+// 04-studio-projektowe-008: pytania FAQ (h3) w dokumentach mniejsze niż nagłówek sekcji (h2) i z odstępem nad sobą. Pomiar: docs/m6/narzedzia/fix-008-faq.mjs.
+test('04-studio-projektowe-008: .dokument h3 ma osobną regułę (rozmiar treści, odstęp ≥ 16 px nad)', () => {
+  const css = read('assets/site.css');
+  const m = css.match(/\.dokument h3\{font:650 var\(--r-tresc\)\/1\.3 var\(--kroj-tresc\);margin:var\(--o-6\) 0 var\(--o-2\)\}/);
+  assert.ok(m, 'reguła .dokument h3');
+});

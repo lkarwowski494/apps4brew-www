@@ -199,6 +199,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .dokument{max-width:calc(68ch + 160px);margin-inline:auto;padding:var(--o-6) var(--margines) var(--o-16)}
 .dokument h1{font-size:clamp(2.25rem,1.6rem + 2.8vw,3.75rem);max-width:none;margin-block:var(--o-2) var(--o-6)}
 .dokument h2{font:700 var(--r-wieksza)/1.25 var(--kroj-tresc);text-transform:none;margin:var(--o-10) 0 var(--o-3)}
+.dokument h3{font:650 var(--r-tresc)/1.3 var(--kroj-tresc);margin:var(--o-6) 0 var(--o-2)}
 .dokument ul{list-style:disc;padding-left:var(--o-6)}
 .dokument li{margin-bottom:var(--o-2);max-width:var(--szer-tekst)}
 .dokument .muted{color:var(--tusz-2)}
