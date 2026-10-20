@@ -1,0 +1,29 @@
+OK   14.66:1 (min 4.5) A2 jasny: tekst na tle #24170F na #E9EDE0
+OK   7.16:1 (min 4.5) A2 jasny: tekst drugorzędny #584A3F na #E9EDE0
+OK   7.76:1 (min 4.5) A2 jasny: akcent (link, fokus) na tle #8A1B2D na #E9EDE0
+OK   9.23:1 (min 4.5) A2 jasny: przycisk biały na akcencie #FFFFFF na #8A1B2D
+OK   14.66:1 (min 3) A2 jasny: obwódka paska (tusz) na tle, grafika #24170F na #E9EDE0
+OK   14.94:1 (min 4.5) A2 ciemny: tekst na tle #F0E8DC na #1C1410
+OK   8.95:1 (min 4.5) A2 ciemny: tekst drugorzędny #C2B4A4 na #1C1410
+OK   7.32:1 (min 4.5) A2 ciemny: akcent na tle #EC8796 na #1C1410
+OK   7.32:1 (min 4.5) A2 ciemny: przycisk tło na akcencie #1C1410 na #EC8796
+OK   15.01:1 (min 4.5) B jasny: tekst na tle #1D1D1F na #F2F2F0
+OK   7.26:1 (min 4.5) B jasny: tekst drugorzędny #4F4F55 na #F2F2F0
+OK   15.01:1 (min 4.5) B jasny: przycisk tło na tuszu #F2F2F0 na #1D1D1F
+OK   12.80:1 (min 4.5) B tablica: litera na filcu (jasny) #F4F2EC na #2A2A2C
+OK   14.81:1 (min 4.5) B ciemny: tekst na tle #EDEDEA na #1A1A1C
+OK   8.41:1 (min 4.5) B ciemny: tekst drugorzędny #B4B4B8 na #1A1A1C
+OK   14.81:1 (min 3) B ciemny: fokus na tle (grafika) #EDEDEA na #1A1A1C
+OK   17.11:1 (min 4.5) B tablica: litera na filcu (ciemny) #F4F2EC na #0F0F10
+OK   13.00:1 (min 4.5) C dzień: tekst na tle #1E2126 na #E6E7E3
+OK   6.64:1 (min 4.5) C dzień: tekst drugorzędny #4A4F57 na #E6E7E3
+OK   5.98:1 (min 4.5) C dzień: akcent (link, fokus) na tle #A61E1E na #E6E7E3
+OK   7.43:1 (min 4.5) C dzień: przycisk biały na akcencie #FFFFFF na #A61E1E
+OK   3.66:1 (min 3) C dzień: rurka świecąca na ścianie (grafika) #C8372B na #D7D9D4
+OK   3.52:1 (min 3) C dzień: rurka zgaszona na ścianie (grafika) #6B7073 na #D7D9D4
+OK   15.01:1 (min 4.5) C noc: tekst na tle #EEEAF0 na #1B1522
+OK   8.91:1 (min 4.5) C noc: tekst drugorzędny #BDB4C4 na #1B1522
+OK   7.01:1 (min 4.5) C noc: akcent na tle #FF7A6B na #1B1522
+OK   7.01:1 (min 4.5) C noc: przycisk tło na akcencie #1B1522 na #FF7A6B
+OK   6.01:1 (min 3) C noc: rurka świecąca na ścianie (grafika) #FF6D5C na #231B2C
+OK   3.38:1 (min 3) C noc: rurka zgaszona na ścianie (grafika) #776C85 na #231B2C

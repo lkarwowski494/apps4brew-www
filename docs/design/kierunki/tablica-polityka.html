@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Makieta E2 roli 04 (20.10.2026), kierunek „tablica”. Wygenerowana: docs/design/narzedzia/kierunki.mjs. Nie jest stroną; usuwana przed publikacją (D-006). -->
+<title>Kierunek B „Tablica z wsuwanymi literami” — polityka prywatności (szablon podstrony)</title>
+<link rel="stylesheet" href="wspolne.css">
+<link rel="stylesheet" href="tablica.css">
+<script src="wspolne.js" defer></script>
+<script src="tablica.js" defer></script>
+</head>
+<body class="podstrona">
+<a class="skip" href="#tresc"><span data-pl="Przejdź do treści" data-en="Skip to content">Przejdź do treści</span></a>
+<header class="naglowek"><a class="logo" href="tablica-glowna.html">Apps4Brew</a><div class="przelaczniki"><div class="jezyk" role="group" aria-label="Język / Language"><button type="button" data-lang="pl" aria-pressed="true" lang="pl">PL</button><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div><button type="button" class="motyw" data-motyw aria-pressed="false"><span data-pl="Ciemny" data-en="Dark">Ciemny</span></button></div></header>
+<main id="tresc" class="dokument" data-ekran="polityka">
+  <p class="okruchy"><a href="tablica-glowna.html#trening">Trening</a></p>
+  <h1>Trening — polityka prywatności</h1>
+  <div class="znak"><div class="tablica tablica-mala" aria-hidden="true"><div class="filc"><p class="rzad"><span class="litery " data-pl="TRENING" data-en="TRENING"><i>T</i><i>R</i><i>E</i><i>N</i><i>I</i><i>N</i><i>G</i></span></p><p class="rzad"><span class="litery " data-pl="TESTFLIGHT" data-en="TESTFLIGHT"><i>T</i><i>E</i><i>S</i><i>T</i><i>F</i><i>L</i><i>I</i><i>G</i><i>H</i><i>T</i></span></p></div></div></div>
+  <section lang="pl" data-lang-section="pl">
+<p class="muted">Obowiązuje od 14 października 2026 r. (wersja aplikacji 0.20.0).</p>
+
+<h2>W skrócie</h2>
+<p>Aplikacja Trening nie zbiera żadnych danych. Wszystko, co wpisujesz, zostaje na Twoim iPhonie, a dane odczytane z Apple Health (jeśli to włączysz) są tylko wyświetlane na telefonie. Aplikacja nie łączy się z internetem,
+nie ma konta, reklam, analityki ani śledzenia.</p>
+
+<h2>Jakie dane są przechowywane i gdzie</h2>
+<ul>
+  <li>Treningi, szablony, plan tygodnia, ćwiczenia, miejsca i sprzęt oraz ustawienia oraz opcjonalne pomiary masy ciała z datą pomiaru (jeśli je wpiszesz)
+      są zapisywane wyłącznie w pamięci Twojego urządzenia (baza SQLite aplikacji).</li>
+  <li>Nikt poza Tobą — także twórca aplikacji — nie ma do nich dostępu. Aplikacja niczego nie wysyła.</li>
+</ul>
+
+<h2>Apple Health (opcjonalnie)</h2>
+<p>Jeśli włączysz zapis do Apple Health w Ustawieniach, aplikacja zapisuje tam zakończone treningi — siłowe i cardio (czas, rodzaj treningu, nazwa, łączna objętość i liczba serii). Trening, którego nie udało się zapisać, aplikacja zapisuje ponownie przy kolejnym uruchomieniu.
+Gdy ten sam trening zapisze zegarek, aplikacja usuwa swoją kopię z Apple Health — wyłącznie wpis, który sama zapisała.</p>
+<p>Jeśli włączysz w Ustawieniach „Pokazuj dane z Apple Health”, aplikacja prosi iOS o zgodę i odczytuje z Apple Health: kroki, treningi (także z zegarka), tętno i aktywną energię.
+Pokazuje je tylko na ekranie telefonu — kroki i inne aktywności w planie dnia, średnią dzienną kroków z ostatnich 7 dni w tygodniu oraz, przy treningu siłowym zapisanym przez zegarek,
+tętno średnie i maksymalne i aktywne kalorie. Odczytane dane są tylko w pamięci aplikacji, gdy ekran je pokazuje: aplikacja nie zapisuje ich w swojej bazie, w kopii zapasowej ani w eksporcie CSV,
+nie wysyła ich nigdzie i nie używa do reklam, marketingu ani analityki. Aplikacja nie ocenia ani nie interpretuje tych wartości i nie udziela porad medycznych.
+Odczyt wyłączysz w Ustawieniach, a zgodę cofniesz w aplikacji Zdrowie (profil → Aplikacje) albo w ustawieniach iOS (Zdrowie → Dostęp do danych i urządzenia).
+Dane w Apple Health podlegają zasadom Apple.</p>
+
+<h2>Apple Watch (opcjonalnie)</h2>
+<p>Jeśli masz Apple Watch z aplikacją Trening, telefon przesyła do zegarka bieżące ćwiczenie, numer serii, ciężar, powtórzenia i odliczanie przerwy, a zegarek odsyła do telefonu odhaczone serie.
+Przesyłanie odbywa się mechanizmem Apple łączącym telefon ze sparowanym zegarkiem (WatchConnectivity) — aplikacja nie ma własnego serwera.
+W trakcie treningu zegarek prowadzi sesję treningu: za Twoją zgodą odczytuje tętno i energię aktywną i po zakończeniu zapisuje trening siłowy w Apple Health.
+Dane nie są wysyłane poza Twoje urządzenia.</p>
+
+<h2>Zapowiedzi głosowe</h2>
+<p>Zapowiedzi w przerwie (na przykład następne ćwiczenie) czyta syntezator mowy iOS na telefonie. Tekst zapowiedzi nie jest nigdzie wysyłany.</p>
+
+<h2>Zakupy (subskrypcja)</h2>
+<p>Zakupy i subskrypcje obsługuje wyłącznie Apple (App Store) — aplikacja nie ma konta, serwera ani usług płatniczych i nie widzi danych płatności. Na telefonie zapamiętuje tylko ostatni znany stan dostępu (pełna wersja albo darmowa i data końca), żeby działać bez internetu; ten stan nie trafia do kopii zapasowej i nigdzie nie jest wysyłany.</p>
+
+<h2>Powiadomienia</h2>
+<p>Przypomnienia (koniec przerwy, trening z planu) są powiadomieniami lokalnymi, tworzonymi na urządzeniu. Aplikacja nie korzysta
+z powiadomień push i nie wysyła żadnych danych do serwerów.</p>
+
+<h2>Kopia zapasowa i eksport</h2>
+<p>Kopie zapasowe i eksport CSV są plikami zapisywanymi na urządzeniu (aplikacja Pliki). Udostępniasz je tylko Ty — na przykład
+przez arkusz udostępniania iOS. Po udostępnieniu plik podlega zasadom usługi, której użyjesz. Kopia zapasowa obejmuje wszystkie dane
+aplikacji, także pomiary masy ciała; eksport CSV zawiera tylko serie treningów (bez masy ciała). Plik przygotowany do udostępnienia
+aplikacja usuwa ze swojej pamięci podręcznej po zamknięciu arkusza udostępniania.</p>
+
+<h2>Usunięcie danych</h2>
+<p>Dane usuniesz w aplikacji (Więcej → Ustawienia → Wyczyść wszystkie dane) albo usuwając aplikację z telefonu. Kopie zapasowe
+zapisane w Plikach usuwasz w aplikacji Pliki.</p>
+
+<h2>Dzieci</h2>
+<p>Aplikacja nie zbiera danych od nikogo, także od dzieci.</p>
+
+<h2>Gdy do nas piszesz</h2>
+<p>Aplikacja nadal niczego nie wysyła — e-mail wysyłasz Ty, swoją pocztą. Jeśli napiszesz na support@apps4brew.com, przetwarzamy tę wiadomość tak:</p>
+<ul>
+  <li><strong>Administrator:</strong> Łukasz Karwowski, osoba fizyczna; kontakt: support@apps4brew.com.</li>
+  <li><strong>Dane:</strong> Twój adres e-mail, treść wiadomości, załączniki oraz wersja aplikacji i iOS, jeśli je podasz.</li>
+  <li><strong>Cel:</strong> obsługa Twojego zapytania (odpowiedź, wyjaśnienie, naprawa błędu) oraz porządkowanie opinii o aplikacji.</li>
+  <li><strong>Podstawa:</strong> art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes: obsługa zapytań i rozwój aplikacji).</li>
+  <li><strong>Przechowywanie:</strong> 12 miesięcy od zamknięcia sprawy, potem usuwamy wiadomość; opinie bez danych osobowych mogą zostać w zanonimizowanej postaci.</li>
+  <li><strong>Odbiorcy i podmioty przetwarzające:</strong> Porkbun (przekierowanie poczty), Google (Gmail, Dysk) oraz dostawca narzędzi AI, których używamy do porządkowania opinii.
+      Nie sprzedajemy danych i nie używamy ich do reklam.</li>
+  <li><strong>Twoje prawa:</strong> dostęp do danych, sprostowanie, usunięcie, sprzeciw wobec przetwarzania oraz skarga do Prezesa Urzędu Ochrony Danych Osobowych (PUODO). Napisz na support@apps4brew.com.</li>
+</ul>
+
+<h2>Zmiany i kontakt</h2>
+<p>Jeśli działanie aplikacji zmieni się tak, że dotyczy to prywatności, ta strona zostanie zaktualizowana przed wydaniem takiej wersji.
+Pytania: <a href="mailto:support@apps4brew.com">support@apps4brew.com</a>.</p>
+</section>
+</main>
+<footer class="stopka">
+  <p class="stopka-studio">© 2026 Apps4Brew, Warszawa</p>
+  <nav aria-label="Informacje"><ul>
+    <li><span data-pl="Trening:" data-en="Trening:">Trening:</span> <a href="../../../trening/privacy.html"><span data-pl="prywatność" data-en="privacy">prywatność</span></a>, <a href="../../../trening/support.html"><span data-pl="wsparcie" data-en="support">wsparcie</span></a></li>
+    <li><span data-pl="Piekarz:" data-en="Piekarz:">Piekarz:</span> <a href="../../../piekarz/privacy.html"><span data-pl="prywatność" data-en="privacy">prywatność</span></a>, <a href="../../../piekarz/support.html"><span data-pl="wsparcie" data-en="support">wsparcie</span></a></li>
+    <li><a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"><span data-pl="Warunki (licencja Apple)" data-en="Terms (Apple licence)">Warunki (licencja Apple)</span></a></li>
+    <li><a href="mailto:support@apps4brew.com">support@apps4brew.com</a></li>
+  </ul></nav>
+</footer>
+</body>
+</html>

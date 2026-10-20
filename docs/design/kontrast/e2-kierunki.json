@@ -1,0 +1,124 @@
+{
+ "A2 jasny: tekst na tle": [
+  "#24170F",
+  "#E9EDE0"
+ ],
+ "A2 jasny: tekst drugorzędny": [
+  "#584A3F",
+  "#E9EDE0"
+ ],
+ "A2 jasny: akcent (link, fokus) na tle": [
+  "#8A1B2D",
+  "#E9EDE0"
+ ],
+ "A2 jasny: przycisk biały na akcencie": [
+  "#FFFFFF",
+  "#8A1B2D"
+ ],
+ "A2 jasny: obwódka paska (tusz) na tle, grafika": [
+  "#24170F",
+  "#E9EDE0",
+  3
+ ],
+ "A2 ciemny: tekst na tle": [
+  "#F0E8DC",
+  "#1C1410"
+ ],
+ "A2 ciemny: tekst drugorzędny": [
+  "#C2B4A4",
+  "#1C1410"
+ ],
+ "A2 ciemny: akcent na tle": [
+  "#EC8796",
+  "#1C1410"
+ ],
+ "A2 ciemny: przycisk tło na akcencie": [
+  "#1C1410",
+  "#EC8796"
+ ],
+ "B jasny: tekst na tle": [
+  "#1D1D1F",
+  "#F2F2F0"
+ ],
+ "B jasny: tekst drugorzędny": [
+  "#4F4F55",
+  "#F2F2F0"
+ ],
+ "B jasny: przycisk tło na tuszu": [
+  "#F2F2F0",
+  "#1D1D1F"
+ ],
+ "B tablica: litera na filcu (jasny)": [
+  "#F4F2EC",
+  "#2A2A2C"
+ ],
+ "B ciemny: tekst na tle": [
+  "#EDEDEA",
+  "#1A1A1C"
+ ],
+ "B ciemny: tekst drugorzędny": [
+  "#B4B4B8",
+  "#1A1A1C"
+ ],
+ "B ciemny: fokus na tle (grafika)": [
+  "#EDEDEA",
+  "#1A1A1C",
+  3
+ ],
+ "B tablica: litera na filcu (ciemny)": [
+  "#F4F2EC",
+  "#0F0F10"
+ ],
+ "C dzień: tekst na tle": [
+  "#1E2126",
+  "#E6E7E3"
+ ],
+ "C dzień: tekst drugorzędny": [
+  "#4A4F57",
+  "#E6E7E3"
+ ],
+ "C dzień: akcent (link, fokus) na tle": [
+  "#A61E1E",
+  "#E6E7E3"
+ ],
+ "C dzień: przycisk biały na akcencie": [
+  "#FFFFFF",
+  "#A61E1E"
+ ],
+ "C dzień: rurka świecąca na ścianie (grafika)": [
+  "#C8372B",
+  "#D7D9D4",
+  3
+ ],
+ "C dzień: rurka zgaszona na ścianie (grafika)": [
+  "#6B7073",
+  "#D7D9D4",
+  3
+ ],
+ "C noc: tekst na tle": [
+  "#EEEAF0",
+  "#1B1522"
+ ],
+ "C noc: tekst drugorzędny": [
+  "#BDB4C4",
+  "#1B1522"
+ ],
+ "C noc: akcent na tle": [
+  "#FF7A6B",
+  "#1B1522"
+ ],
+ "C noc: przycisk tło na akcencie": [
+  "#1B1522",
+  "#FF7A6B"
+ ],
+ "C noc: rurka świecąca na ścianie (grafika)": [
+  "#FF6D5C",
+  "#231B2C",
+  3
+ ],
+ "C noc: rurka zgaszona na ścianie (grafika)": [
+  "#776C85",
+  "#231B2C",
+  3
+ ]
+}

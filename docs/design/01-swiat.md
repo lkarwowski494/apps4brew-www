@@ -174,3 +174,21 @@ Odrzucone z powodem: 3 (znak konkurenta i poprzeczki), 10 (zmyślone dane), 12 (
 ## 10. Czego nie sprawdzono
 - awwwards.com (brak odpowiedzi 20.10.2026), siteinspire (429), land-book i lapa.ninja (403).
 - Na stronach z poprzeczki: płynność animacji, dźwięk, efekty WebGL (Chromium bez GPU); Strive przy 390 px (blokada antybotowa).
+
+## 11. Karty kontrolne testu generyczności (E2, 20.10.2026, spisane przed porównaniem z kierunkami)
+
+**(a) Strona małego studia aplikacji iOS, bez wiedzy o dziedzinie studia**
+- Paleta: białe tło, prawie czarny tekst, akcent pomarańczowy albo niebieski linkowy, delikatny gradient w hero.
+- Krój tytułów: Inter albo systemowy SF, pogrubiony.
+- Element firmowy: makieta iPhone’a ze zrzutem aplikacji i siatka ikon aplikacji.
+- Układ: hero tekst po lewej, telefon po prawej; trzy karty aplikacji w rzędzie; pasek liczb (oceny, pobrania); przycisk App Store; stopka.
+- Ruch: każda sekcja wjeżdża „fade + slide up”.
+
+**(b) Strona z innej dziedziny o podobnym przepływie (wizytówka wiarygodności + dokumenty + kontakt), np. kancelaria albo biuro rachunkowe**
+- Paleta: granat i złoto albo beż, białe tło.
+- Krój tytułów: klasyczny szeryf.
+- Element firmowy: zdjęcie zespołu lub budynku, logo z monogramem.
+- Układ: hero z hasłem na zdjęciu, usługi w kartach, zespół, kontakt z formularzem.
+- Ruch: brak albo paralaksa zdjęcia.
+
+Porównanie pole po polu z kartami kierunków: `02-kierunki.md`, sekcja „Test generyczności”.

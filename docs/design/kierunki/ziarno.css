@@ -1,0 +1,71 @@
+/* A2 „Od ziarna do filiżanki”. Kroje: Big Shoulders Stencil (tytuły; szablon natryskowy jak na workach z zieloną kawą — pochodzenie do sprawdzenia w E2),
+   Source Sans 3 (treść). Barwy etapów: przybliżenia wzrokowe nazw z norm (CVA Physical: barwa zielonego ziarna; dyski SCAA/Agtron; crema „dark golden” SCAA) — 01-zrodla.md poz. 5, 17, 24. */
+@font-face{font-family:"Stencil A2";src:url("../fonty/BigShouldersStencil-VF.ttf") format("truetype");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Treść A2";src:url("../fonty/SourceSans3-VF.ttf") format("truetype");font-weight:200 900;font-display:swap}
+:root{
+  --tlo:#E9EDE0; --tlo-2:#DDE2D2; --tusz:#24170F; --tusz-2:#584A3F; --linia:#C9CBBD; --akcent:#8A1B2D; --fokus:#8A1B2D; --na-akcencie:#FFFFFF;
+  --e-zbior:#A3233A; --e-obrobka:#7C8D60; --e-palenie:#8A5A36; --e-parzenie:#4A2D1E; --e-podanie:#B9853B; --e-puste:#FFFFFF;
+  --tytul:"Stencil A2", "Arial Narrow", sans-serif; --tresc-kroj:"Treść A2", system-ui, sans-serif;
+}
+:root[data-theme="dark"]{
+  --tlo:#1C1410; --tlo-2:#271C16; --tusz:#F0E8DC; --tusz-2:#C2B4A4; --linia:#47382D; --akcent:#EC8796; --fokus:#EC8796; --na-akcencie:#1C1410;
+  --e-zbior:#D2475E; --e-obrobka:#9DAE80; --e-palenie:#B07A4E; --e-parzenie:#7A5038; --e-podanie:#D9A85C; --e-puste:#1C1410;
+}
+body{background:var(--tlo);color:var(--tusz);font-family:var(--tresc-kroj);font-size:1.125rem}
+.logo{font:800 2.5rem/1 var(--tytul);letter-spacing:.02em;text-decoration:none;text-transform:uppercase}
+h1{font:800 clamp(3.5rem,10vw,8.5rem)/.86 var(--tytul);text-transform:uppercase;letter-spacing:.005em;margin-block:12px 32px;max-width:14ch}
+h2{font:800 clamp(2.5rem,6vw,4.5rem)/.95 var(--tytul);text-transform:uppercase;margin-bottom:16px}
+h3{font-weight:650;font-size:1.375rem;line-height:1.25}
+.kto{font-weight:600;color:var(--tusz-2);margin:0}
+.bohater{padding-block:32px 56px}
+.bohater-opis{max-width:66ch}
+@media (min-width:1024px){.bohater-opis{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:end;max-width:none}.bohater-opis .lead{margin:0;max-width:52ch}}
+.lead{font-size:1.375rem;line-height:1.35}
+.cta{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;margin:0}
+.przycisk{display:inline-flex;align-items:center;min-height:48px;padding:12px 24px;background:var(--akcent);color:var(--na-akcencie);font-weight:650;text-decoration:none;border-radius:4px}
+.link-mocny{font-weight:650;text-underline-offset:4px;padding-block:12px}
+main>section{padding-block:64px;border-top:2px solid var(--tusz)}
+.sekcja-lead{color:var(--tusz-2);font-size:1.375rem;margin-bottom:40px}
+.podtytul{font-weight:650;font-size:1.375rem;line-height:1.3}
+.app{padding-block:32px;border-top:1px solid var(--linia)}
+.app h3{font:800 2.5rem/1 var(--tytul);text-transform:uppercase}
+.app-meta li{color:var(--tusz-2);font-weight:600}
+.app-pryw{font-weight:600}
+/* element firmowy: droga ziarna */
+.droga{grid-column:1/-1;margin:0 0 20px;padding-top:20px}
+.droga-pasek{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;list-style:none;margin:0;padding:0}
+.droga-pasek li{position:relative;padding-top:28px}
+.droga-pasek li::before{content:"";position:absolute;left:0;right:0;top:0;height:20px;border:2px solid var(--tusz);background:var(--e-puste)}
+.droga-pasek li.zrobione::before{transform-origin:left;animation:pal .5s calc(var(--i,0)*140ms) both cubic-bezier(.3,.7,.3,1)}
+.droga-pasek li:nth-child(1){--i:0}.droga-pasek li:nth-child(2){--i:1}.droga-pasek li:nth-child(3){--i:2}.droga-pasek li:nth-child(4){--i:3}.droga-pasek li:nth-child(5){--i:4}
+.d-zbior.zrobione::before{background:var(--e-zbior)}.d-obrobka.zrobione::before{background:var(--e-obrobka)}.d-palenie.zrobione::before{background:var(--e-palenie)}.d-parzenie.zrobione::before{background:var(--e-parzenie)}.d-podanie.zrobione::before{background:var(--e-podanie)}
+.droga-pasek li:not(.zrobione)::before{background:repeating-linear-gradient(135deg,transparent 0 6px,var(--linia) 6px 8px),var(--e-puste)}
+.droga-pasek li.teraz::before{height:28px;top:-4px}
+.droga-pasek li.teraz::after{content:"";position:absolute;right:-2px;top:-14px;border:8px solid transparent;border-top-color:var(--tusz);border-bottom:0}
+.d-nazwa{display:block;font-weight:650;font-size:.9375rem;line-height:1.25}
+.d-studio{display:block;font-size:.9375rem;color:var(--tusz-2);line-height:1.3}
+.droga-pasek li:not(.zrobione) .d-nazwa{color:var(--tusz-2)}
+@keyframes pal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (max-width:599px){
+  .droga-pasek{grid-template-columns:1fr;gap:4px}
+  .droga-pasek li{padding:4px 0 4px 44px;padding-top:4px;min-height:32px}
+  .droga-pasek li::before{right:auto;width:28px;height:100%;top:0;bottom:0}
+  .droga-pasek li.teraz::before{height:100%;top:0;width:36px}
+  .droga-pasek li.teraz::after{right:auto;left:40px;top:10px;border:7px solid transparent;border-left-color:var(--tusz);border-right:0}
+  .droga-pasek li.teraz{padding-left:56px}
+}
+.kolejne{margin-top:40px;padding:24px;border:2px dashed var(--tusz-2)}
+.kolejne-h{font:800 2.5rem/1.2 var(--tytul);text-transform:uppercase}
+.zasady{display:grid;gap:32px 48px;margin-top:40px}
+@media (min-width:600px){.zasady{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1280px){.zasady{grid-template-columns:repeat(3,1fr)}}
+.zasady h3{margin-bottom:8px}
+.zasady p{color:var(--tusz-2)}
+.indeks-tab{font-size:1.375rem}
+.indeks-tab td{font-weight:600}
+.studio h2,.kontakt h2{max-width:16ch}
+.mail a{font-size:1.375rem;font-weight:650}
+.dokument h1{font:800 clamp(2.75rem,8vw,5.5rem)/.9 var(--tytul);text-transform:uppercase;max-width:none;margin-block:8px 32px}
+.dokument h2{font:700 1.375rem/1.25 var(--tresc-kroj);text-transform:none;letter-spacing:0}
+.dokument .muted{color:var(--tusz-2)}
+.okruchy{margin:0;font-weight:600}
