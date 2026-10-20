@@ -14,3 +14,4 @@
 - 20.10.2026 E1.3 sprawdzenie M6: `docs/m6/e1-sprawdzenie.md` (E1-01 P1 brak EN zasad; E1-02 zmiany treści do decyzji). Czeka STOP 2.
 - 20.10.2026 STOP 2: D-016–D-019. E2 partia 1 (strona główna, rola 08 jako subagent) w toku.
 - 20.10.2026 E2 partia 1 (rola 08, subagent): 9b48a41 testy (czerwone przed kodem: kroje, adresy; na podglądzie E1-01), 27ad3a1 strona główna + E1-01, 06baf56 obraz OG; `node --test` 29: 28 pass, 1 todo, kod 0. Punkt kontrolny u właściciela.
+- 20.10.2026 E2 partia 2 (rola 08, subagent): 3d09378 testy (czerwone 7 przed kodem), 1378c2d podstrony + 404 + canonical/OG + stopka EN, 9e5a014 obraz OG (D-021); `node --test` 38/38, kod 0; treść sekcji PL/EN podstron identyczna z main (skrypt M6). E3 weryfikacja w toku.
