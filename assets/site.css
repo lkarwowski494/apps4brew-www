@@ -175,6 +175,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .indeks-tab td{font-weight:600}
 .indeks-tab td:last-child,.indeks-tab th:last-child{text-align:right;padding-right:0}
 .przypis{font-size:var(--r-mala);color:var(--tusz-2)}
+.indeks-lista .przypis{margin-top:var(--o-6)}
 
 .indeks-lista{font-variant-numeric:tabular-nums}
 .receipt{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--o-1) var(--o-4);align-items:baseline;padding-block:var(--o-3);border-bottom:1px solid var(--linia);font-size:var(--r-wieksza)}

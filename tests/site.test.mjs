@@ -786,3 +786,9 @@ test('04-studio-projektowe-014: site.js — ścieżka zapasowa kopiowania pokazu
   assert.ok(js.includes('Adres zaznaczony — skopiuj go (Ctrl+C / ⌘C)') && js.includes('Address selected — copy it (Ctrl+C / ⌘C)'));
   assert.match(js, /var sel = function \(\) \{[\s\S]*?say\(/, 'sel() wywołuje say()');
 });
+
+// 04-studio-projektowe-015: wartości wyglądu tylko z tokenów w CSS — bez atrybutu style= w HTML (SP-03).
+test('04-studio-projektowe-015: brak atrybutu style= w HTML stron; odstęp przypisu indeksu z tokenu --o-6', () => {
+  for (const f of HTML) assert.ok(!/\sstyle="/.test(read(f)), `${f}: atrybut style=`);
+  assert.match(read('assets/site.css'), /\.indeks-lista \.przypis\{margin-top:var\(--o-6\)\}/);
+});
