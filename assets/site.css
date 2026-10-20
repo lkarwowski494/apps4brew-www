@@ -121,7 +121,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .app-cechy li::before{content:"";position:absolute;left:0;top:.65em;width:8px;height:2px;background:currentColor}
 .app-pryw{font-weight:600}
 .app-linki{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-6)}
-.app-linki a{display:inline-block;padding-block:var(--o-2)}
+.app-linki a{display:inline-block;padding-block:var(--o-3)}
 .kolejne{margin-top:var(--o-10);padding:var(--o-6);border:2px dashed var(--tusz-2)}
 .kolejne-h{font:400 var(--r-h3)/1.2 var(--kroj-tytul)}
 
@@ -191,8 +191,8 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .mail a{font-size:var(--r-wieksza);font-weight:650;overflow-wrap:anywhere}
 .stopka{padding:var(--o-10) var(--margines);border-top:2px solid var(--linia-mocna);font-size:var(--r-mala)}
 .stopka ul{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-8);margin-top:var(--o-3)}
-.stopka li a+a{margin-left:var(--o-2)}
-.stopka a{display:inline-block;padding-block:var(--o-2)}
+.stopka li a+a{margin-left:var(--o-4)}
+.stopka a{display:inline-block;min-width:44px;padding-block:var(--o-3)}
 .stopka .prawa{margin:var(--o-6) 0 0;color:var(--tusz-2)}
 
 /* podstrona dokumentu (polityka, wsparcie; struktura zgodna z eksportem Treningu: header, h1, main > section[lang]) */

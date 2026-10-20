@@ -709,3 +709,11 @@ test('04-studio-projektowe-006: nazwa dostępna przycisków PL/EN zaczyna się o
     }
   }
 });
+
+// 04-studio-projektowe-007 (D-024): cele dotykowe linków w stopce i na kartach ≥ 44 px. Pomiar w przeglądarce: docs/m6/narzedzia/fix-007-cele.mjs.
+test('04-studio-projektowe-007: CSS stopki i linków kart daje cele ≥ 44 px (padding 12 px + linia ≥ 20 px, min-width 44 px, odstęp 16 px)', () => {
+  const css = read('assets/site.css');
+  assert.match(css, /\.stopka a\{display:inline-block;min-width:44px;padding-block:var\(--o-3\)\}/);
+  assert.match(css, /\.app-linki a\{display:inline-block;padding-block:var\(--o-3\)\}/);
+  assert.match(css, /\.stopka li a\+a\{margin-left:var\(--o-4\)\}/);
+});
