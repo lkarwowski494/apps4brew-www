@@ -1,0 +1,35 @@
+# Adresy na żywo po publikacji (2026-10-20T16:05:13Z), main 91f3779
+200 /
+200 /index.html
+200 /404.html
+200 /trening/privacy.html
+200 /trening/support.html
+200 /piekarz/privacy.html
+200 /piekarz/support.html
+200 /assets/og-image.png
+200 /assets/favicon.svg
+200 /assets/apple-touch-icon.png
+200 /assets/site.css
+200 /assets/site.js
+200 /assets/trening-icon.png
+200 /assets/piekarz-icon.svg
+200 /fonts/young-serif-latin.woff2
+200 /fonts/young-serif-latin-ext.woff2
+200 /fonts/source-sans-3-latin.woff2
+200 /fonts/source-sans-3-latin-ext.woff2
+200 /fonts/barlow-condensed-600-latin.woff2
+200 /fonts/barlow-condensed-600-latin-ext.woff2
+200 /fonts/LICENSE-young-serif-OFL.txt
+200 /fonts/LICENSE-source-sans-3-OFL.txt
+200 /fonts/LICENSE-barlow-condensed-OFL.txt
+kotwica #apps ok
+kotwica #piekarz ok
+kotwica #how ok
+kotwica #index ok
+kotwica #about ok
+kotwica #top ok
+kotwica #main ok
+404 /nie-ma-takiej (oczekiwane 404)
+301 https://apps4brew.com/ www
+301 https://apps4brew.com/ http
+404 /docs/design/porownanie.html (oczekiwane 404)
