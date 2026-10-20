@@ -731,3 +731,23 @@ test('04-studio-projektowe-009: poniżej 600 px .receipt to siatka z krajem w pi
   assert.match(css, /@media \(max-width:599px\)\{\.receipt\{display:grid;grid-template-columns:minmax\(0,1fr\) auto;gap:var\(--o-1\) var\(--o-4\)\}\.receipt\{align-items:end\}\.receipt \.kraj\{grid-column:1\/-1\}/);
   assert.match(css, /\.receipt \.etykieta\{display:block\}\}/);
 });
+
+// 04-studio-projektowe-010 (D-024): w wersji EN nazwy aplikacji ze sklepu: „Training” i „Crust” (bez „Trening”, „Piekarz”, „Crust (Piekarz)”) w szablonie stron.
+// Poza zakresem: sekcje [data-lang-section] to treść generowana z repo aplikacji (zob. test „treść podstron bez zmian”) — tam „Trening” zostaje do zmiany eksportu (D-022).
+test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw „Training” i „Crust”', () => {
+  for (const f of HTML) {
+    const src = read(f).replace(/<section lang="(?:pl|en)" data-lang-section="(?:pl|en)">[\s\S]*?<\/section>/g, '').replace(/<!--[\s\S]*?-->/g, '');
+    const en = [...src.matchAll(/\sdata-(?:en|alt-en|label-en|content-en)="([^"]*)"/g)].map((m) => m[1]);
+    assert.ok(en.length > 5, `${f}: teksty EN`);
+    for (const t of en) assert.ok(!/Trening|Piekarz/.test(t), `${f}: nazwa polska w tekście EN: „${t.slice(0, 70)}”`);
+  }
+  const index = read('index.html');
+  assert.ok(index.includes('data-en="Training: Gym Log &amp; Rest Timer"') && index.includes('data-en="Crust: Sourdough Baking"') && index.includes('data-alt-en="Crust: Sourdough Baking"'));
+  assert.ok(index.includes('data-label-en="Training path: stage 4 of 5') && index.includes('data-label-en="Crust path: stage 4 of 5'));
+  for (const [f, app, tytul] of [['trening/privacy.html', 'Training', 'Privacy Policy'], ['trening/support.html', 'Training', 'Support'], ['piekarz/privacy.html', 'Crust', 'Privacy Policy'], ['piekarz/support.html', 'Crust', 'Support']]) {
+    const src = read(f);
+    assert.ok(src.includes(`data-en="${app} — ${tytul} — Apps4Brew"`), `${f}: tytuł EN`);
+    assert.ok(src.includes(`<h1 data-pl="`) && src.includes(`data-en="${app} — ${tytul}">`), `${f}: h1 EN`);
+    assert.ok(src.includes(`data-label-en="${app} path: stage 4 of 5`), `${f}: opis drogi EN`);
+  }
+});
