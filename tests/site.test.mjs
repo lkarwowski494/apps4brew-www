@@ -619,3 +619,15 @@ test('04-studio-projektowe-001: kroje zastępcze z size-adjust i nadpisaniem met
   assert.match(css, /--kroj-tresc:"Source Sans 3","Source Sans 3 Fallback",/);
   assert.match(css, /--kroj-tytul:"Young Serif","Young Serif Fallback",/);
 });
+
+// 04-studio-projektowe-002: podpisy etapów (px/vw) nie rosły z tekstem; poniżej 600 px na podstronach stoi jeden podpis tekstowy. Pomiar: docs/m6/narzedzia/fix-002-podpisy.mjs.
+test('04-studio-projektowe-002: podstrony mają podpis etapu „Etap 4 z 5” (PL/EN), 404 nie; CSS nie zawiera podpisów w vw', () => {
+  for (const f of SUBPAGES) {
+    const src = read(f);
+    assert.match(src, /<\/span><span class="d-etap" data-pl="Etap 4 z 5: parzenie \(TestFlight\)" data-en="Stage 4 of 5: brewing \(TestFlight\)">Etap 4 z 5: parzenie \(TestFlight\)<\/span>\s*<\/figure>/, `${f}: podpis etapu w figurze`);
+  }
+  assert.ok(!read('404.html').includes('d-etap'), '404: bez podpisu etapu (żaden etap nie jest bieżący)');
+  const css = read('assets/site.css');
+  assert.ok(!/\.d-nazwa\{[^}]*vw/.test(css), '.d-nazwa: rozmiar w vw nie rośnie z tekstem');
+  assert.match(css, /\.dokument \.d-nazwa,\.blad \.d-nazwa\{display:none\}/);
+});
