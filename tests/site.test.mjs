@@ -768,3 +768,14 @@ test('04-studio-projektowe-012: „Kolejne aplikacje w przygotowaniu.” z twar
   assert.ok(src.includes('data-pl="Kolejne aplikacje w&nbsp;przygotowaniu." data-en="More apps are brewing.">Kolejne aplikacje w&nbsp;przygotowaniu.</p>'));
   assert.match(read('assets/site.css'), /\.kolejne-h\{[^}]*text-wrap:balance\}/);
 });
+
+// 04-studio-projektowe-013: podstrony mają w <head> to samo co strona główna: apple-touch-icon, theme-color (jasny i ciemny), twitter:card (404 pomijamy: noindex).
+test('04-studio-projektowe-013: <head> podstron ma apple-touch-icon, theme-color i twitter:card jak index.html', () => {
+  for (const f of SUBPAGES) {
+    const head = read(f).slice(0, read(f).indexOf('</head>'));
+    assert.ok(head.includes('<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">'), `${f}: apple-touch-icon`);
+    assert.ok(head.includes('<meta name="theme-color" content="#E9EDE0" media="(prefers-color-scheme: light)">'), `${f}: theme-color jasny`);
+    assert.ok(head.includes('<meta name="theme-color" content="#1C1410" media="(prefers-color-scheme: dark)">'), `${f}: theme-color ciemny`);
+    assert.ok(head.includes('<meta name="twitter:card" content="summary_large_image">'), `${f}: twitter:card`);
+  }
+});
