@@ -12,7 +12,8 @@ const port = 8765;
 const origin = `http://localhost:${port}`;
 
 // Marginesy bezpieczne ~60 px (podglądy linków przycinają brzegi). Barwy wyłącznie z tokenów jasnego motywu (site.css).
-// Pasek drogi: pięć etapów z podpisami jak na stronie (nazwa etapu + etap pracy studia), wszystkie „zrobione” = pełna paleta.
+// Pasek drogi jako neutralna legenda (D-024, 04-studio-projektowe-003): pięć etapów z podpisami jak na stronie (nazwa etapu + etap pracy studia), wszystkie w tym samym
+// stylu niewypełnionym (obwódka + kreskowanie, bez klasy „zrobione”), więc obraz nie twierdzi, że któraś aplikacja jest już w App Store, i nie traci ważności przy zmianie etapu.
 const html = `<!doctype html>
 <html lang="pl">
 <head>
@@ -41,11 +42,11 @@ const html = `<!doctype html>
   </div>
   <div class="droga" role="img" aria-label="Droga ziarna">
     <span class="droga-pasek">
-      <span class="d-zbior zrobione"><span class="d-nazwa">Zbiór</span><span class="d-studio">research</span></span>
-      <span class="d-obrobka zrobione"><span class="d-nazwa">Obróbka</span><span class="d-studio">projekt</span></span>
-      <span class="d-palenie zrobione"><span class="d-nazwa">Palenie</span><span class="d-studio">budowa z testami</span></span>
-      <span class="d-parzenie zrobione"><span class="d-nazwa">Parzenie</span><span class="d-studio">testy z ludźmi (TestFlight)</span></span>
-      <span class="d-podanie zrobione"><span class="d-nazwa">Podanie</span><span class="d-studio">App Store</span></span>
+      <span class="d-zbior"><span class="d-nazwa">Zbiór</span><span class="d-studio">research</span></span>
+      <span class="d-obrobka"><span class="d-nazwa">Obróbka</span><span class="d-studio">projekt</span></span>
+      <span class="d-palenie"><span class="d-nazwa">Palenie</span><span class="d-studio">budowa z testami</span></span>
+      <span class="d-parzenie"><span class="d-nazwa">Parzenie</span><span class="d-studio">testy z ludźmi (TestFlight)</span></span>
+      <span class="d-podanie"><span class="d-nazwa">Podanie</span><span class="d-studio">App Store</span></span>
     </span>
   </div>
 </body>

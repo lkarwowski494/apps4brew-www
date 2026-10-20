@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -630,4 +631,49 @@ test('04-studio-projektowe-002: podstrony mają podpis etapu „Etap 4 z 5” (P
   const css = read('assets/site.css');
   assert.ok(!/\.d-nazwa\{[^}]*vw/.test(css), '.d-nazwa: rozmiar w vw nie rośnie z tekstem');
   assert.match(css, /\.dokument \.d-nazwa,\.blad \.d-nazwa\{display:none\}/);
+});
+
+// 04-studio-projektowe-003 (D-024): obraz OG pokazywał wszystkie 5 etapów jako ukończone, także „Podanie / App Store”; ma być neutralną legendą drogi.
+function decodePng(buf) {
+  assert.deepEqual([...buf.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10], 'sygnatura PNG');
+  let off = 8; let ihdr = null; const idat = [];
+  while (off < buf.length) {
+    const len = buf.readUInt32BE(off); const type = buf.toString('latin1', off + 4, off + 8); const data = buf.subarray(off + 8, off + 8 + len);
+    if (type === 'IHDR') ihdr = { w: data.readUInt32BE(0), h: data.readUInt32BE(4), depth: data[8], color: data[9], interlace: data[12] };
+    if (type === 'IDAT') idat.push(data);
+    off += 12 + len;
+  }
+  assert.equal(ihdr.depth, 8); assert.equal(ihdr.interlace, 0); assert.ok([2, 6].includes(ihdr.color), 'PNG RGB albo RGBA');
+  const bpp = ihdr.color === 6 ? 4 : 3; const stride = ihdr.w * bpp;
+  const raw = zlib.inflateSync(Buffer.concat(idat)); const px = Buffer.alloc(stride * ihdr.h);
+  for (let y = 0; y < ihdr.h; y++) {
+    const f = raw[y * (stride + 1)]; const line = raw.subarray(y * (stride + 1) + 1, (y + 1) * (stride + 1));
+    for (let x = 0; x < stride; x++) {
+      const a = x >= bpp ? px[y * stride + x - bpp] : 0; const b = y ? px[(y - 1) * stride + x] : 0; const c = x >= bpp && y ? px[(y - 1) * stride + x - bpp] : 0;
+      let v = line[x];
+      if (f === 1) v += a; else if (f === 2) v += b; else if (f === 3) v += (a + b) >> 1;
+      else if (f === 4) { const p = a + b - c; const pa = Math.abs(p - a); const pb = Math.abs(p - b); const pc = Math.abs(p - c); v += pa <= pb && pa <= pc ? a : pb <= pc ? b : c; }
+      px[y * stride + x] = v & 255;
+    }
+  }
+  return { w: ihdr.w, h: ihdr.h, bpp, px };
+}
+
+test('04-studio-projektowe-003: obraz OG bez wypełnień „zrobione” (barwy etapów), skrypt bez klasy zrobione', () => {
+  const css = read('assets/site.css');
+  const kolory = ['--e-zbior', '--e-obrobka', '--e-palenie', '--e-parzenie', '--e-podanie'].map((t) => {
+    const m = css.match(new RegExp(`:root\\{[\\s\\S]*?${t}:#([0-9A-Fa-f]{6})`)); assert.ok(m, `token ${t}`);
+    return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)];
+  });
+  const img = decodePng(fs.readFileSync(path.join(root, 'assets/og-image.png')));
+  assert.deepEqual([img.w, img.h], [1200, 630]);
+  const n = kolory.map(() => 0);
+  for (let i = 0; i < img.w * img.h; i++) {
+    const r = img.px[i * img.bpp]; const g = img.px[i * img.bpp + 1]; const b = img.px[i * img.bpp + 2];
+    kolory.forEach((k, j) => { if (r === k[0] && g === k[1] && b === k[2]) n[j]++; });
+  }
+  // Wypełniony odcinek paska to ok. 200 × 30 = 6000 px jednego koloru; neutralna legenda nie ma żadnego.
+  assert.ok(n.every((x) => x < 100), `piksele w barwach etapów zrobionych (zbiór, obróbka, palenie, parzenie, podanie): ${n.join(', ')}`);
+  const js = read('docs/m6/narzedzia/og-image.mjs');
+  assert.ok(!/class="d-[a-z]+ zrobione"/.test(js), 'skrypt OG: odcinki bez klasy zrobione');
 });
