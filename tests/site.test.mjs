@@ -292,11 +292,17 @@ test('piekarz/support.html: kontakt bez obietnicy czasu odpowiedzi, FAQ z jednos
   assert.ok(!/w ciągu (tygodnia|\d+)|within (a week|\d+)|24[–-]48/i.test(src.replace(/<!--[\s\S]*?-->/g, '')), 'obietnica czasu odpowiedzi');
 });
 
-test('karta Piekarza „Wkrótce” na stronie głównej, z linkami do jego stron, bez App Store', () => {
+// 20.10.2026: karty aplikacji w jednym wzorze (ikona, nazwa, meta, trzy cechy, prywatność, linki do polityki i wsparcia pod kartą).
+test('karty aplikacji: ten sam wzór i linki do własnej polityki i wsparcia, bez App Store', () => {
   const src = read('index.html');
-  const card = src.slice(src.indexOf('<article class="app soon" id="piekarz">'), src.indexOf('</article>', src.indexOf('id="piekarz"')));
-  assert.ok(card.length > 0, 'brak karty Piekarza');
-  assert.match(card, /data-pl="Wkrótce"/);
-  assert.ok(card.includes('href="piekarz/privacy.html"') && card.includes('href="piekarz/support.html"'));
-  assert.ok(!/apps\.apple\.com/.test(card));
+  for (const [app, start] of [['trening', '<article class="app">'], ['piekarz', '<article class="app" id="piekarz">']]) {
+    const i = src.indexOf(start);
+    assert.ok(i > 0, `brak karty ${app}`);
+    const card = src.slice(i, src.indexOf('</article>', i));
+    assert.match(card, /<div class="app-head">\s*<img class="icon" src="assets\/[a-z]+-icon\.(png|svg)" width="64" height="64"/, `${app}: nagłówek z ikoną`);
+    assert.match(card, /<div class="meta" data-pl="iPhone · /, `${app}: meta`);
+    assert.equal((card.match(/<li /g) || []).length, 3, `${app}: trzy cechy`);
+    assert.ok(card.includes(`href="${app}/privacy.html"`) && card.includes(`href="${app}/support.html"`), `${app}: linki pod kartą`);
+    assert.ok(!/apps\.apple\.com/.test(card), `${app}: link do App Store`);
+  }
 });
