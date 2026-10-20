@@ -181,6 +181,8 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .receipt .kraj{font-weight:650;flex:1 1 8em}.receipt .cena{font-weight:600;text-align:right}.receipt .usd{text-align:right;flex:0 0 auto;min-width:7.5em}
 .receipt .etykieta{font-size:var(--r-mala);font-weight:400;color:var(--tusz-2)}
 .receipt .usd{min-width:0}
+/* poniżej 600 px stały układ (04-studio-projektowe-009): kraj w pierwszym wierszu, cena z lewej i przeliczenie z prawej w drugim — w każdym wierszu tak samo, niezależnie od długości kwoty */
+@media (max-width:599px){.receipt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--o-1) var(--o-4)}.receipt{align-items:end}.receipt .kraj{grid-column:1/-1}.receipt .cena{text-align:left}.receipt .etykieta{display:block}}
 .app-head{display:contents}
 .app-tresc{grid-column:2}
 @media (max-width:599px){.app-tresc{grid-column:1}}

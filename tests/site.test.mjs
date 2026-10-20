@@ -724,3 +724,10 @@ test('04-studio-projektowe-008: .dokument h3 ma osobną regułę (rozmiar treśc
   const m = css.match(/\.dokument h3\{font:650 var\(--r-tresc\)\/1\.3 var\(--kroj-tresc\);margin:var\(--o-6\) 0 var\(--o-2\)\}/);
   assert.ok(m, 'reguła .dokument h3');
 });
+
+// 04-studio-projektowe-009: wiersze indeksu espresso poniżej 600 px w stałym układzie (siatka, nie zawijanie flex). Pomiar: docs/m6/narzedzia/fix-009-indeks.mjs.
+test('04-studio-projektowe-009: poniżej 600 px .receipt to siatka z krajem w pierwszym wierszu i etykietą ceny w osobnej linii', () => {
+  const css = read('assets/site.css');
+  assert.match(css, /@media \(max-width:599px\)\{\.receipt\{display:grid;grid-template-columns:minmax\(0,1fr\) auto;gap:var\(--o-1\) var\(--o-4\)\}\.receipt\{align-items:end\}\.receipt \.kraj\{grid-column:1\/-1\}/);
+  assert.match(css, /\.receipt \.etykieta\{display:block\}\}/);
+});
