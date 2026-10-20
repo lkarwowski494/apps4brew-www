@@ -12,3 +12,4 @@
 - 20.10.2026 rola 04 build, E4 → zakończona: D-015 (system i ikona przyjęte), `docs/design/design-spec.md` (AS IS → TO BE, pliki dla roli 08, wpis portfolio), `docs/sztafeta.md`. Następny krok: koordynator M6 (E1.3 sprawdzenie, STOP 2).
 - 20.10.2026 E1 (rola 04 build) zakończone: kierunek A2 „Od ziarna do filiżanki” + tablica B (D-011), Young Serif (D-014), system i ikona (D-015); HEAD b6a8b63.
 - 20.10.2026 E1.3 sprawdzenie M6: `docs/m6/e1-sprawdzenie.md` (E1-01 P1 brak EN zasad; E1-02 zmiany treści do decyzji). Czeka STOP 2.
+- 20.10.2026 STOP 2: D-016–D-019. E2 partia 1 (strona główna, rola 08 jako subagent) w toku.
