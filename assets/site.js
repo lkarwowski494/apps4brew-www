@@ -55,6 +55,7 @@
   var saved = null;
   try { saved = localStorage.getItem('a4b-lang'); } catch (e) {}
   if (saved === 'en' || document.querySelector('[data-lang-section]')) setLang(saved === 'en' ? 'en' : 'pl');
+  pierwszy = false; // także gdy przy wczytaniu nie było setLang (nowy gość): litery tablicy mają ruch już przy pierwszej zmianie języka (D-011)
 
   var btn = document.getElementById('copy');
   var addr = document.getElementById('addr');
