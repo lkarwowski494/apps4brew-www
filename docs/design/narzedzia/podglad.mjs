@@ -90,7 +90,7 @@ let glowa = stary.slice(0, stary.indexOf('</head>'))
   .replace(/<link rel="preload"[^>]*>\n/g, '')
   .replace('<meta name="theme-color" content="#f7e9dc" media="(prefers-color-scheme: light)">', '<meta name="theme-color" content="#E9EDE0" media="(prefers-color-scheme: light)">')
   .replace('<meta name="theme-color" content="#2b2420" media="(prefers-color-scheme: dark)">', '<meta name="theme-color" content="#1C1410" media="(prefers-color-scheme: dark)">')
-  .replace('<link rel="stylesheet" href="assets/site.css">', '<link rel="preload" href="fonts/big-shoulders-stencil-latin.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="assets/site.css">');
+  .replace('<link rel="stylesheet" href="assets/site.css">', '<link rel="preload" href="fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="assets/site.css">');
 
 const indeksPrzypis = stary.match(/<p[^>]*data-pl="\* Włochy[\s\S]*?<\/p>/)[0].replace(/class="[^"]*"/, 'class="przypis"');
 

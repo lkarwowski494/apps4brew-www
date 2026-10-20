@@ -1,0 +1,4 @@
+not ok 13 - czcionki lokalne istnieją, każda rodzina ma licencję OFL
+  error: 'brak @font-face Bricolage Grotesque'
+# pass 21
+# fail 1
