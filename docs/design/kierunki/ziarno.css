@@ -13,7 +13,7 @@
 }
 body{background:var(--tlo);color:var(--tusz);font-family:var(--tresc-kroj);font-size:1.125rem}
 .logo{font:800 2.5rem/1 var(--tytul);letter-spacing:.02em;text-decoration:none;text-transform:uppercase}
-h1{font:800 clamp(3.5rem,10vw,8.5rem)/.86 var(--tytul);text-transform:uppercase;letter-spacing:.005em;margin-block:12px 32px;max-width:14ch}
+h1{font:800 clamp(3.5rem,10vw,8.5rem)/.95 var(--tytul);text-transform:uppercase;letter-spacing:.005em;margin-block:12px 32px;max-width:14ch}
 h2{font:800 clamp(2.5rem,6vw,4.5rem)/.95 var(--tytul);text-transform:uppercase;margin-bottom:16px}
 h3{font-weight:650;font-size:1.375rem;line-height:1.25}
 .kto{font-weight:600;color:var(--tusz-2);margin:0}
@@ -69,3 +69,24 @@ main>section{padding-block:64px;border-top:2px solid var(--tusz)}
 .dokument h2{font:700 1.375rem/1.25 var(--tresc-kroj);text-transform:none;letter-spacing:0}
 .dokument .muted{color:var(--tusz-2)}
 .okruchy{margin:0;font-weight:600}
+
+/* D-011: tablica z wsuwanymi literami (z kierunku B) tylko w indeksie espresso; krój liter tylko na tablicy */
+@font-face{font-family:"Litery B";src:url("../fonty/BarlowCondensed-SemiBold.ttf") format("truetype");font-weight:600;font-display:swap}
+:root{--filc:#2A2A2C;--rowek:#38383B;--litera:#F4F2EC;--litera-akcent:#F4F2EC;--rama:#A9794D;--rama-2:#8C613B}
+:root[data-theme="dark"]{--filc:#0F0F10;--rowek:#232325;--rama:#7A5536;--rama-2:#5E3F27}
+/* element firmowy: tablica */
+.tablica{--h:1.5em;display:inline-block;max-width:100%;padding:12px;background:linear-gradient(135deg,var(--rama),var(--rama-2));border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.15)}
+.filc{padding:calc(var(--h)*.5) clamp(16px,4vw,48px);background:repeating-linear-gradient(to bottom,var(--filc) 0 calc(var(--h)*.5 - 2px),var(--rowek) calc(var(--h)*.5 - 2px) calc(var(--h)*.5));border-radius:2px}
+.rzad{margin:0;max-width:none;line-height:var(--h);height:var(--h);display:flex;justify-content:center;gap:.5em;white-space:nowrap}
+.litery{display:inline-flex}
+.litery i{font:600 1em/1 "Litery B", "Arial Narrow", sans-serif;font-style:normal;color:var(--litera);text-transform:uppercase;display:inline-block;width:.6em;text-align:center;line-height:var(--h)}
+.litery.akcent i{color:var(--litera-akcent)}
+.tablica-bohater{font-size:clamp(2rem,7.6vw,6.5rem);margin-inline:auto}
+.tablica-cennik{font-size:clamp(1.125rem,3.4vw,2.25rem);display:block;max-width:760px;margin-block:16px 32px}
+.tablica-cennik .rzad{justify-content:space-between}
+.tablica-cennik .rzad:first-child{justify-content:flex-start}
+/* ruch: zmiana języka przestawia litery (tablica.js); bez ruchu przy „Ogranicz ruch” */
+.litery i.wsuwa{animation:wsun .32s calc(var(--n,0)*14ms) both cubic-bezier(.2,.8,.3,1)}
+@keyframes wsun{0%{transform:translateY(-.5em);opacity:0}100%{transform:none;opacity:1}}
+.tablica-cennik{margin-block:16px 24px}
+@media (min-width:1024px){.indeks-uklad{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:start}.indeks-uklad .indeks-tab{margin-top:16px}}

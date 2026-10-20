@@ -74,3 +74,18 @@ Karty kontrolne napisane przed porównaniem (w `01-swiat.md`, sekcja 11), tu por
 
 ## Rekomendacja
 Rekomenduję **A2 „Od ziarna do filiżanki”**, z powodu funkcji, nie gustu: cel nr 1 strony to wiarygodność studia dla klientów i inwestorów (D-001), a A2 jako jedyny pokazuje w jednym elemencie metodę pracy i prawdziwy etap każdej aplikacji; ten sam element działa na podstronach (dokument wie, której aplikacji dotyczy) i rośnie z portfolio (kolejna aplikacja = kolejny pasek). **B** jest najmocniejszy wizualnie i najlepiej niesie indeks espresso i PL/EN, ale jego dane to cena i język, a nie to, czy studio dowozi. **C** daje miejsce i najbardziej rozpoznawalny szyld, ale za dnia element firmowy słabnie (test mrużenia), a para „ciemne tło + czerwony akcent” stoi blisko wyboru domyślnego (uzasadniona barwą neonu, ale to wciąż ryzyko szablonu). Łączenie (np. A2 z tablicą B w sekcji indeksu) jest możliwe, ale osłabia zasadę jednego mocnego miejsca.
+
+## Po wyborze (D-011, 20.10.2026)
+- **Kierunek:** A2 jako system strony; tablica z B tylko w sekcji „Indeks espresso” (przy ≥ 1024 px tablica obok tabeli ze źródłami, przy 390 jedna pod drugą). Zrzuty: `kierunki/zrzuty/ziarno-glowna-*-ekran1.png`, cała strona: `kierunki/zrzuty/ziarno-glowna-1440-light-calosc-d011.png`. Warsztat: 0 błędów (390, 1024).
+- **Poprawka z krytyki:** interlinia tytułu 0,86 → 0,95, bo znaki diakrytyczne wersalików (Ń, Ż) dotykały wiersza wyżej.
+- **Porównanie krojów tytułowych** (`kroje-a2.png`, źródło `kierunki/kroje-a2.html`), kryterium mierzalne: szerokość „TAŃSZE NIŻ” przy 100 px i wynikający z niej rozmiar tytułu w tej samej kolumnie; wszystkie mają pełne polskie znaki:
+
+| Krój | Skąd w świecie dziedziny | „TAŃSZE NIŻ” / 100 px | Tytuł w kolumnie |
+|---|---|---|---|
+| 1. Big Shoulders Stencil (obecny) | szablon natryskowy jak na workach i skrzyniach z towarem (uproszczenie, źródło `[DO USTALENIA]`) | 395 px | 70 px |
+| 2. Saira Stencil One | techniczne oznaczenia na skrzyniach i maszynach | 571 px | 49 px |
+| 3. Stardos Stencil | stempel z szeryfami na worku | 570 px | 49 px |
+| 4. Allerta Stencil | humanistyczny szablon oznakowania | 576 px | 53 px |
+| 5. Big Shoulders Display (kontrola) | ten sam rysunek bez szablonu | 394 px | 71 px |
+
+Rekomendacja: **1. Big Shoulders Stencil**: najwęższy szablon, więc największy tytuł na telefonie, a szablon odróżnia go od kontroli nr 5, która wygląda jak zwykły wąski grotesk.

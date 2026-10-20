@@ -139,6 +139,8 @@ const droga = (id, etap, nazwa) => {
 </figure>`;
 };
 
+const tablica = (wiersze, cls = '') => `<div class="tablica ${cls}" aria-hidden="true"><div class="filc">${wiersze.map((w) => `<p class="rzad">${w.map(([pl, en, kl = '']) => `<span class="litery ${kl}" data-pl="${pl}" data-en="${en}">${[...pl].map((c) => `<i>${c === ' ' ? '&nbsp;' : c}</i>`).join('')}</span>`).join('')}</p>`).join('')}</div></div>`;
+const tablicaCennik = () => tablica([[['ESPRESSO', 'ESPRESSO']], ...T.ind.map(([pl, en, lok]) => [[pl.toUpperCase(), en.toUpperCase(), 'kraj'], [lok.toUpperCase(), lok.toUpperCase(), 'cena']]), [[' ', ' ']], [['APLIKACJA', 'AN APP', 'kraj'], ['< 1 ESPRESSO', '< 1 ESPRESSO', 'cena akcent']]], 'tablica-cennik');
 const ziarnoGlowna = () => `${head('ziarno', 'Kierunek A2 „Od ziarna do filiżanki” — strona główna')}
 <body>
 <a class="skip" href="#tresc">${t(['Przejdź do treści', 'Skip to content'])}</a>
@@ -167,7 +169,8 @@ const ziarnoGlowna = () => `${head('ziarno', 'Kierunek A2 „Od ziarna do filiż
     ${t(T.indH, 'h2').replace('<h2 ', '<h2 id="ind-h" ')}
     ${t(T.indSub, 'p', 'podtytul')}
     ${t(T.indLead, 'p')}
-    ${indeks(wierszProsty)}
+    <!-- D-011: tablica z wsuwanymi literami (kierunek B) tylko w indeksie espresso -->
+    <div class="indeks-uklad">${tablicaCennik()}<div>${indeks(wierszProsty)}</div></div>
   </section>
   ${studio()}
   ${kontakt()}
@@ -177,7 +180,6 @@ ${stopka()}
 </html>`;
 
 // ——— B: Tablica z wsuwanymi literami ———
-const tablica = (wiersze, cls = '') => `<div class="tablica ${cls}" aria-hidden="true"><div class="filc">${wiersze.map((w) => `<p class="rzad">${w.map(([pl, en, kl = '']) => `<span class="litery ${kl}" data-pl="${pl}" data-en="${en}">${[...pl].map((c) => `<i>${c === ' ' ? '&nbsp;' : c}</i>`).join('')}</span>`).join('')}</p>`).join('')}</div></div>`;
 
 const tablicaGlowna = () => `${head('tablica', 'Kierunek B „Tablica z wsuwanymi literami” — strona główna')}
 <body>
