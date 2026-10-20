@@ -124,6 +124,8 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .app-linki a{display:inline-block;padding-block:var(--o-3)}
 .kolejne{margin-top:var(--o-10);padding:var(--o-6);border:2px dashed var(--tusz-2)}
 .kolejne-h{font:400 var(--r-h3)/1.2 var(--kroj-tytul);text-wrap:balance}
+/* poniżej 340 px „w przygotowaniu.” (251 px) nie mieści się w polu ramki (padding 24 px); węższy padding zamiast łamania słowa (04-studio-projektowe-012) */
+@media (max-width:339px){.kolejne{padding-inline:var(--o-4)}}
 
 /* ELEMENT FIRMOWY: droga ziarna (5 etapów; dane: etap aplikacji; opis dla czytnika w aria-label figury) */
 .droga{margin:0 0 var(--o-5);padding-top:var(--o-5)}
