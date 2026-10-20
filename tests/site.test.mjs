@@ -779,3 +779,10 @@ test('04-studio-projektowe-013: <head> podstron ma apple-touch-icon, theme-color
     assert.ok(head.includes('<meta name="twitter:card" content="summary_large_image">'), `${f}: twitter:card`);
   }
 });
+
+// 04-studio-projektowe-014: „Kopiuj” z komunikatem w ścieżce zapasowej (schowek odmówił). Pomiar w przeglądarce: docs/m6/narzedzia/fix-014-kopiuj.mjs.
+test('04-studio-projektowe-014: site.js — ścieżka zapasowa kopiowania pokazuje komunikat PL i EN w przycisku i statusie', () => {
+  const js = read('assets/site.js');
+  assert.ok(js.includes('Adres zaznaczony — skopiuj go (Ctrl+C / ⌘C)') && js.includes('Address selected — copy it (Ctrl+C / ⌘C)'));
+  assert.match(js, /var sel = function \(\) \{[\s\S]*?say\(/, 'sel() wywołuje say()');
+});

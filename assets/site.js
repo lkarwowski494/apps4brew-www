@@ -63,17 +63,19 @@
   if (btn && addr) {
     btn.addEventListener('click', function () {
       var t = addr.textContent;
-      var done = function () {
-        var msg = cur === 'pl' ? 'Skopiowano' : 'Copied';
+      var say = function (msg) {
         btn.textContent = msg;
         if (status) status.textContent = msg;
       };
+      var done = function () { say(cur === 'pl' ? 'Skopiowano' : 'Copied'); };
+      // Schowek niedostępny albo odmówił: adres zostaje zaznaczony i mówimy, co zrobić (macierz stanów: błąd = co się stało i co zrobić).
       var sel = function () {
         var r = document.createRange();
         r.selectNodeContents(addr);
         var s = window.getSelection();
         s.removeAllRanges();
         s.addRange(r);
+        say(cur === 'pl' ? 'Adres zaznaczony — skopiuj go (Ctrl+C / ⌘C)' : 'Address selected — copy it (Ctrl+C / ⌘C)');
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(t).then(done, sel);
