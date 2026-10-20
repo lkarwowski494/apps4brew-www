@@ -253,7 +253,7 @@ test('trening/: sekcja PL i EN (przełącznik pokazuje jedną), bez linków do G
     assert.equal((src.match(/<section lang="en" data-lang-section="en">/g) || []).length, 1, f);
     assert.ok(!/github\.(com|io)/.test(src.replace(/<!--[\s\S]*?-->/g, '')), `${f}: link do GitHuba`);
     assert.ok(src.includes('href="mailto:support@apps4brew.com"'), f);
-    assert.match(src, /\[UWAGA 14\.10\.2026\] Skrzynka support@apps4brew\.com działa dopiero po weryfikacji DSA/, f);
+    // D-026: komentarz „[UWAGA 14.10.2026] Skrzynka … po weryfikacji DSA” usunięty (skrzynka działa); jego brak sprawdza test „D-026”.
     assert.ok(!/\+?\d{2,3}[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}/.test(src), `${f}: numer telefonu`);
     assert.ok(!/\bul\.\s|\d{2}-\d{3}\s/.test(src), `${f}: adres pocztowy`);
   }
@@ -286,7 +286,7 @@ test('piekarz/: szablon strony marki, sekcja PL i EN, kontakt tylko support@apps
     assert.equal((src.match(/<section lang="en" data-lang-section="en">/g) || []).length, 1, f);
     assert.ok(!/github\.(com|io)/.test(src.replace(/<!--[\s\S]*?-->/g, '')), `${f}: link do GitHuba`);
     assert.ok(src.includes('href="mailto:support@apps4brew.com"'), f);
-    assert.match(src, /\[UWAGA 14\.10\.2026\] Skrzynka support@apps4brew\.com działa dopiero po weryfikacji DSA/, f);
+    // D-026: komentarz „[UWAGA 14.10.2026] Skrzynka … po weryfikacji DSA” usunięty (skrzynka działa); jego brak sprawdza test „D-026”.
   }
 });
 
@@ -809,4 +809,9 @@ test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu
     ['Na iPhone’a, w 35 językach. Dziś w TestFlight, App Store jesienią 2026.', 'For iPhone, in 35 languages. In TestFlight today, App Store in autumn 2026.'],
     ['Na iPhone’a, w 35 językach przed wydaniem. Dziś w TestFlight.', 'For iPhone, in 35 languages before release. In TestFlight today.'],
   ]);
+});
+
+// D-026 (20.10.2026, właściciel: „e-mail już działa”): komentarze robocze o skrzynce niedziałającej do weryfikacji DSA usunięte z podstron.
+test('D-026: w HTML brak komentarza „[UWAGA 14.10.2026] Skrzynka … działa dopiero po weryfikacji DSA”', () => {
+  for (const f of HTML) assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA|Google Workspace/.test(read(f)), `${f}: komentarz o skrzynce support@ (D-026)`);
 });
