@@ -14,7 +14,7 @@ function siteFiles(dir = '') {
   const out = [];
   for (const e of fs.readdirSync(path.join(root, dir), { withFileTypes: true })) {
     if (e.name.startsWith('.') || e.name === 'tests' || e.name === 'node_modules') continue;
-    const rel = path.join(dir, e.name);
+    const rel = dir ? `${dir}/${e.name}` : e.name; // ukośnik zamiast path.join: te same nazwy na Windows i w CI (ubuntu)
     if (e.isDirectory()) out.push(...siteFiles(rel));
     else if (SITE_EXT.has(path.extname(e.name))) out.push(rel);
   }
@@ -260,4 +260,43 @@ test('trening/privacy.html: treść polityki (dane na telefonie, Apple Health, z
 test('trening/support.html: kontakt, co dołączyć, FAQ; link do polityki względny', () => {
   const src = read('trening/support.html');
   for (const w of ['<h2>Kontakt</h2>', 'Odpowiadamy zwykle w ciągu tygodnia', '<h2>Pytania i odpowiedzi</h2>', '<h2>Contact</h2>', 'We usually reply within a week', '<h2>FAQ</h2>', 'href="privacy.html"']) assert.ok(src.includes(w), w);
+});
+
+// 20.10.2026 (decyzja właściciela w repo Piekarza): polityka i wsparcie aplikacji Piekarz pod apps4brew.com/piekarz/, karta „Wkrótce” na stronie głównej.
+const PIEKARZ = ['piekarz/privacy.html', 'piekarz/support.html'];
+
+test('piekarz/: szablon strony marki, sekcja PL i EN, kontakt tylko support@apps4brew.com, bez GitHuba', () => {
+  for (const f of PIEKARZ) {
+    const src = read(f);
+    assert.ok(HTML.includes(f), `${f}: nie ma na liście stron`);
+    assert.match(src, /<link rel="stylesheet" href="\.\.\/assets\/site\.css">/, f);
+    assert.match(src, /<script src="\.\.\/assets\/site\.js"><\/script>/, f);
+    assert.match(src, /<a class="logo" href="\.\.\/">/, f);
+    assert.equal((src.match(/<section lang="pl" data-lang-section="pl">/g) || []).length, 1, f);
+    assert.equal((src.match(/<section lang="en" data-lang-section="en">/g) || []).length, 1, f);
+    assert.ok(!/github\.(com|io)/.test(src.replace(/<!--[\s\S]*?-->/g, '')), `${f}: link do GitHuba`);
+    assert.ok(src.includes('href="mailto:support@apps4brew.com"'), f);
+    assert.match(src, /\[UWAGA 14\.10\.2026\] Skrzynka support@apps4brew\.com działa dopiero po weryfikacji DSA/, f);
+  }
+});
+
+test('piekarz/privacy.html: dane na telefonie, bez aparatu, zakupy, powiadomienia, „Gdy do nas piszesz” w obu językach', () => {
+  const src = read('piekarz/privacy.html');
+  for (const w of ['nie łączy się z internetem', '<h2>Aparat i inne uprawnienia</h2>', '<h2>Zakupy (subskrypcja albo zakup dożywotni)</h2>', '<h2>Powiadomienia</h2>', '<h2>Gdy do nas piszesz</h2>', 'Obowiązuje od',
+    'does not connect to the internet', '<h2>Camera and other permissions</h2>', '<h2>Purchases (subscription or lifetime purchase)</h2>', '<h2>Notifications</h2>', '<h2>When you write to us</h2>', 'Effective']) assert.ok(src.includes(w), w);
+});
+
+test('piekarz/support.html: kontakt bez obietnicy czasu odpowiedzi, FAQ z jednostkami, link do polityki względny', () => {
+  const src = read('piekarz/support.html');
+  for (const w of ['<h2>Kontakt</h2>', '<h2>Pytania i odpowiedzi</h2>', '<h2>Contact</h2>', '<h2>FAQ</h2>', 'Fahrenheita', 'Fahrenheit', 'href="privacy.html"']) assert.ok(src.includes(w), w);
+  assert.ok(!/w ciągu (tygodnia|\d+)|within (a week|\d+)|24[–-]48/i.test(src.replace(/<!--[\s\S]*?-->/g, '')), 'obietnica czasu odpowiedzi');
+});
+
+test('karta Piekarza „Wkrótce” na stronie głównej, z linkami do jego stron, bez App Store', () => {
+  const src = read('index.html');
+  const card = src.slice(src.indexOf('<article class="app soon" id="piekarz">'), src.indexOf('</article>', src.indexOf('id="piekarz"')));
+  assert.ok(card.length > 0, 'brak karty Piekarza');
+  assert.match(card, /data-pl="Wkrótce"/);
+  assert.ok(card.includes('href="piekarz/privacy.html"') && card.includes('href="piekarz/support.html"'));
+  assert.ok(!/apps\.apple\.com/.test(card));
 });
