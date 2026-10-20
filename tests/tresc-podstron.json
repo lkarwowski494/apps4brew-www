@@ -30,9 +30,9 @@
       "sha256": "8b4f2b0733caee4548e07d77ea50b305ecd4fad147d94c4de6d8f90c27bd2a34"
     },
     "en": {
-      "znakow": 3655,
+      "znakow": 3645,
       "poczatek": "<p class=\"muted\">Effective 20 October 2026 (app version 1.0,",
-      "sha256": "16037059785f53b9cfba4431b3a810c54a48374c7a239cb02b5bbe055a5aaa81"
+      "sha256": "3672b1b7d718a8ae12f2cff1fb93da73ac65a58eb592179673473a929f04d725"
     }
   },
   "piekarz/support.html": {

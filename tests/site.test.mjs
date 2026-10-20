@@ -751,6 +751,14 @@ test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw �
     assert.ok(src.includes(`<h1 data-pl="`) && src.includes(`data-en="${app} — ${tytul}">`), `${f}: h1 EN`);
     assert.ok(src.includes(`data-label-en="${app} path: stage 4 of 5`), `${f}: opis drogi EN`);
   }
+  // D-029: sekcje EN w piekarz/ (treść utrzymywana ręcznie w tym repo) też bez „Piekarz” w nazwie aplikacji („The Crust app”, nie „The Crust (Piekarz) app”).
+  // trening/ nadal wyłączone: treść z eksportu repo aplikacji, nazwa „Trening” zostaje do zmiany eksportu (D-022).
+  for (const f of HTML.filter((x) => x.startsWith('piekarz/'))) {
+    const sec = [...read(f).matchAll(/<section lang="en" data-lang-section="en">([\s\S]*?)<\/section>/g)];
+    assert.equal(sec.length, 1, `${f}: sekcja EN`);
+    const tekst = sec[0][1].replace(/<!--[\s\S]*?-->/g, '');
+    assert.ok(!/Piekarz/.test(tekst), `${f}: nazwa polska w sekcji EN: „${(tekst.match(/.{0,30}Piekarz.{0,30}/) || [''])[0]}”`);
+  }
 });
 
 // 04-studio-projektowe-011: tryb wymuszonych kolorów — stan „zrobione” i punktory listy cech. Pomiar w przeglądarce: docs/m6/narzedzia/fix-011-forced-colors.mjs.
