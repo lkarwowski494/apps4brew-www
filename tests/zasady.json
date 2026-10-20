@@ -1,0 +1,62 @@
+[
+  {
+    "h3": {
+      "pl": "Jakość od pierwszej linijki",
+      "en": "Quality from the first line"
+    },
+    "p": {
+      "pl": "Każda funkcja powstaje razem z testami automatycznymi i według wspólnych wzorców: ta sama czynność wszędzie działa, wygląda i nazywa się tak samo — także dla VoiceOver i w 35 językach. Testy pilnują tego przy każdej zmianie, więc aplikacja zostaje przewidywalna i prosta w obsłudze.",
+      "en": "Every feature is built with automated tests and shared design patterns: the same action works, looks and is named the same everywhere — for VoiceOver and in 35 languages too. Tests guard this on every change, so the app stays predictable and easy to use."
+    }
+  },
+  {
+    "h3": {
+      "pl": "Cena niższa niż espresso",
+      "en": "Priced below an espresso"
+    },
+    "p": {
+      "pl": "AI przejmuje powtarzalną pracę, więc zrobienie aplikacji kosztuje mało. Ta oszczędność trafia do Ciebie.",
+      "en": "AI takes over the repetitive work, so building an app costs little. We pass that saving on to you."
+    }
+  },
+  {
+    "h3": {
+      "pl": "Częste, bezpieczne wydania",
+      "en": "Frequent, safe releases"
+    },
+    "p": {
+      "pl": "Automatyczne testy i kontrola przed każdą wersją pozwalają wprowadzać poprawki szybko i pod pełną kontrolą.",
+      "en": "Automated tests and a check before every version let us ship fixes quickly and under full control."
+    }
+  },
+  {
+    "h3": {
+      "pl": "Twój głos zmienia aplikację",
+      "en": "Your voice shapes the app"
+    },
+    "p": {
+      "pl": "Czytamy każdą opinię, a AI pomaga je porządkować, żeby żadna prośba nie zginęła. W aplikacjach dla zwykłych ludzi to wciąż rzadkość.",
+      "en": "We read every piece of feedback, and AI helps us sort it so no request gets lost. That’s still rare in consumer software."
+    }
+  },
+  {
+    "h3": {
+      "pl": "Research zamiast zgadywania",
+      "en": "Research, not guesswork"
+    },
+    "p": {
+      "pl": "Funkcje projektujemy na podstawie badań rynku, a to, czego aplikacja uczy, na podstawie badań naukowych.",
+      "en": "We design features from market research, and what an app teaches is based on scientific studies."
+    }
+  },
+  {
+    "h3": {
+      "pl": "Bez reklam i śledzenia",
+      "en": "No ads, no tracking"
+    },
+    "p": {
+      "pl": "Nie sprzedajemy danych. Każda aplikacja zbiera tylko to, czego potrzebuje do działania.",
+      "en": "We don’t sell data. Each app collects only what it needs to work."
+    }
+  }
+]

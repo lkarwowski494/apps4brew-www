@@ -196,16 +196,21 @@ test('dostępność: alt obrazów, jeden h1, kolejność nagłówków, fokus, re
   assert.match(css, /prefers-reduced-motion:reduce/);
 });
 
+// D-014 (20.10.2026, decyzja właściciela): tytuły Young Serif, treść Source Sans 3, litery tablicy indeksu Barlow Condensed.
 test('czcionki lokalne istnieją, każda rodzina ma licencję OFL', () => {
   const css = read('assets/site.css');
   const refs = [...css.matchAll(/url\("\.\.\/(fonts\/[^"]+\.woff2)"\)/g)].map((m) => m[1]);
   assert.ok(refs.length >= 3);
   for (const r of refs) assert.ok(fs.existsSync(path.join(root, r)), `brak ${r}`);
-  for (const fam of ['Bricolage Grotesque', 'Instrument Sans', 'JetBrains Mono']) {
+  for (const fam of ['Young Serif', 'Source Sans 3', 'Barlow Condensed']) {
     assert.ok(css.includes(`font-family:"${fam}"`), `brak @font-face ${fam}`);
     const lic = `fonts/LICENSE-${fam.toLowerCase().replace(/ /g, '-')}-OFL.txt`;
     assert.match(read(lic), /SIL OPEN FONT LICENSE Version 1\.1/i, lic);
   }
+  // Stare kroje wycofane (D-014): ani pliki, ani odwołania.
+  for (const old of ['Bricolage Grotesque', 'Instrument Sans', 'JetBrains Mono']) assert.ok(!css.includes(old), `stary krój ${old} w CSS`);
+  const files = fs.readdirSync(path.join(root, 'fonts'));
+  assert.ok(!files.some((n) => /bricolage|instrument|jetbrains/i.test(n)), `stare pliki krojów: ${files.join(', ')}`);
 });
 
 test('lokalne odwołania w HTML wskazują istniejące pliki', () => {
@@ -213,9 +218,10 @@ test('lokalne odwołania w HTML wskazują istniejące pliki', () => {
     const src = read(f);
     for (const m of src.matchAll(/\s(?:src|href)="([^"#:][^"]*)"/g)) {
       if (/^[a-z]+:/i.test(m[1])) continue; // https:, mailto: — sprawdzane w innych testach
-      if (m[1] === '/') continue;
+      const ref = m[1].split('#')[0]; // kotwice sprawdza osobny test („kotwice w linkach wewnętrznych…”)
+      if (ref === '/') continue;
       // Ścieżka od korzenia („/assets/…”) albo względna do katalogu strony (trening/privacy.html → ../assets/…).
-      const p = m[1].startsWith('/') ? path.join(root, m[1].slice(1)) : path.join(root, path.dirname(f), m[1]);
+      const p = ref.startsWith('/') ? path.join(root, ref.slice(1)) : path.join(root, path.dirname(f), ref);
       assert.ok(fs.existsSync(p), `${f}: brak pliku ${m[1]}`);
     }
   }
@@ -305,5 +311,149 @@ test('karty aplikacji: ten sam wzór i linki do własnej polityki i wsparcia, be
     assert.equal((card.match(/<li /g) || []).length, 3, `${app}: trzy cechy`);
     assert.ok(card.includes(`href="${app}/privacy.html"`) && card.includes(`href="${app}/support.html"`), `${app}: linki pod kartą`);
     assert.ok(!/apps\.apple\.com/.test(card), `${app}: link do App Store`);
+  }
+});
+
+// ---------------------------------------------------------------------------------------------
+// M6, partia 1 (20.10.2026): adresy z App Store Connect, kotwice, dokument/OG, tłumaczenia treści.
+
+// Prosty parser HTML bez zależności: elementy z własnym tekstem i ich przodkowie (atrybuty bywają z „<” i „>”).
+const VOID = new Set(['meta', 'link', 'img', 'br', 'hr', 'input', 'source', 'wbr']);
+function parseHtml(html) {
+  const src = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<script\b[\s\S]*?<\/script>/gi, '').replace(/<style\b[\s\S]*?<\/style>/gi, '');
+  const re = /<(\/?)([a-z][\w-]*)((?:\s+[\w:-]+(?:="[^"]*")?)*)\s*(\/?)>|([^<]+)/gi;
+  const attrsOf = (a) => Object.fromEntries([...a.matchAll(/([\w:-]+)(?:="([^"]*)")?/g)].map((m) => [m[1], m[2] ?? '']));
+  const root0 = { tag: '#root', attrs: {}, own: '', skip: false, covered: false };
+  const stack = [root0];
+  const done = [];
+  for (const m of src.matchAll(re)) {
+    const top = stack[stack.length - 1];
+    if (m[5] !== undefined) { top.own += m[5]; continue; }
+    const [, close, tag0, rawAttrs, selfClose] = m;
+    const tag = tag0.toLowerCase();
+    if (close) {
+      let i = stack.length - 1;
+      while (i > 0 && stack[i].tag !== tag) i--;
+      if (i > 0) while (stack.length > i) done.push(stack.pop());
+      continue;
+    }
+    const attrs = attrsOf(rawAttrs);
+    const node = {
+      tag, attrs, own: '',
+      skip: top.skip || attrs['aria-hidden'] === 'true' || 'data-lang-section' in attrs,
+      covered: top.covered || 'data-pl' in top.attrs, // tekst przodka z data-pl jest podmieniany w całości
+    };
+    if (!VOID.has(tag) && !selfClose) stack.push(node); else done.push(node);
+  }
+  while (stack.length > 1) done.push(stack.pop());
+  return done;
+}
+
+// Nazwy własne i znaki, które nie są tekstem do tłumaczenia (adres e-mail, logo, przełącznik PL/EN, nazwy aplikacji i produktów).
+function needsTranslation(node) {
+  if (node.attrs.id === 'lang-pl' || node.attrs.id === 'lang-en') return false;
+  if (/(^|\s)logo(\s|$)/.test(node.attrs.class || '')) return false; // logo = nazwa własna
+  const txt = node.own.replace(/&[a-z#0-9]+;/gi, ' ')
+    .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '')
+    .replace(/Apps4Brew|Trening|Piekarz|TestFlight|App Store|iPhone/g, '');
+  return /\p{L}/u.test(txt);
+}
+const TEXT_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'a', 'button']);
+
+// Plik z adresami (tests/adresy.txt): ścieżki plików i kotwice z docs/m6/adresy.txt, bez adresów zewnętrznych.
+test('adresy z App Store Connect i linków zewnętrznych: każdy plik istnieje, każda kotwica jest id w index.html', () => {
+  const lines = read('tests/adresy.txt').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('//'));
+  assert.ok(lines.length >= 25, `za mało adresów: ${lines.length}`);
+  const idx = read('index.html');
+  for (const a of lines) {
+    assert.match(a, /^\/(#[\w-]+|[\w./-]*)$/, `adres spoza repo albo zły format: ${a}`);
+    if (a.startsWith('/#')) {
+      assert.ok(new RegExp(`\\sid="${a.slice(2)}"`).test(idx), `index.html: brak id="${a.slice(2)}" (kotwica ${a})`);
+    } else {
+      const file = a === '/' ? 'index.html' : a.slice(1);
+      assert.ok(fs.existsSync(path.join(root, file)), `brak pliku dla adresu ${a}`);
+    }
+  }
+  for (const must of ['/', '/trening/privacy.html', '/trening/support.html', '/piekarz/privacy.html', '/piekarz/support.html', '/404.html']) {
+    assert.ok(lines.includes(must), `adresy.txt bez ${must}`);
+  }
+});
+
+test('kotwice w linkach wewnętrznych: każde #id wskazuje istniejący element w docelowym pliku, id są unikalne', () => {
+  for (const f of HTML) {
+    const src = read(f);
+    const ids = [...src.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(new Set(ids).size, ids.length, `${f}: powtórzone id ${ids.filter((x, i) => ids.indexOf(x) !== i).join(', ')}`);
+    for (const m of src.matchAll(/\shref="([^"]*)#([^"]+)"/g)) {
+      if (/^[a-z]+:/i.test(m[1])) continue; // linki zewnętrzne i mailto
+      let target = f;
+      if (m[1]) {
+        const ref = m[1].endsWith('/') ? m[1] + 'index.html' : m[1];
+        target = (ref.startsWith('/') ? ref.slice(1) : path.posix.join(path.posix.dirname(f), ref));
+      }
+      assert.ok(fs.existsSync(path.join(root, target)), `${f}: link #${m[2]} do nieistniejącego pliku ${target}`);
+      assert.ok(new RegExp(`\\sid="${m[2]}"`).test(read(target)), `${f}: kotwica #${m[2]} nie istnieje w ${target}`);
+    }
+  }
+});
+
+test('każda strona: lang na <html>, unikalny <title>, niepusty opis, brak powtórzonych opisów', () => {
+  const titles = new Map(); const descs = new Map();
+  for (const f of HTML) {
+    const src = read(f);
+    assert.match(src, /<html lang="(pl|en)">/, `${f}: lang`);
+    const t = (src.match(/<title[^>]*>([^<]+)<\/title>/) || [])[1];
+    const d = (src.match(/<meta name="description" content="([^"]+)"/) || [])[1];
+    assert.ok(t && t.trim().length >= 5, `${f}: tytuł`);
+    assert.ok(d && d.trim().length >= 40, `${f}: opis (min. 40 znaków)`);
+    assert.ok(!titles.has(t), `${f}: tytuł taki sam jak w ${titles.get(t)}`); titles.set(t, f);
+    assert.ok(!descs.has(d), `${f}: opis taki sam jak w ${descs.get(d)}`); descs.set(d, f);
+  }
+});
+
+test('index.html: canonical i cztery tagi Open Graph; obraz OG 1200×630 PNG z zadeklarowanymi wymiarami', () => {
+  const idx = read('index.html');
+  assert.match(idx, /<link rel="canonical" href="https:\/\/apps4brew\.com\/">/);
+  for (const p of ['og:title', 'og:type', 'og:image', 'og:url']) assert.match(idx, new RegExp(`<meta property="${p}" content="[^"]+">`), p);
+  assert.match(idx, /<meta property="og:image" content="https:\/\/apps4brew\.com\/assets\/og-image\.png">/);
+  assert.match(idx, /<meta property="og:image:width" content="1200">/);
+  assert.match(idx, /<meta property="og:image:height" content="630">/);
+  const png = fs.readFileSync(path.join(root, 'assets/og-image.png'));
+  assert.equal(png.subarray(1, 4).toString(), 'PNG');
+  assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630], 'wymiary og-image.png');
+});
+
+// Partia 2: podstrony dostają canonical i Open Graph w nowym szablonie (jeszcze ich nie zmieniamy).
+test('podstrony: canonical własnego adresu i Open Graph (og:title, og:type, og:image, og:url)', { todo: 'partia 2: podstrony w nowym szablonie' }, () => {
+  for (const f of HTML.filter((x) => x !== 'index.html')) {
+    const src = read(f);
+    assert.match(src, /<link rel="canonical" href="https:\/\/apps4brew\.com\/[^"]*">/, `${f}: canonical`);
+    for (const p of ['og:title', 'og:type', 'og:image', 'og:url']) assert.match(src, new RegExp(`<meta property="${p}" content="[^"]+">`), `${f}: ${p}`);
+  }
+});
+
+// E1-01 (P1, docs/m6/e1-sprawdzenie.md): sześć zasad „Jak robimy aplikacje” w podglądzie nie miało wersji EN, a test par data-pl/data-en
+// tego nie łapał (brak atrybutów to nie para). Ten test wymaga pary przy każdym tekście treści strony głównej.
+test('E1-01: index.html — każdy tekst treści (h1–h6, p, li, a, button) ma parę data-pl i data-en', () => {
+  const bad = parseHtml(read('index.html'))
+    .filter((n) => TEXT_TAGS.has(n.tag) && !n.skip && !n.covered && needsTranslation(n))
+    .filter((n) => !('data-pl' in n.attrs && 'data-en' in n.attrs))
+    .map((n) => `<${n.tag}> „${n.own.trim().replace(/\s+/g, ' ').slice(0, 50)}”`);
+  assert.deepEqual(bad, [], `${bad.length} tekstów bez pary data-pl/data-en`);
+});
+
+test('E1-01: sześć zasad „Jak robimy aplikacje” ma PL i EN dosłownie jak na dotychczasowej stronie (tests/zasady.json)', () => {
+  const how = read('index.html');
+  const sec = how.slice(how.indexOf('id="how"'), how.indexOf('id="index"'));
+  const items = parseHtml(sec).filter((n) => n.tag === 'li' || n.tag === 'h3' || n.tag === 'p');
+  const zasady = JSON.parse(read('tests/zasady.json'));
+  assert.equal(zasady.length, 6);
+  for (const z of zasady) {
+    for (const [tag, v] of [['h3', z.h3], ['p', z.p]]) {
+      const n = items.find((x) => x.tag === tag && x.attrs['data-pl'] === v.pl);
+      assert.ok(n, `brak <${tag}> z data-pl „${v.pl.slice(0, 40)}”`);
+      assert.equal(n.attrs['data-en'], v.en, `<${tag}> „${v.pl.slice(0, 40)}”: data-en inne niż dotychczas`);
+      assert.equal(n.own.trim(), v.pl, `<${tag}>: treść domyślna (PL) inna niż data-pl`);
+    }
   }
 });
