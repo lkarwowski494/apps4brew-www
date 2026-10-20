@@ -1,0 +1,24 @@
+OK   14.66:1 (min 4.5) jasny: tusz / tło #24170F na #E9EDE0
+OK   7.16:1 (min 4.5) jasny: tusz-2 / tło #584A3F na #E9EDE0
+OK   7.76:1 (min 4.5) jasny: akcent (link, fokus) / tło #8A1B2D na #E9EDE0
+OK   9.23:1 (min 4.5) jasny: tekst przycisku / akcent #FFFFFF na #8A1B2D
+OK   14.66:1 (min 4.5) jasny: przełącznik aktywny (tło na tuszu) #E9EDE0 na #24170F
+OK   14.66:1 (min 3) jasny: obwódka paska / tło (grafika) #24170F na #E9EDE0
+OK   1.40:1 (min 1) jasny: obwódka paska / etap parzenie (grafika) #24170F na #4A2D1E
+OK   1.38:1 (min 1) jasny: linia / tło (dekoracja, bez progu) #C9CBBD na #E9EDE0
+OK   14.94:1 (min 4.5) ciemny: tusz / tło #F0E8DC na #1C1410
+OK   8.95:1 (min 4.5) ciemny: tusz-2 / tło #C2B4A4 na #1C1410
+OK   7.32:1 (min 4.5) ciemny: akcent / tło #EC8796 na #1C1410
+OK   7.32:1 (min 4.5) ciemny: tekst przycisku / akcent #1C1410 na #EC8796
+OK   14.94:1 (min 4.5) ciemny: przełącznik aktywny #1C1410 na #F0E8DC
+OK   14.94:1 (min 3) ciemny: obwódka paska / tło (grafika) #F0E8DC na #1C1410
+OK   12.80:1 (min 4.5) tablica: litera / filc (jasny) #F4F2EC na #2A2A2C
+OK   17.11:1 (min 4.5) tablica: litera / filc (ciemny) #F4F2EC na #0F0F10
+OK   3.19:1 (min 3) tablica: rama / tło jasne (grafika) #A9794D na #E9EDE0
+OK   2.75:1 (min 1) tablica: rama / tło ciemne (grafika) #7A5536 na #1C1410
+OK   9.96:1 (min 7) zwiększony kontrast jasny: akcent / tło #6E1222 na #E9EDE0
+OK   14.66:1 (min 7) zwiększony kontrast jasny: tusz-2 = tusz / tło #24170F na #E9EDE0
+OK   4.89:1 (min 3) zwiększony kontrast jasny: linia / tło (grafika) #6D6457 na #E9EDE0
+OK   10.46:1 (min 7) zwiększony kontrast ciemny: akcent / tło #F6B3BD na #1C1410
+OK   14.94:1 (min 7) zwiększony kontrast ciemny: tusz-2 = tusz / tło #F0E8DC na #1C1410
+OK   6.48:1 (min 3) zwiększony kontrast ciemny: linia / tło (grafika) #A89886 na #1C1410

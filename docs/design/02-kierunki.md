@@ -89,3 +89,24 @@ Rekomenduję **A2 „Od ziarna do filiżanki”**, z powodu funkcji, nie gustu: 
 | 5. Big Shoulders Display (kontrola) | ten sam rysunek bez szablonu | 394 px | 71 px |
 
 Rekomendacja: **1. Big Shoulders Stencil**: najwęższy szablon, więc największy tytuł na telefonie, a szablon odróżnia go od kontroli nr 5, która wygląda jak zwykły wąski grotesk.
+
+## Po wecie kroju (D-013, 20.10.2026)
+Słowa właściciela: „ta czcionka troche mnie osacza i za bardzo wydaje sie "wojskowa"”. Runda 2 (`kroje-a2-v2.png`, źródło `kierunki/kroje-a2-v2.html`): kroje bez szablonu, zapis małymi i wielkimi literami (ciężkie wersaliki to część wrażenia „osacza”). Pochodzenie według opisów krojów w katalogu Google Fonts (`ofl/<krój>/DESCRIPTION.en_us.html`, odczyt 20.10.2026; dokumentacja wydawcy kroju):
+
+| Krój | Opis wydawcy (skrót, cytat) | Ryzyko |
+|---|---|---|
+| 1. Fraunces | „"Old Style" soft-serif typeface inspired by the mannerisms of early 20th century typefaces such as Windsor, Souvenir, and the Cooper Series” | miękki szeryf to częsty wybór nowych marek i „druga fala” wyglądu AI (Kalibracja: kontrastowy szeryf) |
+| 2. Young Serif | „a heavy weight old style serif typeface”, „adding a tender and generous quality” | jedna odmiana (bez cienkiej i średniej) |
+| 3. Josefin Sans | „geometric, elegant, with a vintage feeling”, „inspired by geometric sans serif designs from the 1920s” | nietypowa wysokość małych liter; elegancja bardziej modowa niż kawowa |
+| 4. Lato | „started in the summer of 2010 by Warsaw-based designer Łukasz Dziedzic” | bardzo popularny, mało charakterystyczny w tytułach |
+| 5. Big Shoulders Display | rysunek wycofanego kroju bez szablonu | nadal wąski i zwarty (ryzyko tego samego wrażenia) |
+
+Rekomendacja: **2. Young Serif**: ciepły, „hojny” ciężki szeryf jak na dawnych etykietach produktów, wyraźnie inny niż konkurencja (szeryfy z kursywą, grotesk) i niż wybór domyślny (Fraunces); pełne polskie znaki. Wybiera właściciel okiem.
+
+## Stan E3 przed wetem (zachowany; krój do podmiany po wyborze)
+- System: `system/site.css` (tokeny + komponenty, propozycja `assets/site.css`), `system/site.js`; podgląd całej strony `system/podglad/` (generator `narzedzia/podglad.mjs`).
+- Testy strony na kopii repo z podglądem: 21/22; jedyny błąd to test krojów (wymaga starych rodzin Bricolage/Instrument/JetBrains) — do zmiany przez rolę 08 razem z krojem (nie zmieniam testów).
+- Kontrast tokenów: `kontrast/e3-tokeny.txt` (wszystkie progi spełnione, w tym zwiększony kontrast 7:1).
+- Warsztat (`warsztat.mjs`, podgląd 390/1024): 0 błędów.
+- Tekst 200 % (WCAG 1.4.4): przy 1280 px bez przewijania; przy 390 px przewijanie w poziomie na stronie głównej i polityce `[DO POPRAWY po wyborze kroju]`.
+- Ikona strony: `ikona/` (cyfra 4 z szablonu + pasek etapów) — do przerysowania w nowym kroju.

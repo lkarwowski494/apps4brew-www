@@ -1,0 +1,199 @@
+/* Apps4Brew — system strony „Od ziarna do filiżanki” (E3 roli 04, 20.10.2026; D-009, D-011, D-012).
+   Propozycja pliku assets/site.css dla roli 08. Kroje lokalne (OFL, fonts/), bez zasobów zewnętrznych (CSP bez zmian).
+   Kolejność: 1) kroje, 2) tokeny (jasny, ciemny, zwiększony kontrast), 3) baza, 4) komponenty. Tabela kontrastu: docs/design/kontrast/e3-tokeny.txt. */
+
+/* 1. Kroje — podzbiory: latin + Latin Extended-A (polskie znaki); ścieżki względem assets/ */
+@font-face{font-family:"Big Shoulders Stencil";font-weight:800;font-display:swap;src:url("../fonts/big-shoulders-stencil-latin-ext.woff2") format("woff2");unicode-range:U+0100-017F}
+@font-face{font-family:"Big Shoulders Stencil";font-weight:800;font-display:swap;src:url("../fonts/big-shoulders-stencil-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Source Sans 3";font-weight:400 700;font-display:swap;src:url("../fonts/source-sans-3-latin-ext.woff2") format("woff2");unicode-range:U+0100-017F}
+@font-face{font-family:"Source Sans 3";font-weight:400 700;font-display:swap;src:url("../fonts/source-sans-3-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url("../fonts/barlow-condensed-600-latin-ext.woff2") format("woff2");unicode-range:U+0100-017F}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url("../fonts/barlow-condensed-600-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* 2. Tokeny */
+:root{
+  /* barwy — jasny („zielone ziarno”); pochodzenie: docs/design/02-kierunki.md, karta A2 */
+  --tlo:#E9EDE0; --tlo-2:#DDE2D2; --tusz:#24170F; --tusz-2:#584A3F; --linia:#C9CBBD; --linia-mocna:#24170F;
+  --akcent:#8A1B2D; --na-akcencie:#FFFFFF; --focus:#8A1B2D;
+  --e-zbior:#A3233A; --e-obrobka:#7C8D60; --e-palenie:#8A5A36; --e-parzenie:#4A2D1E; --e-podanie:#B9853B; --e-puste:#FFFFFF;
+  --filc:#2A2A2C; --rowek:#38383B; --litera:#F4F2EC; --rama:#A9794D; --rama-2:#8C613B;
+  /* kroje */
+  --kroj-tytul:"Big Shoulders Stencil","Arial Narrow",sans-serif;
+  --kroj-tresc:"Source Sans 3",system-ui,-apple-system,sans-serif;
+  --kroj-tablica:"Barlow Condensed","Arial Narrow",sans-serif;
+  /* skala tekstu (6 wielkości; treść 17–18 px, Butterick 15–25 px) */
+  --r-mala:.9375rem; --r-tresc:clamp(1.0625rem,1rem + .2vw,1.125rem); --r-wieksza:1.375rem; --r-h3:2.5rem;
+  --r-h2:clamp(2.5rem,1.6rem + 3.6vw,4.5rem); --r-h1:clamp(3.5rem,1.5rem + 8.5vw,8.5rem);
+  --lh-tresc:1.4; --lh-tytul:.95;
+  /* odstępy: jednostka 4 px */
+  --o-1:4px; --o-2:8px; --o-3:12px; --o-4:16px; --o-5:20px; --o-6:24px; --o-8:32px; --o-10:40px; --o-12:48px; --o-16:64px; --o-20:80px;
+  --margines:clamp(16px,5vw,80px); --szer-max:1440px; --szer-tekst:66ch;
+  /* promienie według hierarchii: przedmioty z szablonu i paski bez zaokrągleń; przyciski 4; rama tablicy 6; ikony aplikacji 22% */
+  --p-0:0; --p-przycisk:4px; --p-rama:6px;
+  /* ruch */
+  --ruch-pal:500ms; --ruch-pal-odstep:140ms; --ruch-litera:320ms; --ruch-litera-odstep:14ms; --ruch-krzywa:cubic-bezier(.3,.7,.3,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --tlo:#1C1410; --tlo-2:#271C16; --tusz:#F0E8DC; --tusz-2:#C2B4A4; --linia:#47382D; --linia-mocna:#F0E8DC;
+  --akcent:#EC8796; --na-akcencie:#1C1410; --focus:#EC8796;
+  --e-zbior:#D2475E; --e-obrobka:#9DAE80; --e-palenie:#B07A4E; --e-parzenie:#7A5038; --e-podanie:#D9A85C; --e-puste:#1C1410;
+  --filc:#0F0F10; --rowek:#232325; --rama:#7A5536; --rama-2:#5E3F27; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --tlo:#1C1410; --tlo-2:#271C16; --tusz:#F0E8DC; --tusz-2:#C2B4A4; --linia:#47382D; --linia-mocna:#F0E8DC;
+  --akcent:#EC8796; --na-akcencie:#1C1410; --focus:#EC8796;
+  --e-zbior:#D2475E; --e-obrobka:#9DAE80; --e-palenie:#B07A4E; --e-parzenie:#7A5038; --e-podanie:#D9A85C; --e-puste:#1C1410;
+  --filc:#0F0F10; --rowek:#232325; --rama:#7A5536; --rama-2:#5E3F27; color-scheme:dark}
+/* zwiększony kontrast (prefers-contrast: more): tekst drugorzędny = główny, mocniejsze linie i obwódki */
+@media (prefers-contrast:more){
+  :root{--tusz-2:var(--tusz); --linia:#6D6457; --akcent:#6E1222; --focus:#6E1222}
+  :root[data-theme="dark"]{--tusz-2:var(--tusz); --linia:#A89886; --akcent:#F6B3BD; --focus:#F6B3BD}
+}
+@media (prefers-contrast:more) and (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tusz-2:var(--tusz); --linia:#A89886; --akcent:#F6B3BD; --focus:#F6B3BD}}
+
+/* 3. Baza */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--tlo);color:var(--tusz);font:400 var(--r-tresc)/var(--lh-tresc) var(--kroj-tresc);font-kerning:normal}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-underline-offset:3px}
+p{margin:0 0 var(--o-4);max-width:var(--szer-tekst)}
+h1,h2,h3{margin:0;text-wrap:balance}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--o-4);top:-80px;z-index:10;padding:var(--o-2) var(--o-4);background:var(--tlo);color:var(--tusz)}
+.skip:focus{top:var(--o-3)}
+main{max-width:var(--szer-max);margin-inline:auto}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* 4. Komponenty */
+/* nagłówek: logo, menu sekcji (od 600 px), przełącznik języka */
+.naglowek{display:flex;flex-wrap:wrap;align-items:center;gap:var(--o-4) var(--o-8);padding:var(--o-4) var(--margines);border-bottom:2px solid var(--linia-mocna)}
+.logo{font:800 2.5rem/1 var(--kroj-tytul);text-transform:uppercase;letter-spacing:.02em;text-decoration:none}
+.menu ul{display:flex;flex-wrap:wrap;gap:var(--o-1) var(--o-6)}
+.menu a{display:inline-block;padding-block:var(--o-3);text-decoration:none}
+.menu a:hover{text-decoration:underline}
+@media (max-width:599px){.naglowek .menu{display:none}}
+@media (max-width:399px){.logo{font-size:2rem}.naglowek{gap:var(--o-3)}}
+@media (min-width:600px) and (max-width:1023px){.naglowek{flex-wrap:nowrap;gap:var(--o-4)}.menu ul{gap:var(--o-1) var(--o-4)}}
+.jezyk{display:flex;margin-left:auto}
+.jezyk button{min-height:44px;min-width:44px;padding:var(--o-2) var(--o-3);background:none;border:1px solid var(--linia-mocna)}
+.jezyk button+button{border-left:0}
+.jezyk button[aria-pressed="true"]{background:var(--tusz);color:var(--tlo)}
+
+/* sekcje */
+.sekcja{padding:var(--o-16) var(--margines)}
+.sekcja+.sekcja{border-top:2px solid var(--linia-mocna)}
+h1{font:800 var(--r-h1)/var(--lh-tytul) var(--kroj-tytul);text-transform:uppercase;letter-spacing:.005em;max-width:14ch;margin-block:var(--o-3) var(--o-8)}
+h2{font:800 var(--r-h2)/var(--lh-tytul) var(--kroj-tytul);text-transform:uppercase;margin-bottom:var(--o-4)}
+h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
+.kto{font-weight:600;color:var(--tusz-2);margin:0}
+.lead,.sekcja-lead,.podtytul{font-size:var(--r-wieksza);line-height:1.35}
+.sekcja-lead{color:var(--tusz-2);margin-bottom:var(--o-10)}
+.podtytul{font-weight:650}
+.bohater{padding-block:var(--o-8) var(--o-12)}
+.bohater-opis{max-width:var(--szer-tekst)}
+@media (min-width:1024px){.bohater-opis{display:grid;grid-template-columns:1fr auto;gap:var(--o-12);align-items:end;max-width:none}.bohater-opis .lead{margin:0;max-width:52ch}}
+
+/* przyciski i linki */
+.cta{display:flex;flex-wrap:wrap;gap:var(--o-4) var(--o-6);align-items:center;margin:0}
+.przycisk{display:inline-flex;align-items:center;min-height:48px;padding:var(--o-3) var(--o-6);background:var(--akcent);color:var(--na-akcencie);font-weight:650;text-decoration:none;border-radius:var(--p-przycisk)}
+.link-mocny{font-weight:650;padding-block:var(--o-3)}
+.kopiuj{min-height:44px;padding:var(--o-2) var(--o-4);background:none;border:1px solid var(--tusz);border-radius:var(--p-przycisk)}
+
+/* karta aplikacji */
+.app{display:grid;grid-template-columns:64px 1fr;gap:var(--o-4) var(--o-6);padding-block:var(--o-8);border-top:1px solid var(--linia)}
+@media (max-width:599px){.app{grid-template-columns:1fr;gap:var(--o-3)}.app .icon{width:56px;height:56px}}
+.app-ikona,.app .icon{border-radius:22%}
+.app h3{font:800 var(--r-h3)/1 var(--kroj-tytul);text-transform:uppercase}
+.app-meta,.app .meta{display:flex;flex-wrap:wrap;gap:var(--o-1) var(--o-4);margin-block:var(--o-2) var(--o-3);color:var(--tusz-2);font-weight:600}
+.app-meta li{color:var(--tusz-2);font-weight:600}
+.app-cechy li{position:relative;padding-left:20px;margin-bottom:var(--o-2);max-width:60ch}
+.app-cechy li::before{content:"";position:absolute;left:0;top:.65em;width:8px;height:2px;background:currentColor}
+.app-pryw{font-weight:600}
+.app-linki{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-6)}
+.app-linki a{display:inline-block;padding-block:var(--o-2)}
+.kolejne{margin-top:var(--o-10);padding:var(--o-6);border:2px dashed var(--tusz-2)}
+.kolejne-h{font:800 var(--r-h3)/1.2 var(--kroj-tytul);text-transform:uppercase}
+
+/* ELEMENT FIRMOWY: droga ziarna (5 etapów; dane: etap aplikacji; opis dla czytnika w aria-label figury) */
+.droga{margin:0 0 var(--o-5);padding-top:var(--o-5)}
+.droga-pasek{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--o-1)}
+.droga-pasek>span{display:block;position:relative;padding-top:28px}
+.droga-pasek>span::before{content:"";position:absolute;left:0;right:0;top:0;height:20px;border:2px solid var(--linia-mocna);background:repeating-linear-gradient(135deg,transparent 0 6px,var(--linia) 6px 8px),var(--e-puste)}
+.droga-pasek>span.zrobione::before{transform-origin:left;animation:pal var(--ruch-pal) calc(var(--i,0)*var(--ruch-pal-odstep)) both var(--ruch-krzywa)}
+.droga-pasek>span:nth-child(1){--i:0}.droga-pasek>span:nth-child(2){--i:1}.droga-pasek>span:nth-child(3){--i:2}.droga-pasek>span:nth-child(4){--i:3}.droga-pasek>span:nth-child(5){--i:4}
+.d-zbior.zrobione::before{background:var(--e-zbior)}.d-obrobka.zrobione::before{background:var(--e-obrobka)}.d-palenie.zrobione::before{background:var(--e-palenie)}.d-parzenie.zrobione::before{background:var(--e-parzenie)}.d-podanie.zrobione::before{background:var(--e-podanie)}
+.droga-pasek>span.teraz::before{height:28px;top:-4px}
+.droga-pasek>span.teraz::after{content:"";position:absolute;right:-2px;top:-14px;border:8px solid transparent;border-top-color:var(--linia-mocna);border-bottom:0}
+.d-nazwa{display:block;font-weight:650;font-size:var(--r-mala);line-height:1.25}
+.d-studio{display:block;font-size:var(--r-mala);color:var(--tusz-2);line-height:1.3}
+.droga-pasek>span:not(.zrobione) .d-nazwa{color:var(--tusz-2)}
+@keyframes pal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (max-width:599px){
+  .droga-pasek{grid-template-columns:1fr}
+  .droga-pasek>span{padding:var(--o-1) 0 var(--o-1) 44px;min-height:36px}
+  .droga-pasek>span::before{right:auto;width:28px;height:100%;top:0}
+  .droga-pasek>span.teraz{padding-left:56px}
+  .droga-pasek>span.teraz::before{width:36px;height:100%;top:0}
+  .droga-pasek>span.teraz::after{right:auto;left:40px;top:12px;border:7px solid transparent;border-left-color:var(--linia-mocna);border-right:0}
+  .droga-pasek>span.zrobione::before{transform-origin:top;animation-name:pal-pion}
+}
+@keyframes pal-pion{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media (prefers-contrast:more){.droga-pasek>span::before{border-width:3px}}
+
+/* zasady „Jak robimy aplikacje” */
+.zasady{display:grid;gap:var(--o-8) var(--o-12);margin-top:var(--o-10)}
+@media (min-width:600px){.zasady{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1280px){.zasady{grid-template-columns:repeat(3,1fr)}}
+.zasady h3{margin-bottom:var(--o-2)}
+.zasady p{color:var(--tusz-2)}
+
+/* indeks espresso (tablica to grafika aria-hidden; wielkość liter w px/vw, bo dane są w tekście obok i rosną z ustawieniem tekstu): tablica z wsuwanymi literami (D-011) + tabela ze źródłami */
+.indeks-uklad{display:grid;gap:var(--o-6)}
+@media (min-width:1024px){.indeks-uklad{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--o-12);align-items:start}}
+.tablica{--h:1.5em;display:block;max-width:760px;font-size:clamp(14px,3.4vw,36px);padding:var(--o-3);background:linear-gradient(135deg,var(--rama),var(--rama-2));border-radius:var(--p-rama)}
+.filc{padding:calc(var(--h)*.5) clamp(16px,4vw,48px);background:repeating-linear-gradient(to bottom,var(--filc) 0 calc(var(--h)*.5 - 2px),var(--rowek) calc(var(--h)*.5 - 2px) calc(var(--h)*.5));border-radius:2px}
+.rzad{margin:0;max-width:none;height:var(--h);line-height:var(--h);display:flex;justify-content:space-between;gap:.5em;white-space:nowrap}
+.litery{display:inline-flex}
+.litery i{font:600 1em/1 var(--kroj-tablica);font-style:normal;color:var(--litera);text-transform:uppercase;display:inline-block;width:.6em;text-align:center;line-height:var(--h)}
+.litery i.wsuwa{animation:wsun var(--ruch-litera) calc(var(--n,0)*var(--ruch-litera-odstep)) both cubic-bezier(.2,.8,.3,1)}
+@keyframes wsun{0%{transform:translateY(-.5em);opacity:0}100%{transform:none;opacity:1}}
+.indeks-tab{border-collapse:collapse;width:100%;font-size:var(--r-wieksza);font-variant-numeric:tabular-nums;margin-block:var(--o-4)}
+.indeks-tab th,.indeks-tab td{text-align:left;padding:var(--o-3) var(--o-4) var(--o-3) 0;border-bottom:1px solid var(--linia)}
+.indeks-tab td{font-weight:600}
+.indeks-tab td:last-child,.indeks-tab th:last-child{text-align:right;padding-right:0}
+.przypis{font-size:var(--r-mala);color:var(--tusz-2)}
+
+.indeks-lista{font-variant-numeric:tabular-nums}
+.receipt{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--o-1) var(--o-4);align-items:baseline;padding-block:var(--o-3);border-bottom:1px solid var(--linia);font-size:var(--r-wieksza)}
+.receipt .kraj{font-weight:650;flex:1 1 8em}.receipt .cena{font-weight:600;text-align:right}.receipt .usd{text-align:right;flex:0 0 auto;min-width:7.5em}
+.receipt .etykieta{font-size:var(--r-mala);font-weight:400;color:var(--tusz-2)}
+.receipt .usd{min-width:0}
+.app-head{display:contents}
+.app-tresc{grid-column:2}
+@media (max-width:599px){.app-tresc{grid-column:1}}
+.kontakt-h{margin-top:var(--o-10)}
+/* kontakt i stopka (linie praw Apple tam, gdzie informacje prawne: Warunki → licencja Apple) */
+.studio h2,.kontakt h2{max-width:16ch}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:var(--o-3)}
+.mail a{font-size:var(--r-wieksza);font-weight:650}
+.stopka{padding:var(--o-10) var(--margines);border-top:2px solid var(--linia-mocna);font-size:var(--r-mala)}
+.stopka ul{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-8);margin-top:var(--o-3)}
+.stopka li a+a{margin-left:var(--o-2)}
+.stopka a{display:inline-block;padding-block:var(--o-2)}
+
+/* podstrona dokumentu (polityka, wsparcie; struktura zgodna z eksportem Treningu: header, h1, main > section[lang]) */
+.dokument{max-width:calc(68ch + 160px);margin-inline:auto;padding:var(--o-6) var(--margines) var(--o-16)}
+.dokument h1{font-size:clamp(2.75rem,1.8rem + 4vw,5.5rem);max-width:none;margin-block:var(--o-2) var(--o-6)}
+.dokument h2{font:700 var(--r-wieksza)/1.25 var(--kroj-tresc);text-transform:none;margin:var(--o-10) 0 var(--o-3)}
+.dokument ul{list-style:disc;padding-left:var(--o-6)}
+.dokument li{margin-bottom:var(--o-2);max-width:var(--szer-tekst)}
+.dokument .muted{color:var(--tusz-2)}
+.okruchy{margin:0;font-weight:600}
+@media (max-width:599px){.dokument .droga-pasek,.blad .droga-pasek{grid-template-columns:repeat(5,1fr)}.dokument .droga-pasek>span,.blad .droga-pasek>span{padding:28px 0 0;min-height:0}.dokument .droga-pasek>span::before,.blad .droga-pasek>span::before{width:auto;right:0;height:20px}.dokument .droga-pasek>span.teraz::before,.blad .droga-pasek>span.teraz::before{height:28px;top:-4px;width:auto}.dokument .droga-pasek>span.teraz,.blad .droga-pasek>span.teraz{padding-left:0}.dokument .droga-pasek>span.teraz::after,.blad .droga-pasek>span.teraz::after{left:auto;right:-2px;top:-14px;border:8px solid transparent;border-top-color:var(--linia-mocna);border-bottom:0}.dokument .d-studio,.blad .d-studio{display:none}.dokument .d-nazwa,.blad .d-nazwa{font-size:min(.8125rem,3.4vw)}}
+
+/* strona 404 */
+.blad{padding:var(--o-16) var(--margines)}

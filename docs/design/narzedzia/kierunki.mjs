@@ -303,4 +303,5 @@ const pliki = {
   'tablica-glowna.html': tablicaGlowna(), 'tablica-polityka.html': polityka('tablica', 'B „Tablica z wsuwanymi literami”'),
   'neon-glowna.html': neonGlowna(), 'neon-polityka.html': polityka('neon', 'C „Warszawski neon”'),
 };
-for (const [n, s] of Object.entries(pliki)) { writeFileSync(resolve(out, n), s); console.log('OK', n); }
+export { T };
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) for (const [n, s] of Object.entries(pliki)) { writeFileSync(resolve(out, n), s); console.log('OK', n); }
