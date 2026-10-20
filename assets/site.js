@@ -1,4 +1,4 @@
-// Apps4Brew — przełącznik języka PL/EN i kopiowanie adresu e-mail.
+// Apps4Brew — przełącznik języka PL/EN (z przestawieniem liter na tablicy indeksu espresso) i kopiowanie adresu e-mail.
 // Jedyny zapis w przeglądarce: wybrany język (localStorage, klucz "a4b-lang"). Bez ciasteczek i analityki.
 (function () {
   var cur = 'pl';
@@ -28,6 +28,23 @@
     if (pl) pl.setAttribute('aria-pressed', String(l === 'pl'));
     if (en) en.setAttribute('aria-pressed', String(l === 'en'));
     try { localStorage.setItem('a4b-lang', l); } catch (e) {}
+    tablica(l);
+  }
+
+  // Tablica z wsuwanymi literami: litery w <i>, tekst w data-tab-pl/en; przy zmianie języka wsuwają się kolejno (bez ruchu przy „Ogranicz ruch”).
+  var spokoj = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pierwszy = true;
+  function tablica(l) {
+    document.querySelectorAll('[data-tab-' + l + ']').forEach(function (el) {
+      var txt = el.getAttribute('data-tab-' + l);
+      var html = '';
+      for (var n = 0; n < txt.length; n++) {
+        var c = txt[n] === ' ' ? '&nbsp;' : txt[n].replace('<', '&lt;');
+        html += (spokoj || pierwszy) ? '<i>' + c + '</i>' : '<i class="wsuwa" style="--n:' + n + '">' + c + '</i>';
+      }
+      el.innerHTML = html;
+    });
+    pierwszy = false;
   }
 
   var plBtn = document.getElementById('lang-pl');

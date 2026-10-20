@@ -11,7 +11,7 @@ Strona studia Apps4Brew. Statyczny HTML publikowany przez GitHub Pages z gałęz
 | `404.html` | Strona „nie ma takiej strony” w tym samym stylu. |
 | `assets/site.css`, `assets/site.js` | Style (z `@font-face`) i skrypt przełącznika języka oraz przycisku „Kopiuj”. |
 | `assets/*.png`, `assets/favicon.svg` | Ikona aplikacji Trening, obraz Open Graph (1200×630), ikony strony. |
-| `fonts/` | Czcionki Bricolage Grotesque, Instrument Sans, JetBrains Mono (woff2, podzbiory latin i latin-ext) z licencjami SIL OFL 1.1. |
+| `fonts/` | Czcionki Young Serif, Source Sans 3, Barlow Condensed (woff2, podzbiory latin i latin-ext) z licencjami SIL OFL 1.1. |
 | `CNAME` | Domena dla GitHub Pages: `apps4brew.com`. |
 | `.nojekyll` | Wyłącza Jekyll — pliki są serwowane bez przetwarzania. |
 | `tests/site.test.mjs` | Testy `node --test` (bez zależności). |
