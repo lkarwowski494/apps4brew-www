@@ -310,7 +310,7 @@ test('karty aplikacji: ten sam wzór i linki do własnej polityki i wsparcia, be
     assert.ok(i > 0, `brak karty ${app}`);
     const card = src.slice(i, src.indexOf('</article>', i));
     assert.match(card, /<div class="app-head">\s*<img class="icon" src="assets\/[a-z]+-icon\.(png|svg)" width="64" height="64"/, `${app}: nagłówek z ikoną`);
-    assert.match(card, /<div class="meta" data-pl="iPhone · /, `${app}: meta`);
+    assert.match(card, /<div class="meta" data-pl="Na iPhone’a, w 35 językach/, `${app}: meta`); // D-024 (016): zdanie zamiast ciągu „iPhone · …”; format sprawdza test 04-studio-projektowe-016
     assert.equal((card.match(/<li /g) || []).length, 3, `${app}: trzy cechy`);
     assert.ok(card.includes(`href="${app}/privacy.html"`) && card.includes(`href="${app}/support.html"`), `${app}: linki pod kartą`);
     assert.ok(!/apps\.apple\.com/.test(card), `${app}: link do App Store`);
@@ -791,4 +791,22 @@ test('04-studio-projektowe-014: site.js — ścieżka zapasowa kopiowania pokazu
 test('04-studio-projektowe-015: brak atrybutu style= w HTML stron; odstęp przypisu indeksu z tokenu --o-6', () => {
   for (const f of HTML) assert.ok(!/\sstyle="/.test(read(f)), `${f}: atrybut style=`);
   assert.match(read('assets/site.css'), /\.indeks-lista \.przypis\{margin-top:var\(--o-6\)\}/);
+});
+
+// 04-studio-projektowe-016 (D-024): linia stanu aplikacji na karcie jako zwykłe zdanie (PL i EN), nie ciąg „A · B · C”.
+test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu „·” (PL i EN)', () => {
+  const src = read('index.html');
+  const metas = [...src.matchAll(/<div class="meta" data-pl="([^"]*)" data-en="([^"]*)">([^<]*)<\/div>/g)];
+  assert.equal(metas.length, 2, 'dwie karty');
+  for (const m of metas) {
+    for (const t of [m[1], m[2], m[3]]) {
+      assert.ok(!t.includes('·'), `ciąg „·” w linii stanu: „${t}”`);
+      assert.match(t, /\.$/, `linia stanu kończy się kropką: „${t}”`);
+    }
+    assert.equal(m[3], m[1], 'treść domyślna = data-pl');
+  }
+  assert.deepEqual(metas.map((m) => [m[1], m[2]]), [
+    ['Na iPhone’a, w 35 językach. Dziś w TestFlight, App Store jesienią 2026.', 'For iPhone, in 35 languages. In TestFlight today, App Store in autumn 2026.'],
+    ['Na iPhone’a, w 35 językach przed wydaniem. Dziś w TestFlight.', 'For iPhone, in 35 languages before release. In TestFlight today.'],
+  ]);
 });
