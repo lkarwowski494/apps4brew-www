@@ -602,3 +602,20 @@ test('obraz OG: skrypt renderuje kompozycję przez setContent z lokalnego serwer
   const png = fs.readFileSync(path.join(root, 'assets/og-image.png'));
   assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630]);
 });
+
+// ---------------------------------------------------------------------------------------------
+// M6, rola 08 w trybie fix (20.10.2026): zatwierdzone znaleziska weryfikacji 04-studio-projektowe (D-023, D-024).
+// Testy wymagające przeglądarki: docs/m6/narzedzia/ (cls-lab.mjs, fix-przegladarka.mjs); tu testy treści i kodu.
+
+// 04-studio-projektowe-001: podmiana kroju przesuwała tekst (CLS lab 0,175 na stronach wsparcia); pomiar: docs/m6/narzedzia/cls-lab.mjs.
+test('04-studio-projektowe-001: kroje zastępcze z size-adjust i nadpisaniem metryk stoją w stosach krojów', () => {
+  const css = read('assets/site.css');
+  for (const fam of ['Source Sans 3', 'Young Serif']) {
+    const face = css.match(new RegExp(`@font-face\\{font-family:"${fam} Fallback";([^}]*)\\}`));
+    assert.ok(face, `brak @font-face "${fam} Fallback"`);
+    for (const prop of ['size-adjust', 'ascent-override', 'descent-override', 'line-gap-override']) assert.match(face[1], new RegExp(`${prop}:`), `${fam} Fallback: brak ${prop}`);
+    assert.match(face[1], /src:local\(/, `${fam} Fallback: krój zastępczy z local()`);
+  }
+  assert.match(css, /--kroj-tresc:"Source Sans 3","Source Sans 3 Fallback",/);
+  assert.match(css, /--kroj-tytul:"Young Serif","Young Serif Fallback",/);
+});
