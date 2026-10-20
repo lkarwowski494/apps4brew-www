@@ -193,6 +193,7 @@ h3{font-weight:650;font-size:var(--r-wieksza);line-height:1.25}
 .stopka ul{display:flex;flex-wrap:wrap;gap:var(--o-2) var(--o-8);margin-top:var(--o-3)}
 .stopka li a+a{margin-left:var(--o-2)}
 .stopka a{display:inline-block;padding-block:var(--o-2)}
+.stopka .prawa{margin:var(--o-6) 0 0;color:var(--tusz-2)}
 
 /* podstrona dokumentu (polityka, wsparcie; struktura zgodna z eksportem Treningu: header, h1, main > section[lang]) */
 .dokument{max-width:calc(68ch + 160px);margin-inline:auto;padding:var(--o-6) var(--margines) var(--o-16)}

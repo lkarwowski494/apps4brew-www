@@ -677,3 +677,21 @@ test('04-studio-projektowe-003: obraz OG bez wypełnień „zrobione” (barwy e
   const js = read('docs/m6/narzedzia/og-image.mjs');
   assert.ok(!/class="d-[a-z]+ zrobione"/.test(js), 'skrypt OG: odcinki bez klasy zrobione');
 });
+
+// 04-studio-projektowe-005 (D-024): linia praw Apple w stopce każdej strony ze stopką (404 stopki nie ma).
+// Źródło (odczyt 20.10.2026): Apple, Marketing Resources and Identity Guidelines, „Include Apple credit lines wherever legal information is provided.”;
+// wzór poza USA: „______ and______ are trademarks of Apple Inc.”; „A translation of the legal notice and credit lines (but not the trademarks) can be used in materials distributed outside the U.S.”
+test('04-studio-projektowe-005: stopka każdej strony ma linię praw Apple (PL i EN) z użytymi znakami i adresem źródła w komentarzu', () => {
+  const pl = 'iPhone, App Store, Apple Watch, Apple Health i TestFlight są znakami towarowymi Apple Inc.';
+  const en = 'iPhone, App Store, Apple Watch, Apple Health and TestFlight are trademarks of Apple Inc.';
+  for (const f of ['index.html', ...SUBPAGES]) {
+    const foot = footerOf(f);
+    assert.ok(foot.includes(`<p class="prawa" data-pl="${pl}" data-en="${en}">${pl}</p>`), `${f}: linia praw Apple w stopce`);
+    assert.ok(foot.includes('developer.apple.com/app-store/marketing/guidelines/') && foot.includes('20.10.2026') && foot.includes('Include Apple credit lines wherever legal information is provided.'), `${f}: komentarz ze źródłem, datą i cytatem`);
+  }
+  // Każdy znak Apple użyty w widocznym tekście którejkolwiek strony musi być na liście w linii (lista znaków: Apple Trademark List, odczyt 20.10.2026).
+  for (const f of HTML) {
+    const vis = read(f).replace(/<!--[\s\S]*?-->/g, '').replace(/<(script|style)[\s\S]*?<\/\1>/g, '').replace(/<[^>]+>/g, ' ');
+    for (const znak of new Set(vis.match(/\b(iPhone|iPad|iPod touch|App Store|Apple Watch|Apple Health|Apple Pay|Apple TV|Apple Pencil|Apple Vision Pro|TestFlight|HealthKit|StoreKit|Siri|MacBook Air|MacBook Pro|iMac|Mac App Store)\b/g) || [])) assert.ok(en.includes(znak) && pl.includes(znak), `${f}: znak ${znak} jest w tekście, ale nie na liście w linii praw`);
+  }
+});
