@@ -761,3 +761,10 @@ test('04-studio-projektowe-011: @media (forced-colors: active) wypełnia „zrob
   assert.match(blok, /\.droga-pasek>span\.zrobione::before\{background:CanvasText;forced-color-adjust:none\}/);
   assert.match(blok, /\.app-cechy li::before\{background:CanvasText;forced-color-adjust:none\}/);
 });
+
+// 04-studio-projektowe-012: jednoliterowy przyimek „w” nie kończy wiersza nagłówka ramki (twarda spacja, text-wrap: balance). Pomiar: docs/m6/narzedzia/fix-012-spojnik.mjs.
+test('04-studio-projektowe-012: „Kolejne aplikacje w przygotowaniu.” z twardą spacją po „w” (PL), nagłówek ramki z text-wrap: balance', () => {
+  const src = read('index.html');
+  assert.ok(src.includes('data-pl="Kolejne aplikacje w&nbsp;przygotowaniu." data-en="More apps are brewing.">Kolejne aplikacje w&nbsp;przygotowaniu.</p>'));
+  assert.match(read('assets/site.css'), /\.kolejne-h\{[^}]*text-wrap:balance\}/);
+});
