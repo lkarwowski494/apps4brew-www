@@ -12,7 +12,7 @@ Wejście:
 - inwentarz (treść, nie wzorzec): docs/m6/inwentarz.md; adresy, które muszą działać: docs/m6/adresy.txt (oznaczone „sklep” = App Store Connect, D-003);
 - tryb build z modułem strona-www, sekcja „Strona od zera”; STOP-y E1–E3 przekazujesz właścicielowi bez skracania, ze zrzutami (porownanie.png na gałęzi);
 - sieć z chmury 20.10.2026: awwwards.com nie odpowiadał (przekroczony czas) — sprawdź sam, niedostępne źródła zapisz jako „nie sprawdzono”; cssdesignawards.com i developer.apple.com odpowiadały;
-- ograniczenia: statyczny HTML/CSS z minimalnym JS, bez nowych zależności i usług; CSP, brak śledzenia i fonty lokalne zostają; testy strony (tests/site.test.mjs) skanują każdy plik .html/.css/.js/.svg w repo poza tests/ — nie zmieniaj testów; jak traktować pliki w docs/design/ rozstrzyga D-006 w docs/decyzje.md (przeczytaj przed pierwszym commitem);
+- ograniczenia: statyczny HTML/CSS z minimalnym JS, bez nowych zależności i usług; CSP, brak śledzenia i fonty lokalne zostają; testy strony (tests/site.test.mjs) skanują każdy plik .html/.css/.js/.svg w repo poza tests/ — nie zmieniaj testów; makiety w docs/design/ są poza zakresem testów (D-006 w docs/decyzje.md), a przed publikacją koordynator usunie docs/design/kierunki/ i porownanie.html — wszystko, co ma przetrwać, trzymaj w design-spec.md, tokenach i zrzutach;
 - polityka i wsparcie Treningu są generowane z repo aplikacji Trening (scripts/site/export-apps4brew.mjs) — szablon podstrony projektuj tak, żeby dało się go przenieść do eksportu (wdrożenie to osobny krok);
 - commity „[M6/04] <co>” na gałęzi strona/apps4brew-2026-10-20, push tylko na nią; na każdym STOP zaktualizuj docs/m6/postep.md.
 

@@ -14,6 +14,7 @@ function siteFiles(dir = '') {
   const out = [];
   for (const e of fs.readdirSync(path.join(root, dir), { withFileTypes: true })) {
     if (e.name.startsWith('.') || e.name === 'tests' || e.name === 'node_modules') continue;
+    if (!dir && e.name === 'docs') continue; // D-006: docs/ to dokumentacja i makiety projektu, nie strona; makiety usuwane przed scaleniem z main
     const rel = dir ? `${dir}/${e.name}` : e.name; // ukośnik zamiast path.join: te same nazwy na Windows i w CI (ubuntu)
     if (e.isDirectory()) out.push(...siteFiles(rel));
     else if (SITE_EXT.has(path.extname(e.name))) out.push(rel);
