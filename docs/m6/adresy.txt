@@ -1,0 +1,20 @@
+# Adresy apps4brew.com, które muszą działać po przebudowie (odczyt 20.10.2026, curl z chmury)
+# kolumny: ścieżka | źródło | kod HTTP na żywo | oznaczenie
+/                          repo:index.html            200  strona główna; sklep: Marketing URL (D-003)
+/index.html                repo:index.html            200
+/trening/privacy.html      repo + link z index        200  sklep (D-003: docelowo, jeszcze niewpisany)
+/trening/support.html      repo + link z index        200  sklep (D-003: docelowo, jeszcze niewpisany)
+/piekarz/privacy.html      repo + link z index        200  sklep (D-003: docelowo, jeszcze niewpisany)
+/piekarz/support.html      repo + link z index        200  sklep (D-003: docelowo, jeszcze niewpisany)
+/404.html                  repo (GitHub Pages 404)    404 dla nieistniejącej ścieżki (poprawnie)
+/#apps /#piekarz /#how /#index /#about /#top /#main   kotwice w index.html (linkowalne z zewnątrz)
+/assets/og-image.png       og:image                   200  (adres w podglądach udostępnień)
+/assets/favicon.svg /assets/apple-touch-icon.png /assets/site.css /assets/site.js /assets/trening-icon.png /assets/piekarz-icon.svg
+/fonts/*.woff2 (6) + LICENSE-*-OFL.txt (3)
+# Domeny
+https://www.apps4brew.com/  -> 301 https://apps4brew.com/
+http://apps4brew.com/       -> 301 https://apps4brew.com/
+# Stare adresy POZA tym repo (inne repo, nie dotykamy): nadal 200
+https://lkarwowski494.github.io/trening/privacy.html   200  (stary adres z historii repo; możliwe, że wciąż w App Store Connect)
+https://lkarwowski494.github.io/trening/support.html   200
+# Brak: /robots.txt 404, /sitemap.xml 404
