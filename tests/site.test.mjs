@@ -822,5 +822,10 @@ test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu
 
 // D-026 (20.10.2026, właściciel: „e-mail już działa”): komentarze robocze o skrzynce niedziałającej do weryfikacji DSA usunięte z podstron.
 test('D-026: w HTML brak komentarza „[UWAGA 14.10.2026] Skrzynka … działa dopiero po weryfikacji DSA”', () => {
-  for (const f of HTML) assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA|Google Workspace/.test(read(f)), `${f}: komentarz o skrzynce support@ (D-026)`);
+  // Sprawdza tylko komentarze HTML: od 21.10.2026 polityka Treningu wymienia Google Workspace jako odbiorcę danych (decyzja właściciela, M8 Q5/Q10).
+  for (const f of HTML) {
+    const komentarze = (read(f).match(/<!--[\s\S]*?-->/g) || []).join('\n');
+    assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA|Google Workspace/.test(komentarze), `${f}: komentarz o skrzynce support@ (D-026)`);
+    assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA/.test(read(f)), `${f}: uwaga o skrzynce support@ (D-026)`);
+  }
 });
