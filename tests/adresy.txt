@@ -8,6 +8,8 @@
 /trening/support.html
 /trening/espresso.html
 /piekarz/privacy.html
+/oczko/privacy.html
+/oczko/support.html
 /piekarz/support.html
 /#apps
 /#piekarz

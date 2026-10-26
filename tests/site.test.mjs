@@ -302,10 +302,53 @@ test('piekarz/support.html: kontakt bez obietnicy czasu odpowiedzi, FAQ z jednos
   assert.ok(!/w ciągu (tygodnia|\d+)|within (a week|\d+)|24[–-]48/i.test(src.replace(/<!--[\s\S]*?-->/g, '')), 'obietnica czasu odpowiedzi');
 });
 
+// 2026-10-26 (P-226 w repo Oczka, decyzja właściciela: wariant A jak Piekarz): polityka i wsparcie aplikacji Oczko pod apps4brew.com/oczko/,
+// karta „Wkrótce” i wiersz w stopce. Treść sekcji PL/EN kopiowana z repo oczko (site/privacy.html, site/support.html; rola 10).
+const OCZKO = ['oczko/privacy.html', 'oczko/support.html'];
+
+test('oczko/: szablon strony marki, sekcja PL i EN, kontakt tylko support@apps4brew.com, bez GitHuba, źródło w komentarzu', () => {
+  for (const f of OCZKO) {
+    const src = read(f);
+    assert.ok(HTML.includes(f), `${f}: nie ma na liście stron`);
+    assert.match(src, /<link rel="stylesheet" href="\.\.\/assets\/site\.css">/, f);
+    assert.match(src, /<script src="\.\.\/assets\/site\.js"><\/script>/, f);
+    assert.match(src, /<a class="logo" href="\.\.\/">/, f);
+    assert.match(src, /Źródło treści sekcji PL\/EN: repo oczko, site\//, f);
+    assert.equal((src.match(/<section lang="pl" data-lang-section="pl">/g) || []).length, 1, f);
+    assert.equal((src.match(/<section lang="en" data-lang-section="en">/g) || []).length, 1, f);
+    assert.ok(!/github\.(com|io)/.test(src.replace(/<!--[\s\S]*?-->/g, '')), `${f}: link do GitHuba`);
+    assert.ok(src.includes('href="mailto:support@apps4brew.com"'), f);
+    assert.ok(!/\+?\d{2,3}[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}/.test(src), `${f}: numer telefonu`);
+  }
+});
+
+test('oczko/privacy.html: dane na urządzeniu, aparat, zegarek, zakupy, „Zgłoś problem”, „Gdy do nas piszesz” w obu językach', () => {
+  const src = read('oczko/privacy.html');
+  for (const w of ['nie zbiera żadnych danych', '<h2>Aparat i zdjęcia</h2>', '<h2>Ekran blokady i Apple Watch</h2>', '<h2>Zakupy</h2>', '<h2>Zgłoś problem</h2>', '<h2>Gdy do nas piszesz</h2>',
+    'does not collect any data', '<h2>Camera and photos</h2>', '<h2>Lock Screen and Apple Watch</h2>', '<h2>Purchases</h2>', '<h2>Report a problem</h2>', '<h2>When you write to us</h2>']) assert.ok(src.includes(w), w);
+});
+
+// 26.10.2026: Oczko działa też na Apple Watch, więc karta mówi to samo co polityka („na Twoich urządzeniach”), nie „na urządzeniu”.
+test('karta Oczka: linia prywatności zgodna z polityką (dane na urządzeniach, liczba mnoga, PL i EN)', () => {
+  const src = read('index.html');
+  const i = src.indexOf('<article class="app" id="oczko">');
+  const card = src.slice(i, src.indexOf('</article>', i));
+  const pryw = card.match(/<p class="app-pryw"[^>]*>/)?.[0] ?? '';
+  assert.ok(read('oczko/privacy.html').includes('zostaje na Twoich urządzeniach'), 'polityka: „na Twoich urządzeniach”');
+  assert.match(pryw, /data-pl="[^"]*na Twoich urządzeniach/, 'PL');
+  assert.match(pryw, /data-en="[^"]*on your devices/, 'EN');
+});
+
+test('oczko/support.html: kontakt bez obietnicy czasu odpowiedzi, FAQ, link do polityki względny', () => {
+  const src = read('oczko/support.html');
+  for (const w of ['<h2>Częste pytania</h2>', '<h2>Frequently asked questions</h2>', 'href="privacy.html"', 'support@apps4brew.com']) assert.ok(src.includes(w), w);
+  assert.ok(!/w ciągu (tygodnia|\d+)|within (a week|\d+)|24[–-]48/i.test(src.replace(/<!--[\s\S]*?-->/g, '')), 'obietnica czasu odpowiedzi');
+});
+
 // 20.10.2026: karty aplikacji w jednym wzorze (ikona, nazwa, meta, trzy cechy, prywatność, linki do polityki i wsparcia pod kartą).
 test('karty aplikacji: ten sam wzór i linki do własnej polityki i wsparcia, bez App Store', () => {
   const src = read('index.html');
-  for (const [app, start] of [['trening', '<article class="app">'], ['piekarz', '<article class="app" id="piekarz">']]) {
+  for (const [app, start] of [['trening', '<article class="app">'], ['piekarz', '<article class="app" id="piekarz">'], ['oczko', '<article class="app" id="oczko">']]) {
     const i = src.indexOf(start);
     assert.ok(i > 0, `brak karty ${app}`);
     const card = src.slice(i, src.indexOf('</article>', i));
@@ -358,7 +401,7 @@ function needsTranslation(node) {
   if (/(^|\s)logo(\s|$)/.test(node.attrs.class || '')) return false; // logo = nazwa własna
   const txt = node.own.replace(/&[a-z#0-9]+;/gi, ' ')
     .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '')
-    .replace(/Apps4Brew|Trening|Piekarz|TestFlight|App Store|iPhone/g, '');
+    .replace(/Apps4Brew|Trening|Piekarz|Oczko|TestFlight|App Store|iPhone/g, '');
   return /\p{L}/u.test(txt);
 }
 const TEXT_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'a', 'button']);
@@ -377,7 +420,7 @@ test('adresy z App Store Connect i linków zewnętrznych: każdy plik istnieje, 
       assert.ok(fs.existsSync(path.join(root, file)), `brak pliku dla adresu ${a}`);
     }
   }
-  for (const must of ['/', '/trening/privacy.html', '/trening/support.html', '/piekarz/privacy.html', '/piekarz/support.html', '/404.html']) {
+  for (const must of ['/', '/trening/privacy.html', '/trening/support.html', '/piekarz/privacy.html', '/piekarz/support.html', '/oczko/privacy.html', '/oczko/support.html', '/404.html']) {
     assert.ok(lines.includes(must), `adresy.txt bez ${must}`);
   }
 });
@@ -427,7 +470,7 @@ test('index.html: canonical i cztery tagi Open Graph; obraz OG 1200×630 PNG z z
 });
 
 // Partia 2 (20.10.2026, D-020): podstrony dostają canonical i Open Graph; 404 jest noindex i bez canonical.
-const SUBPAGES = ['trening/privacy.html', 'trening/support.html', 'trening/espresso.html', 'piekarz/privacy.html', 'piekarz/support.html'];
+const SUBPAGES = ['trening/privacy.html', 'trening/support.html', 'trening/espresso.html', 'piekarz/privacy.html', 'piekarz/support.html', 'oczko/privacy.html', 'oczko/support.html'];
 
 test('index.html i podstrony: canonical własnego adresu i Open Graph (og:title, og:type, og:image, og:url)', () => {
   for (const f of ['index.html', ...SUBPAGES]) {
@@ -494,7 +537,7 @@ test('E1-01: wszystkie strony — każdy tekst poza sekcjami PL/EN (h1–h6, p, 
   }
 });
 
-test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, nazwy aplikacji → „Training”/„Crust”, żaden inny tekst bez pary', () => {
+test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, nazwy aplikacji → „Training”/„Crust”/„Oczko”, żaden inny tekst bez pary', () => {
   for (const f of ['index.html', ...SUBPAGES]) {
     const foot = parseHtml(footerOf(f)).filter((n) => !n.skip && !n.covered);
     assert.ok(foot.length > 5, `${f}: brak stopki`);
@@ -504,13 +547,13 @@ test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, naz
     assert.ok(warsaw, `${f}: stopka bez osobnego elementu „Warszawa”`);
     assert.equal(warsaw.attrs['data-pl'], 'Warszawa', `${f}: data-pl „Warszawa”`);
     assert.equal(warsaw.attrs['data-en'], 'Warsaw', `${f}: data-en „Warsaw”`);
-    for (const [pl, en] of [['Trening', 'Training'], ['Piekarz', 'Crust']]) {
+    for (const [pl, en] of [['Trening', 'Training'], ['Piekarz', 'Crust'], ['Oczko', 'Oczko']]) {
       const n = foot.find((x) => x.own.trim() === pl);
       assert.ok(n, `${f}: stopka bez elementu z nazwą ${pl}`);
       assert.deepEqual([n.attrs['data-pl'], n.attrs['data-en']], [pl, en], `${f}: nazwa ${pl} → ${en}`);
     }
     // Żadna nazwa aplikacji nie zostaje gołym tekstem.
-    for (const n of foot) if (/Trening|Piekarz/.test(n.own)) assert.ok(n.own.trim() === 'Trening' || n.own.trim() === 'Piekarz', `${f}: nazwa aplikacji w gołym tekście: ${shortOf(n)}`);
+    for (const n of foot) if (/Trening|Piekarz|Oczko/.test(n.own)) assert.ok(['Trening', 'Piekarz', 'Oczko'].includes(n.own.trim()), `${f}: nazwa aplikacji w gołym tekście: ${shortOf(n)}`);
   }
 });
 
@@ -532,7 +575,8 @@ test('treść podstron bez zmian: sekcje PL i EN polityk i wsparcia zgodne z zap
 });
 
 test('podstrony: nowy nagłówek, main.dokument z h1 i drogą ziarna aplikacji, bez starych klas', () => {
-  const stage = { trening: 'Trening', piekarz: 'Piekarz' };
+  const stage = { trening: 'Trening', piekarz: 'Piekarz', oczko: 'Oczko' };
+  const etap = { trening: ['4', 'parzenie'], piekarz: ['4', 'parzenie'], oczko: ['3', 'palenie'] }; // P-226: Oczko w budowie z testami, po TestFlight etap 4
   for (const f of SUBPAGES) {
     const src = read(f);
     const app = f.split('/')[0];
@@ -541,10 +585,10 @@ test('podstrony: nowy nagłówek, main.dokument z h1 i drogą ziarna aplikacji, 
     assert.ok(!/class="(hero|doc-hero|bar|lang|wrap|foot|doc)\b/.test(src.replace(/<section[\s\S]*?<\/section>/g, '')), `${f}: stare klasy szablonu`);
     assert.match(src, /<main class="dokument" id="main">\s*<h1 data-pl="[^"]+" data-en="[^"]+">[^<]+<\/h1>\s*<figure class="droga" role="img"/, `${f}: main.dokument → h1 → figure.droga`);
     const fig = src.slice(src.indexOf('<figure class="droga"'), src.indexOf('</figure>'));
-    assert.ok(fig.includes(`Droga aplikacji ${stage[app]}: etap 4 z 5`), `${f}: opis drogi z nazwą aplikacji`);
+    assert.ok(fig.includes(`Droga aplikacji ${stage[app]}: etap ${etap[app][0]} z 5`), `${f}: opis drogi z nazwą aplikacji`);
     assert.equal((fig.match(/class="d-(zbior|obrobka|palenie|parzenie|podanie)\b/g) || []).length, 5, `${f}: pięć etapów`);
     assert.equal((fig.match(/\bteraz\b/g) || []).length, 1, `${f}: jeden etap „teraz”`);
-    assert.ok(/class="d-parzenie zrobione teraz"/.test(fig), `${f}: etap bieżący = parzenie`);
+    assert.ok(new RegExp(`class="d-${etap[app][1]} zrobione teraz"`).test(fig), `${f}: etap bieżący = ${etap[app][1]}`);
     assert.ok(src.includes('<footer class="stopka">'), `${f}: stopka`);
     assert.equal((src.match(/<main\b/g) || []).length, 1, `${f}: jeden main`);
   }
@@ -577,7 +621,7 @@ test('szablon: nagłówek i stopka identyczne na 4 podstronach (poza ścieżkami
     assert.match(ref, tag === 'header' ? /^<header class="naglowek">/ : /^<footer class="stopka">/, `${tag}: nowy szablon`);
     for (const f of SUBPAGES.slice(1)) assert.equal(part(f, tag), ref, `${tag}: ${f} różni się od ${SUBPAGES[0]}`);
   }
-  for (const f of SUBPAGES) for (const l of ['trening/support', 'trening/privacy', 'piekarz/support', 'piekarz/privacy']) assert.ok(footerOf(f).includes(`href="../${l}.html"`), `${f}: stopka bez linku ${l}`);
+  for (const f of SUBPAGES) for (const l of ['trening/support', 'trening/privacy', 'piekarz/support', 'piekarz/privacy', 'oczko/support', 'oczko/privacy']) assert.ok(footerOf(f).includes(`href="../${l}.html"`), `${f}: stopka bez linku ${l}`);
 });
 
 test('trening/*.html: komentarz „WYGENEROWANE…” zostaje, pod nim adnotacja o ręcznej zmianie szablonu (D-017, D-022)', () => {
@@ -622,10 +666,13 @@ test('04-studio-projektowe-001: kroje zastępcze z size-adjust i nadpisaniem met
 });
 
 // 04-studio-projektowe-002: podpisy etapów (px/vw) nie rosły z tekstem; poniżej 600 px na podstronach stoi jeden podpis tekstowy. Pomiar: docs/m6/narzedzia/fix-002-podpisy.mjs.
-test('04-studio-projektowe-002: podstrony mają podpis etapu „Etap 4 z 5” (PL/EN), 404 nie; CSS nie zawiera podpisów w vw', () => {
+test('04-studio-projektowe-002: podstrony mają podpis etapu („Etap 4 z 5”, Oczko „Etap 3 z 5”, P-226) (PL/EN), 404 nie; CSS nie zawiera podpisów w vw', () => {
   for (const f of SUBPAGES) {
     const src = read(f);
-    assert.match(src, /<\/span><span class="d-etap" data-pl="Etap 4 z 5: parzenie" data-en="Stage 4 of 5: brewing">Etap 4 z 5: parzenie<\/span>\s*<\/figure>/, `${f}: podpis etapu w figurze`);
+    const podpis = f.startsWith('oczko/')
+      ? /<\/span><span class="d-etap" data-pl="Etap 3 z 5: palenie" data-en="Stage 3 of 5: roasting">Etap 3 z 5: palenie<\/span>\s*<\/figure>/
+      : /<\/span><span class="d-etap" data-pl="Etap 4 z 5: parzenie" data-en="Stage 4 of 5: brewing">Etap 4 z 5: parzenie<\/span>\s*<\/figure>/;
+    assert.match(src, podpis, `${f}: podpis etapu w figurze`);
   }
   assert.ok(!read('404.html').includes('d-etap'), '404: bez podpisu etapu (żaden etap nie jest bieżący)');
   const css = read('assets/site.css');
@@ -744,12 +791,13 @@ test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw �
   }
   const index = read('index.html');
   assert.ok(index.includes('data-en="Training: Gym Log &amp; Rest Timer"') && index.includes('data-en="Crust: Sourdough Baking"') && index.includes('data-alt-en="Crust: Sourdough Baking"'));
-  assert.ok(index.includes('data-label-en="Training path: stage 4 of 5') && index.includes('data-label-en="Crust path: stage 4 of 5'));
-  for (const [f, app, tytul] of [['trening/privacy.html', 'Training', 'Privacy Policy'], ['trening/support.html', 'Training', 'Support'], ['piekarz/privacy.html', 'Crust', 'Privacy Policy'], ['piekarz/support.html', 'Crust', 'Support']]) {
+  assert.ok(index.includes('data-label-en="Training path: stage 4 of 5') && index.includes('data-label-en="Crust path: stage 4 of 5') && index.includes('data-label-en="Oczko path: stage 3 of 5'));
+  assert.ok(index.includes('data-en="Oczko: Row Counter"') && index.includes('data-alt-en="Oczko: Row Counter"'));
+  for (const [f, app, tytul, etap] of [['trening/privacy.html', 'Training', 'Privacy Policy', 4], ['trening/support.html', 'Training', 'Support', 4], ['piekarz/privacy.html', 'Crust', 'Privacy Policy', 4], ['piekarz/support.html', 'Crust', 'Support', 4], ['oczko/privacy.html', 'Oczko', 'Privacy Policy', 3], ['oczko/support.html', 'Oczko', 'Support', 3]]) {
     const src = read(f);
     assert.ok(src.includes(`data-en="${app} — ${tytul} — Apps4Brew"`), `${f}: tytuł EN`);
     assert.ok(src.includes(`<h1 data-pl="`) && src.includes(`data-en="${app} — ${tytul}">`), `${f}: h1 EN`);
-    assert.ok(src.includes(`data-label-en="${app} path: stage 4 of 5`), `${f}: opis drogi EN`);
+    assert.ok(src.includes(`data-label-en="${app} path: stage ${etap} of 5`), `${f}: opis drogi EN`);
   }
   // D-029: sekcje EN w piekarz/ (treść utrzymywana ręcznie w tym repo) też bez „Piekarz” w nazwie aplikacji („The Crust app”, nie „The Crust (Piekarz) app”).
   // trening/ nadal wyłączone: treść z eksportu repo aplikacji, nazwa „Trening” zostaje do zmiany eksportu (D-022).
@@ -806,7 +854,7 @@ test('04-studio-projektowe-015: brak atrybutu style= w HTML stron; odstęp przyp
 test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu „·” (PL i EN)', () => {
   const src = read('index.html');
   const metas = [...src.matchAll(/<div class="meta" data-pl="([^"]*)" data-en="([^"]*)">([^<]*)<\/div>/g)];
-  assert.equal(metas.length, 2, 'dwie karty');
+  assert.equal(metas.length, 3, 'trzy karty'); // P-226: karta Oczka „Wkrótce”
   for (const m of metas) {
     for (const t of [m[1], m[2], m[3]]) {
       assert.ok(!t.includes('·'), `ciąg „·” w linii stanu: „${t}”`);
@@ -817,6 +865,7 @@ test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu
   assert.deepEqual(metas.map((m) => [m[1], m[2]]), [
     ['Na iPhone’a, w 35 językach. W App Store jesienią 2026.', 'For iPhone, in 35 languages. In the App Store in autumn 2026.'],
     ['Na iPhone’a, w 35 językach przed wydaniem.', 'For iPhone, in 35 languages before release.'],
+    ['Na iPhone’a, w 35 językach przed wydaniem.', 'For iPhone, in 35 languages before release.'], // Oczko jak Piekarz (P-226)
   ]);
 });
 

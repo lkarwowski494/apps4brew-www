@@ -58,5 +58,29 @@
       "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
       "sha256": "c599dd7527da0592e51d0c8acb05e6faf6dddcde1d1a01141803b8f3c6778c75"
     }
+  },
+  "oczko/privacy.html": {
+    "pl": {
+      "znakow": 6015,
+      "poczatek": "<p class=\"muted\">Wersja z 26 października 2026 r., przygotow",
+      "sha256": "84711bcc733c82da792347a020df7d0f714ca097f02e6f7e1834cdc0c99ebbb8"
+    },
+    "en": {
+      "znakow": 5952,
+      "poczatek": "<p class=\"muted\">Version of 26 October 2026, prepared before",
+      "sha256": "0a31f276fe749806ef3693d8a4c75529284841fad756b3c0c2095b1a6f5354ce"
+    }
+  },
+  "oczko/support.html": {
+    "pl": {
+      "znakow": 1420,
+      "poczatek": "<p>Napisz do nas: <a href=\"mailto:support@apps4brew.com\">sup",
+      "sha256": "039ee60ef534080741ebabb2268f968a1d03e32254c4e363690ec76460249b9a"
+    },
+    "en": {
+      "znakow": 1428,
+      "poczatek": "<p>Write to us: <a href=\"mailto:support@apps4brew.com\">suppo",
+      "sha256": "2a286f848b86cdd88af4c6dc36ef74bbdf783970090b39158b740720db6df65c"
+    }
   }
 }
