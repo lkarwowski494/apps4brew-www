@@ -1,26 +1,38 @@
 {
   "trening/privacy.html": {
     "pl": {
-      "znakow": 7551,
+      "znakow": 7527,
       "poczatek": "<p class=\"muted\">Obowiązuje od 21 października 2026 r. (wers",
-      "sha256": "85929f1b7281cdbb1a57cacfbafa3a764ae694988887ad5352fe60281e118ac0"
+      "sha256": "80b80cc80afec784612a5cc7ff5c6ea083ec391a686b7fb2b0d0c13610fd7cdc"
     },
     "en": {
-      "znakow": 7380,
+      "znakow": 7359,
       "poczatek": "<p class=\"muted\">Effective 21 October 2026 (app version 1.0.",
-      "sha256": "4ef69de3cc0ae633c6c5463c1c9c140e7a65b621f99c272df2c524ebcf6ee68a"
+      "sha256": "17a7579c3f2a013c64223144b12b43ead72fa7eddc2aec44b9a25bb9b538a25a"
     }
   },
   "trening/support.html": {
     "pl": {
-      "znakow": 1594,
+      "znakow": 3230,
       "poczatek": "<h2>Kontakt</h2> <p>Pytania, błędy i pomysły: <a href=\"mailt",
-      "sha256": "a110c7670929966053b7442ab596f1ec36d9f98e839432bce601135fe42e9f65"
+      "sha256": "0a45d68321430ac26e5d6250f7c03bb4743d296381054b43fe5c82bc462a35f3"
     },
     "en": {
-      "znakow": 1519,
+      "znakow": 3196,
       "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
-      "sha256": "eaa17a2ee61ac784f8c07e0bf71fea565f0a5763bb79b96c01df815678ebe234"
+      "sha256": "a91d8967d7c1fb19578420298d410fe7c972a7a91f3fccb17fa1283b29452cd5"
+    }
+  },
+  "trening/espresso.html": {
+    "pl": {
+      "znakow": 1144,
+      "poczatek": "<p>Trening jest darmowy w ramach limitu dni treningowych w m",
+      "sha256": "6539fea4a7cfbd6d39908d8e65ab2ec97eddba0c0a47d7210ff4a95070f49a37"
+    },
+    "en": {
+      "znakow": 1149,
+      "poczatek": "<p>Trening is free within a monthly limit of training days. ",
+      "sha256": "3fef8f0008b3defb0802534774ba6dc034575eeaee3dd2f3a109be6d1b34b833"
     }
   },
   "piekarz/privacy.html": {

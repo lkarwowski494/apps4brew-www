@@ -427,7 +427,7 @@ test('index.html: canonical i cztery tagi Open Graph; obraz OG 1200×630 PNG z z
 });
 
 // Partia 2 (20.10.2026, D-020): podstrony dostają canonical i Open Graph; 404 jest noindex i bez canonical.
-const SUBPAGES = ['trening/privacy.html', 'trening/support.html', 'piekarz/privacy.html', 'piekarz/support.html'];
+const SUBPAGES = ['trening/privacy.html', 'trening/support.html', 'trening/espresso.html', 'piekarz/privacy.html', 'piekarz/support.html'];
 
 test('index.html i podstrony: canonical własnego adresu i Open Graph (og:title, og:type, og:image, og:url)', () => {
   for (const f of ['index.html', ...SUBPAGES]) {
@@ -625,7 +625,7 @@ test('04-studio-projektowe-001: kroje zastępcze z size-adjust i nadpisaniem met
 test('04-studio-projektowe-002: podstrony mają podpis etapu „Etap 4 z 5” (PL/EN), 404 nie; CSS nie zawiera podpisów w vw', () => {
   for (const f of SUBPAGES) {
     const src = read(f);
-    assert.match(src, /<\/span><span class="d-etap" data-pl="Etap 4 z 5: parzenie \(TestFlight\)" data-en="Stage 4 of 5: brewing \(TestFlight\)">Etap 4 z 5: parzenie \(TestFlight\)<\/span>\s*<\/figure>/, `${f}: podpis etapu w figurze`);
+    assert.match(src, /<\/span><span class="d-etap" data-pl="Etap 4 z 5: parzenie" data-en="Stage 4 of 5: brewing">Etap 4 z 5: parzenie<\/span>\s*<\/figure>/, `${f}: podpis etapu w figurze`);
   }
   assert.ok(!read('404.html').includes('d-etap'), '404: bez podpisu etapu (żaden etap nie jest bieżący)');
   const css = read('assets/site.css');
@@ -682,8 +682,8 @@ test('04-studio-projektowe-003: obraz OG bez wypełnień „zrobione” (barwy e
 // Źródło (odczyt 20.10.2026): Apple, Marketing Resources and Identity Guidelines, „Include Apple credit lines wherever legal information is provided.”;
 // wzór poza USA: „______ and______ are trademarks of Apple Inc.”; „A translation of the legal notice and credit lines (but not the trademarks) can be used in materials distributed outside the U.S.”
 test('04-studio-projektowe-005: stopka każdej strony ma linię praw Apple (PL i EN) z użytymi znakami i adresem źródła w komentarzu', () => {
-  const pl = 'iPhone, App Store, Apple Watch, Apple Health i TestFlight są znakami towarowymi Apple Inc.';
-  const en = 'iPhone, App Store, Apple Watch, Apple Health and TestFlight are trademarks of Apple Inc.';
+  const pl = 'iPhone, App Store, Apple Watch i Apple Health są znakami towarowymi Apple Inc.';
+  const en = 'iPhone, App Store, Apple Watch and Apple Health are trademarks of Apple Inc.';
   for (const f of ['index.html', ...SUBPAGES]) {
     const foot = footerOf(f);
     assert.ok(foot.includes(`<p class="prawa" data-pl="${pl}" data-en="${en}">${pl}</p>`), `${f}: linia praw Apple w stopce`);
@@ -815,8 +815,8 @@ test('04-studio-projektowe-016: linia .meta kart aplikacji to zdania, bez ciągu
     assert.equal(m[3], m[1], 'treść domyślna = data-pl');
   }
   assert.deepEqual(metas.map((m) => [m[1], m[2]]), [
-    ['Na iPhone’a, w 35 językach. Dziś w TestFlight, App Store jesienią 2026.', 'For iPhone, in 35 languages. In TestFlight today, App Store in autumn 2026.'],
-    ['Na iPhone’a, w 35 językach przed wydaniem. Dziś w TestFlight.', 'For iPhone, in 35 languages before release. In TestFlight today.'],
+    ['Na iPhone’a, w 35 językach. W App Store jesienią 2026.', 'For iPhone, in 35 languages. In the App Store in autumn 2026.'],
+    ['Na iPhone’a, w 35 językach przed wydaniem.', 'For iPhone, in 35 languages before release.'],
   ]);
 });
 
@@ -827,5 +827,46 @@ test('D-026: w HTML brak komentarza „[UWAGA 14.10.2026] Skrzynka … działa d
     const komentarze = (read(f).match(/<!--[\s\S]*?-->/g) || []).join('\n');
     assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA|Google Workspace/.test(komentarze), `${f}: komentarz o skrzynce support@ (D-026)`);
     assert.ok(!/UWAGA 14\.10\.2026|weryfikacji DSA/.test(read(f)), `${f}: uwaga o skrzynce support@ (D-026)`);
+  }
+});
+
+// B-01/B-02 audytu 1.0 (26.10.2026): adresy wpisane w aplikację Trening (PRIVACY_URL, SUPPORT_URL, ESPRESSO_URL, marketingUrl) muszą istnieć;
+// publicznie bez „TestFlight” i bez haseł o oparciu na badaniach (decyzja właściciela 25.10.2026: zero wzmianek o źródłach).
+test('B-01: trening/espresso.html, privacy.html i support.html istnieją, mają treść PL i EN', () => {
+  for (const f of ['trening/espresso.html', 'trening/privacy.html', 'trening/support.html']) {
+    assert.ok(fs.existsSync(path.join(root, f)), `brak ${f}`);
+    const src = read(f);
+    assert.match(src, /<section lang="pl" data-lang-section="pl">/, `${f}: sekcja PL`);
+    assert.match(src, /<section lang="en" data-lang-section="en">/, `${f}: sekcja EN`);
+  }
+});
+
+test('B-02: żadna strona nie zawiera słów „TestFlight”, „oparte na badaniach”, „based on research”', () => {
+  for (const f of HTML) {
+    const src = read(f);
+    assert.ok(!/TestFlight/i.test(src), `${f}: TestFlight`);
+    assert.ok(!/oparte na badaniach|opartych na badaniach|based on research|research-based/i.test(src), `${f}: hasło o oparciu na badaniach`);
+  }
+});
+
+test('B-01: polityka Treningu zgodna z 1.0 (bez okresu próbnego i przypomnienia o ważeniu), wsparcie opisuje subskrypcję', () => {
+  const priv = read('trening/privacy.html');
+  assert.ok(!/okres[ua]? próbn|przypomnienie o ważeniu|free trial|weigh-in reminder/i.test(priv), 'polityka: pozostałość po wersji sprzed 1.0');
+  const sup = read('trening/support.html');
+  assert.ok(sup.includes('Nie ma okresu próbnego') && sup.includes('There is no free trial'), 'wsparcie: sekcja o subskrypcji');
+});
+
+test('B-01: linki wewnętrzne (href, src) w trening/*.html prowadzą do istniejących plików i kotwic', () => {
+  for (const f of HTML) {
+    const dir = path.posix.dirname(f);
+    for (const m of read(f).matchAll(/\b(?:href|src)="([^"]+)"/g)) {
+      const u = m[1];
+      if (/^(https?:|mailto:)/.test(u)) continue;
+      const [p, hash] = u.split('#');
+      const target = p === '' ? f : p.startsWith('/') ? p.slice(1) : path.posix.normalize(path.posix.join(dir, p));
+      const file = target === '' || target.endsWith('/') ? target + 'index.html' : target;
+      assert.ok(fs.existsSync(path.join(root, file)), `${f}: link do nieistniejącego pliku ${u}`);
+      if (hash && file.endsWith('.html')) assert.ok(new RegExp(`\\bid="${hash}"`).test(read(file)), `${f}: brak kotwicy ${u}`);
+    }
   }
 });

@@ -6,6 +6,7 @@
 /404.html
 /trening/privacy.html
 /trening/support.html
+/trening/espresso.html
 /piekarz/privacy.html
 /piekarz/support.html
 /#apps
