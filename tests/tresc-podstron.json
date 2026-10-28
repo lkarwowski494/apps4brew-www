@@ -1,26 +1,26 @@
 {
   "trening/privacy.html": {
     "pl": {
-      "znakow": 7527,
+      "znakow": 7416,
       "poczatek": "<p class=\"muted\">Obowiązuje od 21 października 2026 r. (wers",
-      "sha256": "80b80cc80afec784612a5cc7ff5c6ea083ec391a686b7fb2b0d0c13610fd7cdc"
+      "sha256": "36a885d068ac9a38b2b6f4adf9bf7006135a27970fb40e0deef9c70c078ee905"
     },
     "en": {
-      "znakow": 7359,
+      "znakow": 7249,
       "poczatek": "<p class=\"muted\">Effective 21 October 2026 (app version 1.0.",
-      "sha256": "17a7579c3f2a013c64223144b12b43ead72fa7eddc2aec44b9a25bb9b538a25a"
+      "sha256": "c8ccaef81f175b06c6b0604fda0b6ed9f23f591dc01b5e811fb5f30301485f37"
     }
   },
   "trening/support.html": {
     "pl": {
-      "znakow": 3230,
+      "znakow": 3318,
       "poczatek": "<h2>Kontakt</h2> <p>Pytania, błędy i pomysły: <a href=\"mailt",
-      "sha256": "0a45d68321430ac26e5d6250f7c03bb4743d296381054b43fe5c82bc462a35f3"
+      "sha256": "0170eac49d9d868799f624c37387a8f86f29116b77b8a757654ce7e80f30cd25"
     },
     "en": {
-      "znakow": 3196,
+      "znakow": 3299,
       "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
-      "sha256": "a91d8967d7c1fb19578420298d410fe7c972a7a91f3fccb17fa1283b29452cd5"
+      "sha256": "a278538d0dc57c9a6287fda9778169378ad75ae52e84ee0053fe224b4cbd6426"
     }
   },
   "trening/espresso.html": {
