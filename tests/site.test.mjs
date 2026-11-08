@@ -537,7 +537,7 @@ test('E1-01: wszystkie strony — każdy tekst poza sekcjami PL/EN (h1–h6, p, 
   }
 });
 
-test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, nazwy aplikacji → „Training”/„Crust”/„Oczko”, żaden inny tekst bez pary', () => {
+test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, nazwy aplikacji → „Training”/„Baker”/„Oczko”, żaden inny tekst bez pary', () => {
   for (const f of ['index.html', ...SUBPAGES]) {
     const foot = parseHtml(footerOf(f)).filter((n) => !n.skip && !n.covered);
     assert.ok(foot.length > 5, `${f}: brak stopki`);
@@ -547,7 +547,7 @@ test('E1-01: stopka (index i podstrony) — „Warszawa” → „Warsaw”, naz
     assert.ok(warsaw, `${f}: stopka bez osobnego elementu „Warszawa”`);
     assert.equal(warsaw.attrs['data-pl'], 'Warszawa', `${f}: data-pl „Warszawa”`);
     assert.equal(warsaw.attrs['data-en'], 'Warsaw', `${f}: data-en „Warsaw”`);
-    for (const [pl, en] of [['Trening', 'Training'], ['Piekarz', 'Crust'], ['Oczko', 'Oczko']]) {
+    for (const [pl, en] of [['Trening', 'Training'], ['Piekarz', 'Baker'], ['Oczko', 'Oczko']]) {
       const n = foot.find((x) => x.own.trim() === pl);
       assert.ok(n, `${f}: stopka bez elementu z nazwą ${pl}`);
       assert.deepEqual([n.attrs['data-pl'], n.attrs['data-en']], [pl, en], `${f}: nazwa ${pl} → ${en}`);
@@ -780,9 +780,9 @@ test('04-studio-projektowe-009: poniżej 600 px .receipt to siatka z krajem w pi
   assert.match(css, /\.receipt \.etykieta\{display:block\}\}/);
 });
 
-// 04-studio-projektowe-010 (D-024): w wersji EN nazwy aplikacji ze sklepu: „Training” i „Crust” (bez „Trening”, „Piekarz”, „Crust (Piekarz)”) w szablonie stron.
+// 04-studio-projektowe-010 (D-024): w wersji EN nazwy aplikacji ze sklepu: „Training” i „Baker” (D-053 repo piekarz zastąpiło „Crust”; bez „Trening”, „Piekarz”, „Crust”) w szablonie stron.
 // Poza zakresem: sekcje [data-lang-section] to treść generowana z repo aplikacji (zob. test „treść podstron bez zmian”) — tam „Trening” zostaje do zmiany eksportu (D-022).
-test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw „Training” i „Crust”', () => {
+test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw „Training” i „Baker”', () => {
   for (const f of HTML) {
     const src = read(f).replace(/<section lang="(?:pl|en)" data-lang-section="(?:pl|en)">[\s\S]*?<\/section>/g, '').replace(/<!--[\s\S]*?-->/g, '');
     const en = [...src.matchAll(/\sdata-(?:en|alt-en|label-en|content-en)="([^"]*)"/g)].map((m) => m[1]);
@@ -790,23 +790,25 @@ test('04-studio-projektowe-010: teksty EN poza sekcjami treści używają nazw �
     for (const t of en) assert.ok(!/Trening|Piekarz/.test(t), `${f}: nazwa polska w tekście EN: „${t.slice(0, 70)}”`);
   }
   const index = read('index.html');
-  assert.ok(index.includes('data-en="Training: Gym Log &amp; Rest Timer"') && index.includes('data-en="Crust: Sourdough Baking"') && index.includes('data-alt-en="Crust: Sourdough Baking"'));
-  assert.ok(index.includes('data-label-en="Training path: stage 4 of 5') && index.includes('data-label-en="Crust path: stage 4 of 5') && index.includes('data-label-en="Oczko path: stage 3 of 5'));
+  assert.ok(index.includes('data-en="Training: Gym Log &amp; Rest Timer"') && index.includes('data-en="Baker: Sourdough Bread Planner"') && index.includes('data-alt-en="Baker: Sourdough Bread Planner"'));
+  assert.ok(index.includes('data-label-en="Training path: stage 4 of 5') && index.includes('data-label-en="Baker path: stage 4 of 5') && index.includes('data-label-en="Oczko path: stage 3 of 5'));
   assert.ok(index.includes('data-en="Oczko: Row Counter"') && index.includes('data-alt-en="Oczko: Row Counter"'));
-  for (const [f, app, tytul, etap] of [['trening/privacy.html', 'Training', 'Privacy Policy', 4], ['trening/support.html', 'Training', 'Support', 4], ['piekarz/privacy.html', 'Crust', 'Privacy Policy', 4], ['piekarz/support.html', 'Crust', 'Support', 4], ['oczko/privacy.html', 'Oczko', 'Privacy Policy', 3], ['oczko/support.html', 'Oczko', 'Support', 3]]) {
+  for (const [f, app, tytul, etap] of [['trening/privacy.html', 'Training', 'Privacy Policy', 4], ['trening/support.html', 'Training', 'Support', 4], ['piekarz/privacy.html', 'Baker', 'Privacy Policy', 4], ['piekarz/support.html', 'Baker', 'Support', 4], ['oczko/privacy.html', 'Oczko', 'Privacy Policy', 3], ['oczko/support.html', 'Oczko', 'Support', 3]]) {
     const src = read(f);
     assert.ok(src.includes(`data-en="${app} — ${tytul} — Apps4Brew"`), `${f}: tytuł EN`);
     assert.ok(src.includes(`<h1 data-pl="`) && src.includes(`data-en="${app} — ${tytul}">`), `${f}: h1 EN`);
     assert.ok(src.includes(`data-label-en="${app} path: stage ${etap} of 5`), `${f}: opis drogi EN`);
   }
-  // D-029: sekcje EN w piekarz/ (treść utrzymywana ręcznie w tym repo) też bez „Piekarz” w nazwie aplikacji („The Crust app”, nie „The Crust (Piekarz) app”).
+  // D-029: sekcje EN w piekarz/ (treść utrzymywana ręcznie w tym repo) też bez „Piekarz” w nazwie aplikacji („The Baker app”, D-053; nie „Crust” ani „Piekarz”).
   // trening/ nadal wyłączone: treść z eksportu repo aplikacji, nazwa „Trening” zostaje do zmiany eksportu (D-022).
   for (const f of HTML.filter((x) => x.startsWith('piekarz/'))) {
     const sec = [...read(f).matchAll(/<section lang="en" data-lang-section="en">([\s\S]*?)<\/section>/g)];
     assert.equal(sec.length, 1, `${f}: sekcja EN`);
     const tekst = sec[0][1].replace(/<!--[\s\S]*?-->/g, '');
     assert.ok(!/Piekarz/.test(tekst), `${f}: nazwa polska w sekcji EN: „${(tekst.match(/.{0,30}Piekarz.{0,30}/) || [''])[0]}”`);
+    assert.ok(!/Crust/.test(tekst), `${f}: dawna nazwa EN „Crust” w sekcji EN (D-053)`);
   }
+  for (const f of HTML) assert.ok(!/Crust/.test(read(f)), `${f}: dawna nazwa EN „Crust” (D-053)`);
 });
 
 // 04-studio-projektowe-011: tryb wymuszonych kolorów — stan „zrobione” i punktory listy cech. Pomiar w przeglądarce: docs/m6/narzedzia/fix-011-forced-colors.mjs.

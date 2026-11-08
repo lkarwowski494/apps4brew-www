@@ -37,26 +37,26 @@
   },
   "piekarz/privacy.html": {
     "pl": {
-      "znakow": 3830,
-      "poczatek": "<p class=\"muted\">Obowiązuje od 20 października 2026 r. (wers",
-      "sha256": "8b4f2b0733caee4548e07d77ea50b305ecd4fad147d94c4de6d8f90c27bd2a34"
+      "znakow": 5572,
+      "poczatek": "<p class=\"muted\">Obowiązuje od 9 listopada 2026 r. (wersja 2",
+      "sha256": "716b4d09608e645d9bf0c81f12a8cfd99db0ad62abde914804f037645af48fdd"
     },
     "en": {
-      "znakow": 3645,
-      "poczatek": "<p class=\"muted\">Effective 20 October 2026 (app version 1.0,",
-      "sha256": "3672b1b7d718a8ae12f2cff1fb93da73ac65a58eb592179673473a929f04d725"
+      "znakow": 5438,
+      "poczatek": "<p class=\"muted\">Effective 9 November 2026 (version 2).</p> ",
+      "sha256": "fa1d7ed6383c48bb63506565b1c854c666a609abab8cba3cfb0c405be6eeafcd"
     }
   },
   "piekarz/support.html": {
     "pl": {
-      "znakow": 1772,
+      "znakow": 1727,
       "poczatek": "<h2>Kontakt</h2> <p>Pytania, błędy i pomysły: <a href=\"mailt",
-      "sha256": "2ca91caf519f0ea3dc348507f8f5e4aa5c05b6e530e8e5c1dcde73df4cca2a86"
+      "sha256": "7666e767f06534c8426a92309486c6cac53cdccf385a7ddb6143c0332254755f"
     },
     "en": {
-      "znakow": 1700,
+      "znakow": 1672,
       "poczatek": "<h2>Contact</h2> <p>Questions, bugs and ideas: <a href=\"mail",
-      "sha256": "c599dd7527da0592e51d0c8acb05e6faf6dddcde1d1a01141803b8f3c6778c75"
+      "sha256": "b7132420d7e1462f116112adef429fd929b6171f97c1374a97a64a76832ccfe8"
     }
   },
   "oczko/privacy.html": {
