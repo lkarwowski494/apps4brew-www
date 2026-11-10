@@ -61,26 +61,26 @@
   },
   "oczko/privacy.html": {
     "pl": {
-      "znakow": 6015,
-      "poczatek": "<p class=\"muted\">Wersja z 26 października 2026 r., przygotow",
-      "sha256": "84711bcc733c82da792347a020df7d0f714ca097f02e6f7e1834cdc0c99ebbb8"
+      "znakow": 6366,
+      "poczatek": "<p class=\"muted\">Wersja z 3 listopada 2026 r., przygotowana ",
+      "sha256": "1923547e26225d9903271f3289601a44746ff60c2236c184e7f85db857770c30"
     },
     "en": {
-      "znakow": 5952,
-      "poczatek": "<p class=\"muted\">Version of 26 October 2026, prepared before",
-      "sha256": "0a31f276fe749806ef3693d8a4c75529284841fad756b3c0c2095b1a6f5354ce"
+      "znakow": 6324,
+      "poczatek": "<p class=\"muted\">Version of 3 November 2026, prepared before",
+      "sha256": "99b1ccaa978b1da83623896e56efe6426ffffecf3a83ba3c604ee7d88fedf074"
     }
   },
   "oczko/support.html": {
     "pl": {
-      "znakow": 1420,
+      "znakow": 2140,
       "poczatek": "<p>Napisz do nas: <a href=\"mailto:support@apps4brew.com\">sup",
-      "sha256": "039ee60ef534080741ebabb2268f968a1d03e32254c4e363690ec76460249b9a"
+      "sha256": "912548b3787804d228ad439575300e0156d659c818011f539656fa7ac26d0f85"
     },
     "en": {
-      "znakow": 1428,
+      "znakow": 2149,
       "poczatek": "<p>Write to us: <a href=\"mailto:support@apps4brew.com\">suppo",
-      "sha256": "2a286f848b86cdd88af4c6dc36ef74bbdf783970090b39158b740720db6df65c"
+      "sha256": "988c9d49e866efdac501d88a303ebda4974c544d242ee76b2a3b7c6352dcac49"
     }
   }
 }
